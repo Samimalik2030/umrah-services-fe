@@ -1,23 +1,40 @@
 import {
-  Box,
   Button,
   Card,
   Container,
-  Group,
   PasswordInput,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm, yupResolver } from "@mantine/form";
 import * as yup from "yup";
 import { useMediaQuery } from "@mantine/hooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { ResetPasswordDto } from "../../http/Api";
+import { notifications } from "@mantine/notifications";
+import http from "../../http";
+import { useMutation } from "@tanstack/react-query";
 
 function ResetPassword() {
   //Hooks
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const resetPasswordMutation = useMutation({
+    mutationFn: (data: ResetPasswordDto) =>
+      http.users.userControllerResetPassword(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
+      notifications.show({
+        title: "Success",
+        message: "Password reset successfully",
+        color: "green"
+      });
+      navigate("/auth/sign-in");
+    }
+  });
 
   const isSmall = useMediaQuery("(max-width: 768px)");
   // Form
@@ -26,7 +43,7 @@ function ResetPassword() {
     const { email, type, otp } = location.state || "";
     const schema = yup.object({
       password: yup.string().required("Password is required"),
-      confirm_password: yup.string().required("Confirm Password is required"),
+      confirm_password: yup.string().required("Confirm Password is required")
     });
     // Form Hooks
     const form = useForm({
@@ -36,13 +53,17 @@ function ResetPassword() {
         otp: otp,
         type: type,
         password: "",
-        confirm_password: "",
+        confirm_password: ""
       },
-      validate: yupResolver(schema),
+      validate: yupResolver(schema)
     });
 
+    function handleResetPasswordSubmit(values: ResetPasswordDto) {
+      resetPasswordMutation.mutate(values);
+    }
+
     return (
-      <form onSubmit={form.onSubmit(() => navigate("/"))}>
+      <form onSubmit={form.onSubmit(handleResetPasswordSubmit)}>
         <Stack align="center">
           <Stack gap={1}>
             <Title ta={"center"} order={1}>
@@ -74,7 +95,11 @@ function ResetPassword() {
                 {...form.getInputProps("confirm_password")}
               />
               <br />
-              <Button type="submit" fullWidth>
+              <Button
+                type="submit"
+                fullWidth
+                loading={resetPasswordMutation.isPending}
+              >
                 Reset Password
               </Button>
             </Stack>

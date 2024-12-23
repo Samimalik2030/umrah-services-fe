@@ -11,13 +11,16 @@ import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
 
 import theme from "./theme";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const Providers = () => {
   return (
     <MantineProvider theme={theme}>
       <Notifications position="top-right" withinPortal zIndex={9999} />
-      <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AuthProvider>
     </MantineProvider>
   );
 };

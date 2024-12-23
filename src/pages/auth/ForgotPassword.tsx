@@ -1,6 +1,5 @@
 import {
   Anchor,
-  Box,
   Button,
   Card,
   Container,
@@ -9,17 +8,35 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useForm, yupResolver } from "@mantine/form";
 import * as yup from "yup";
 import { useMediaQuery } from "@mantine/hooks";
 import IconArrowNarrowLeft from "../../assets/icons/IconArrowNarrowLeft";
+import { useQueryClient } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+import http from "../../http";
+import { ForgotPasswordDto } from "../../http/Api";
+import { useMutation } from "@tanstack/react-query";
 
 function ForgotPassword() {
   //Hooks
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const forgotPasswordMutation = useMutation({
+    mutationFn: (data: ForgotPasswordDto) =>
+      http.users.userControllerForgotPassword(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
+      notifications.show({
+        title: "Success",
+        message: "OTP sent to your email",
+        color: "green"
+      });
+    }
+  });
 
   const isSmall = useMediaQuery("(max-width: 768px)");
 
@@ -30,20 +47,37 @@ function ForgotPassword() {
         .string()
         .trim()
         .email("Invalid email address")
-        .required("Email is required"),
+        .required("Email is required")
     });
     // Form Hooks
 
     const form = useForm({
       mode: "uncontrolled",
       initialValues: {
-        email: "",
+        email: ""
       },
-      validate: yupResolver(schema),
+      validate: yupResolver(schema)
     });
 
+    async function handleVerifyEmailSubmit(values: ForgotPasswordDto) {
+      try {
+        forgotPasswordMutation.mutate(values, {
+          onSuccess() {
+            navigate("/auth/verify-otp", {
+              state: {
+                email: values.email,
+                type: "Reset Password" // Add type for OTP verification
+              }
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Forgot password error:", error);
+      }
+    }
+
     return (
-      <form onSubmit={form.onSubmit(() => navigate("/verify-otp"))}>
+      <form onSubmit={form.onSubmit(handleVerifyEmailSubmit)}>
         <Stack align="center" mx={"xl"}>
           <Stack gap={1} align="center">
             <Title ta={isSmall ? "center" : "start"} order={1}>
@@ -81,7 +115,12 @@ function ForgotPassword() {
                     Back to login page
                   </Anchor>
                 </Group>
-                <Button type="submit">Reset password</Button>
+                <Button
+                  type="submit"
+                  loading={forgotPasswordMutation.isPending}
+                >
+                  Reset password
+                </Button>
               </Flex>
             </Stack>
           </Card>

@@ -78,11 +78,7 @@ export interface TwoFAOtpDto {
   /** @example 123456 */
   otp: string;
   /** @example "Two Factor Authentication" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
 }
 
 export interface VerifyEmailDto {
@@ -90,11 +86,7 @@ export interface VerifyEmailDto {
   email?: string;
   otp: string;
   /** @example "Email Verification" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
 }
 
 export interface MessageDto {
@@ -108,22 +100,14 @@ export interface UnlockAccountDto {
   /** @example 123456 */
   otp: string;
   /** @example "Account Unlock" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
 }
 
 export interface SendOtpDto {
   /** @default "example@example.com" */
   email?: string;
   /** @example "Reset Password" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
 }
 
 export interface VerifyOtpDto {
@@ -132,11 +116,7 @@ export interface VerifyOtpDto {
   /** @example 123456 */
   otp: string;
   /** @example "Email Verification" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
 }
 
 export interface ForgotPasswordDto {
@@ -150,11 +130,7 @@ export interface ResetPasswordDto {
   /** @default "123456" */
   otp: string;
   /** @example "Reset Password" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
   password: string;
   confirm_password: string;
 }
@@ -175,11 +151,7 @@ export interface RefreshTokenDto {
   /** @default "example@example.com" */
   email?: string;
   /** @example "Reset Password" */
-  type:
-    | "Reset Password"
-    | "Email Verification"
-    | "Two Factor Authentication"
-    | "Account Unlock";
+  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
 }
 
 export interface SocialLoginUrlDto {
@@ -492,12 +464,7 @@ export interface LifestyleAndBackgroundDto {
   religion: string;
 }
 
-export interface PetsAndHouseholdInformationDto {
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  hasPets: string;
+export interface PetsTypeAndQuantityDTO {
   /**
    * @default null
    * @example "Dog"
@@ -508,11 +475,15 @@ export interface PetsAndHouseholdInformationDto {
    * @example 2
    */
   numberOfPets: number;
+}
+
+export interface PetsAndHouseholdInformationDto {
   /**
-   * @default false
-   * @example false
+   * @default null
+   * @example "Yes"
    */
-  fullyVaccinated: string;
+  hasPets: string;
+  pets: PetsTypeAndQuantityDTO[];
 }
 
 export interface HostChildrenDto {
@@ -603,7 +574,7 @@ export interface HostingPreferenceDto {
    * @default null
    * @example "Yes"
    */
-  smokingAllowed: string[];
+  smokingAllowed: string;
   /**
    * @default null
    * @example "Yes"
@@ -621,9 +592,32 @@ export interface HostingPreferenceDto {
   preferredHostingDuration: string[];
   /**
    * @default null
-   * @example "Flexible working hours"
+   * @example ["Flexible working hours"]
    */
-  preferredWorkingHoursOption: string;
+  preferredWorkingHoursOption: string[];
+}
+
+export interface ReferenceDto {
+  /**
+   * @default null
+   * @example "John Doe"
+   */
+  fullName?: string;
+  /**
+   * @default null
+   * @example "+1-234-567-890"
+   */
+  mobileNumber?: string;
+  /**
+   * @default null
+   * @example "john.doe@example.com"
+   */
+  email?: string;
+  /**
+   * @default null
+   * @example "US"
+   */
+  countryCode?: string;
 }
 
 export interface BankDetailsDto {
@@ -684,10 +678,31 @@ export interface Host {
   petsAndHouseholdInformation: PetsAndHouseholdInformationDto;
   hostFamilyAndReferrals: HostFamilyAndReferralsDto;
   hostingPreference: HostingPreferenceDto;
-  references: ReferenceDto[];
+  references: ReferenceDto;
   bankDetail: BankDetailsDto;
   dataProtection: DataProtectionDto;
   status: string;
+  default: boolean;
+}
+
+export interface HostAuthenticatedDto {
+  /** @example "Success Message!" */
+  message?: string;
+  accessToken?: string;
+  user?: AuthUserDto;
+  host: Host | null;
+}
+
+export interface UpdateHostDto {
+  personalInformation?: PersonalInformationDto;
+  livingArrangements?: LivingInformationDto;
+  lifeStyleAndBackground?: LifestyleAndBackgroundDto;
+  petsAndHouseholdInformation?: PetsAndHouseholdInformationDto;
+  hostFamilyAndReferrals?: HostFamilyAndReferralsDto;
+  hostingPreference?: HostingPreferenceDto;
+  references?: ReferenceDto[];
+  bankDetail?: BankDetailsDto;
+  dataProtection?: DataProtectionDto;
 }
 
 export interface Property {
@@ -709,16 +724,10 @@ export interface Property {
   bathrooms: number;
   description: string;
   condition: string;
-  photos: IImage[];
+  photos: FileDto;
   status: string;
   kitchen: number;
   garage: string;
-  host: Host;
-}
-
-export interface IImage {
-  fileId: string;
-  url: string;
 }
 
 export interface PropertyPagination {
@@ -767,61 +776,130 @@ export interface UpdatePhotosDto {
 }
 
 export interface PhotoIdsDto {
-  /** @example ["67541893e375273f6020bc49","67541892e375273f6020baea"] */
-  ids: any[];
+  ids: string[];
 }
 
-export interface ReferenceDto {
-  /**
-   * @default null
-   * @example "John Doe"
-   */
-  fullName: string;
-  /**
-   * @default null
-   * @example "+1-234-567-890"
-   */
-  mobileNumber: string;
-  /**
-   * @default null
-   * @example "john.doe@example.com"
-   */
+export interface AreaDto {
+  /** @example 5 */
+  width: number;
+  /** @example 5 */
+  length: number;
+  /** @example "square_feet" */
+  unit: string;
+}
+
+export interface RentPriceDto {
+  /** @example 5 */
+  price: number;
+  /** @example "usd" */
+  currency: string;
+  /** @example "day" */
+  duration: string;
+}
+
+export interface RoomAttributesDto {
+  /** @example "Drawing Room" */
+  name: string;
+  area: AreaDto;
+  prices: RentPriceDto[];
+  availabilityStatus: "Draft" | "Available" | "Occupied" | "Under Maintenance";
+}
+
+export interface FeaturesAndAmenitiesDTO {
+  /** @example 4 */
+  beds: number;
+  /** @example "Yes" */
+  has_AC: string;
+  /** @example "Yes" */
+  has_heater: string;
+}
+
+export interface AccessibilityAndComplianceDTO {
+  /** @example "Yes" */
+  wheelchairAccessibleWidths: string;
+  /** @example "Yes" */
+  elevatorAccess: string;
+}
+
+export interface Room {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  attributes: RoomAttributesDto;
+  description: string;
+  featuresAndAmenities: FeaturesAndAmenitiesDTO;
+  accessibilityAndCompliance: AccessibilityAndComplianceDTO;
+  photos: FileDto[];
+  status: "Draft" | "Available" | "Occupied" | "Under Maintenance";
+}
+
+export interface RoomPagination {
+  data: Room[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateRoomDto {
+  attributes: RoomAttributesDto;
+  propertyId: string;
+}
+
+export interface UpdateRoomDto {
+  attributes?: RoomAttributesDto;
+  /** @example "A well-furnished room with modern amenities, ensuring comfort and convenience for occupants." */
+  description?: string;
+  featuresAndAmenities?: FeaturesAndAmenitiesDTO;
+  accessibilityAndCompliance?: AccessibilityAndComplianceDTO;
+}
+
+export interface StudentPersonalInfoDto {
+  /** @example "https://example.com/user/profile-picture.jpg" */
+  profileUrl: string;
+  /** @example "John" */
+  firstName: string;
+  /** @example "Doe" */
+  lastName: string;
+  /** @example "john@gmail.com" */
   email: string;
+  /** @example "111-1111111-111" */
+  contact: string;
+  /**
+   * @format date-time
+   * @example "2010-11-09T00:00:00.000Z"
+   */
+  dob: string;
+  /** @example "123 Maple Street, Apt 4B, Springfield, IL 62701" */
+  address: string;
 }
 
-export interface UpdateHostDto {
-  personalInformation?: PersonalInformationDto;
-  livingArrangements?: LivingInformationDto;
-  lifeStyleAndBackground?: LifestyleAndBackgroundDto;
-  petsAndHouseholdInformation?: PetsAndHouseholdInformationDto;
-  hostFamilyAndReferrals?: HostFamilyAndReferralsDto;
-  hostingPreference?: HostingPreferenceDto;
-  references?: ReferenceDto;
-  bankDetail?: BankDetailsDto;
-  dataProtection?: DataProtectionDto;
+export interface UpdateStudentDto {
+  personalInformation?: StudentPersonalInfoDto;
 }
 
-export interface HostAuthenticatedDto {
+export interface Student {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  personalInformation: StudentPersonalInfoDto;
+}
+
+export interface StudentAuthenticatedDto {
   /** @example "Success Message!" */
   message?: string;
   accessToken?: string;
   user?: AuthUserDto;
-  host: Host | null;
+  student: Student | null;
 }
 
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  HeadersDefaults,
-  ResponseType
-} from "axios";
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
 import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
-export interface FullRequestParams
-  extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
+export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -836,15 +914,11 @@ export interface FullRequestParams
   body?: unknown;
 }
 
-export type RequestParams = Omit<
-  FullRequestParams,
-  "body" | "method" | "query" | "path"
->;
+export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
 
-export interface ApiConfig<SecurityDataType = unknown>
-  extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
   securityWorker?: (
-    securityData: SecurityDataType | null
+    securityData: SecurityDataType | null,
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
   secure?: boolean;
   format?: ResponseType;
@@ -854,7 +928,7 @@ export enum ContentType {
   Json = "application/json",
   FormData = "multipart/form-data",
   UrlEncoded = "application/x-www-form-urlencoded",
-  Text = "text/plain"
+  Text = "text/plain",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
@@ -864,16 +938,8 @@ export class HttpClient<SecurityDataType = unknown> {
   private secure?: boolean;
   private format?: ResponseType;
 
-  constructor({
-    securityWorker,
-    secure,
-    format,
-    ...axiosConfig
-  }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({
-      ...axiosConfig,
-      baseURL: axiosConfig.baseURL || ""
-    });
+  constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
+    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
@@ -883,10 +949,7 @@ export class HttpClient<SecurityDataType = unknown> {
     this.securityData = data;
   };
 
-  protected mergeRequestParams(
-    params1: AxiosRequestConfig,
-    params2?: AxiosRequestConfig
-  ): AxiosRequestConfig {
+  protected mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
     const method = params1.method || (params2 && params2.method);
 
     return {
@@ -894,14 +957,10 @@ export class HttpClient<SecurityDataType = unknown> {
       ...params1,
       ...(params2 || {}),
       headers: {
-        ...((method &&
-          this.instance.defaults.headers[
-            method.toLowerCase() as keyof HeadersDefaults
-          ]) ||
-          {}),
+        ...((method && this.instance.defaults.headers[method.toLowerCase() as keyof HeadersDefaults]) || {}),
         ...(params1.headers || {}),
-        ...((params2 && params2.headers) || {})
-      }
+        ...((params2 && params2.headers) || {}),
+      },
     };
   }
 
@@ -919,15 +978,11 @@ export class HttpClient<SecurityDataType = unknown> {
     }
     return Object.keys(input || {}).reduce((formData, key) => {
       const property = input[key];
-      const propertyContent: any[] =
-        property instanceof Array ? property : [property];
+      const propertyContent: any[] = property instanceof Array ? property : [property];
 
       for (const formItem of propertyContent) {
         const isFileType = formItem instanceof Blob || formItem instanceof File;
-        formData.append(
-          key,
-          isFileType ? formItem : this.stringifyFormItem(formItem)
-        );
+        formData.append(key, isFileType ? formItem : this.stringifyFormItem(formItem));
       }
 
       return formData;
@@ -951,21 +1006,11 @@ export class HttpClient<SecurityDataType = unknown> {
     const requestParams = this.mergeRequestParams(params, secureParams);
     const responseFormat = format || this.format || undefined;
 
-    if (
-      type === ContentType.FormData &&
-      body &&
-      body !== null &&
-      typeof body === "object"
-    ) {
+    if (type === ContentType.FormData && body && body !== null && typeof body === "object") {
       body = this.createFormData(body as Record<string, unknown>);
     }
 
-    if (
-      type === ContentType.Text &&
-      body &&
-      body !== null &&
-      typeof body !== "string"
-    ) {
+    if (type === ContentType.Text && body && body !== null && typeof body !== "string") {
       body = JSON.stringify(body);
     }
 
@@ -973,12 +1018,12 @@ export class HttpClient<SecurityDataType = unknown> {
       ...requestParams,
       headers: {
         ...(requestParams.headers || {}),
-        ...(type ? { "Content-Type": type } : {})
+        ...(type ? { "Content-Type": type } : {}),
       },
       params: query,
       responseType: responseFormat,
       data: body,
-      url: path
+      url: path,
     });
   };
 }
@@ -988,9 +1033,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version 0.0.20
  * @contact
  */
-export class Api<
-  SecurityDataType extends unknown
-> extends HttpClient<SecurityDataType> {
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
@@ -1002,7 +1045,7 @@ export class Api<
     this.request<void, any>({
       path: `/`,
       method: "GET",
-      ...params
+      ...params,
     });
 
   health = {
@@ -1017,8 +1060,8 @@ export class Api<
       this.request<void, any>({
         path: `/health`,
         method: "GET",
-        ...params
-      })
+        ...params,
+      }),
   };
   permissions = {
     /**
@@ -1033,8 +1076,8 @@ export class Api<
         path: `/permissions`,
         method: "GET",
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
   };
   users = {
     /**
@@ -1051,7 +1094,7 @@ export class Api<
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1068,7 +1111,7 @@ export class Api<
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1078,17 +1121,14 @@ export class Api<
      * @name UserControllerSignInWith2FaOtp
      * @request POST:/users/users/2fa-sign-in
      */
-    userControllerSignInWith2FaOtp: (
-      data: TwoFAOtpDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerSignInWith2FaOtp: (data: TwoFAOtpDto, params: RequestParams = {}) =>
       this.request<TokenDto, any>({
         path: `/users/users/2fa-sign-in`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1098,17 +1138,14 @@ export class Api<
      * @name UserControllerVerifyEmail
      * @request POST:/users/verify-email
      */
-    userControllerVerifyEmail: (
-      data: VerifyEmailDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerVerifyEmail: (data: VerifyEmailDto, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
         path: `/users/verify-email`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1118,17 +1155,14 @@ export class Api<
      * @name UserControllerUnlockAccount
      * @request POST:/users/users/unlock-account
      */
-    userControllerUnlockAccount: (
-      data: UnlockAccountDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerUnlockAccount: (data: UnlockAccountDto, params: RequestParams = {}) =>
       this.request<TokenDto, any>({
         path: `/users/users/unlock-account`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1145,7 +1179,7 @@ export class Api<
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1162,7 +1196,7 @@ export class Api<
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1172,17 +1206,14 @@ export class Api<
      * @name UserControllerForgotPassword
      * @request POST:/users/forgot-password
      */
-    userControllerForgotPassword: (
-      data: ForgotPasswordDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerForgotPassword: (data: ForgotPasswordDto, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
         path: `/users/forgot-password`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1192,17 +1223,14 @@ export class Api<
      * @name UserControllerResetPassword
      * @request PATCH:/users/reset-password
      */
-    userControllerResetPassword: (
-      data: ResetPasswordDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerResetPassword: (data: ResetPasswordDto, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
         path: `/users/reset-password`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1213,10 +1241,7 @@ export class Api<
      * @request PATCH:/users/change-password
      * @secure
      */
-    userControllerChangePassword: (
-      data: ChangePasswordDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerChangePassword: (data: ChangePasswordDto, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
         path: `/users/change-password`,
         method: "PATCH",
@@ -1224,7 +1249,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1235,10 +1260,7 @@ export class Api<
      * @request PATCH:/users/update-profile
      * @secure
      */
-    userControllerUpdateProfile: (
-      data: UpdateProfileDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerUpdateProfile: (data: UpdateProfileDto, params: RequestParams = {}) =>
       this.request<AuthUserDto, any>({
         path: `/users/update-profile`,
         method: "PATCH",
@@ -1246,7 +1268,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1262,7 +1284,7 @@ export class Api<
         /** @format binary */
         file?: File;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<AuthUserDto, any>({
         path: `/users/change-avatar`,
@@ -1271,7 +1293,7 @@ export class Api<
         secure: true,
         type: ContentType.FormData,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1288,7 +1310,7 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1298,17 +1320,14 @@ export class Api<
      * @name UserControllerRefreshToken
      * @request POST:/users/refresh-token
      */
-    userControllerRefreshToken: (
-      data: RefreshTokenDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerRefreshToken: (data: RefreshTokenDto, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
         path: `/users/refresh-token`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1325,7 +1344,7 @@ export class Api<
         method: "PATCH",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1336,10 +1355,7 @@ export class Api<
      * @request PATCH:/users/two-fa-verification
      * @secure
      */
-    userControllerVerifyTwoFa: (
-      data: TwoFAOtpDto,
-      params: RequestParams = {}
-    ) =>
+    userControllerVerifyTwoFa: (data: TwoFAOtpDto, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
         path: `/users/two-fa-verification`,
         method: "PATCH",
@@ -1347,7 +1363,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1362,7 +1378,7 @@ export class Api<
         path: `/users/sign-in/google`,
         method: "GET",
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1376,14 +1392,14 @@ export class Api<
       query: {
         code: string;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<User, any>({
         path: `/users/google/callback`,
         method: "GET",
         query: query,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1398,7 +1414,7 @@ export class Api<
         path: `/users/sign-in/facebook`,
         method: "GET",
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1412,15 +1428,15 @@ export class Api<
       query: {
         code: string;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<User, any>({
         path: `/users/facebook/callback`,
         method: "GET",
         query: query,
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
   };
   activityLogs = {
     /**
@@ -1437,8 +1453,8 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
   };
   businesses = {
     /**
@@ -1458,7 +1474,7 @@ export class Api<
         name?: string;
         isArchived?: boolean;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<BusinessPagination, any>({
         path: `/businesses`,
@@ -1466,7 +1482,7 @@ export class Api<
         query: query,
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1477,10 +1493,7 @@ export class Api<
      * @request POST:/businesses
      * @secure
      */
-    businessControllerCreate: (
-      data: CreateBusinessDto,
-      params: RequestParams = {}
-    ) =>
+    businessControllerCreate: (data: CreateBusinessDto, params: RequestParams = {}) =>
       this.request<SignedBusinessDto, any>({
         path: `/businesses`,
         method: "POST",
@@ -1488,7 +1501,7 @@ export class Api<
         secure: true,
         type: ContentType.FormData,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1503,7 +1516,7 @@ export class Api<
         path: `/businesses/types`,
         method: "GET",
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1513,17 +1526,14 @@ export class Api<
      * @name BusinessControllerRootSignIn
      * @request POST:/businesses/root/sign-in
      */
-    businessControllerRootSignIn: (
-      data: RootBusinessSignInDto,
-      params: RequestParams = {}
-    ) =>
+    businessControllerRootSignIn: (data: RootBusinessSignInDto, params: RequestParams = {}) =>
       this.request<TokenDto, any>({
         path: `/businesses/root/sign-in`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1533,17 +1543,14 @@ export class Api<
      * @name BusinessControllerCodeBasedSignIn
      * @request POST:/businesses/code-based-sign-in
      */
-    businessControllerCodeBasedSignIn: (
-      data: CodeBasedSignInDto,
-      params: RequestParams = {}
-    ) =>
+    businessControllerCodeBasedSignIn: (data: CodeBasedSignInDto, params: RequestParams = {}) =>
       this.request<TokenDto, any>({
         path: `/businesses/code-based-sign-in`,
         method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1560,7 +1567,7 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1577,7 +1584,7 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1588,11 +1595,7 @@ export class Api<
      * @request PATCH:/businesses/{id}
      * @secure
      */
-    businessControllerUpdate: (
-      id: string,
-      data: UpdateBusinessDto,
-      params: RequestParams = {}
-    ) =>
+    businessControllerUpdate: (id: string, data: UpdateBusinessDto, params: RequestParams = {}) =>
       this.request<Business, any>({
         path: `/businesses/${id}`,
         method: "PATCH",
@@ -1600,7 +1603,7 @@ export class Api<
         secure: true,
         type: ContentType.FormData,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1617,7 +1620,7 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1634,7 +1637,7 @@ export class Api<
         method: "DELETE",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1645,11 +1648,7 @@ export class Api<
      * @request PATCH:/businesses/{id}/archive
      * @secure
      */
-    businessControllerArchive: (
-      id: string,
-      data: BusinessArchiveDto,
-      params: RequestParams = {}
-    ) =>
+    businessControllerArchive: (id: string, data: BusinessArchiveDto, params: RequestParams = {}) =>
       this.request<Business, any>({
         path: `/businesses/${id}/archive`,
         method: "PATCH",
@@ -1657,8 +1656,8 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
   };
   jobs = {
     /**
@@ -1679,7 +1678,7 @@ export class Api<
         isArchived?: boolean;
         businessId?: string;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<JobPagination, any>({
         path: `/jobs`,
@@ -1687,7 +1686,7 @@ export class Api<
         query: query,
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1706,7 +1705,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1723,7 +1722,7 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1734,11 +1733,7 @@ export class Api<
      * @request PATCH:/jobs/{id}
      * @secure
      */
-    jobControllerUpdate: (
-      id: string,
-      data: UpdateJobDto,
-      params: RequestParams = {}
-    ) =>
+    jobControllerUpdate: (id: string, data: UpdateJobDto, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/jobs/${id}`,
         method: "PATCH",
@@ -1746,7 +1741,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1763,8 +1758,96 @@ export class Api<
         method: "DELETE",
         secure: true,
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
+  };
+  hosts = {
+    /**
+     * No description
+     *
+     * @tags Host
+     * @name HostAuthControllerSignUp
+     * @request POST:/hosts/sign-up
+     */
+    hostAuthControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+      this.request<HostAuthenticatedDto, any>({
+        path: `/hosts/sign-up`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Host
+     * @name HostAuthControllerLogin
+     * @request POST:/hosts/sign-in
+     */
+    hostAuthControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
+      this.request<HostAuthenticatedDto, any>({
+        path: `/hosts/sign-in`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Host
+     * @name HostAuthControllerSign
+     * @request POST:/hosts/sign
+     * @secure
+     */
+    hostAuthControllerSign: (params: RequestParams = {}) =>
+      this.request<HostAuthenticatedDto, any>({
+        path: `/hosts/sign`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Host
+     * @name HostControllerPatchDefault
+     * @request PATCH:/hosts/default
+     * @secure
+     */
+    hostControllerPatchDefault: (data: UpdateHostDto, params: RequestParams = {}) =>
+      this.request<Host, any>({
+        path: `/hosts/default`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Host
+     * @name HostControllerGetDefaultHost
+     * @request GET:/hosts/default
+     * @secure
+     */
+    hostControllerGetDefaultHost: (params: RequestParams = {}) =>
+      this.request<Host, any>({
+        path: `/hosts/default`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
   };
   properties = {
     /**
@@ -1784,7 +1867,7 @@ export class Api<
         name?: string;
         type?: string;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<PropertyPagination, any>({
         path: `/properties`,
@@ -1792,7 +1875,7 @@ export class Api<
         query: query,
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1803,10 +1886,7 @@ export class Api<
      * @request POST:/properties
      * @secure
      */
-    propertyControllerCreate: (
-      data: CreatePropertyDto,
-      params: RequestParams = {}
-    ) =>
+    propertyControllerCreate: (data: CreatePropertyDto, params: RequestParams = {}) =>
       this.request<Property, any>({
         path: `/properties`,
         method: "POST",
@@ -1814,7 +1894,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1831,7 +1911,7 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1842,11 +1922,7 @@ export class Api<
      * @request PATCH:/properties/{id}
      * @secure
      */
-    propertyControllerPatch: (
-      id: string,
-      data: UpdatePropertyDto,
-      params: RequestParams = {}
-    ) =>
+    propertyControllerPatch: (id: string, data: UpdatePropertyDto, params: RequestParams = {}) =>
       this.request<Property, any>({
         path: `/properties/${id}`,
         method: "PATCH",
@@ -1854,7 +1930,7 @@ export class Api<
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1871,7 +1947,7 @@ export class Api<
         method: "DELETE",
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1882,11 +1958,7 @@ export class Api<
      * @request PATCH:/properties/{id}/photos
      * @secure
      */
-    propertyControllerPatchImages: (
-      id: string,
-      data: UpdatePhotosDto,
-      params: RequestParams = {}
-    ) =>
+    propertyControllerPatchImages: (id: string, data: UpdatePhotosDto, params: RequestParams = {}) =>
       this.request<Property, any>({
         path: `/properties/${id}/photos`,
         method: "PATCH",
@@ -1894,7 +1966,7 @@ export class Api<
         secure: true,
         type: ContentType.FormData,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
@@ -1905,19 +1977,32 @@ export class Api<
      * @request DELETE:/properties/{id}/photos
      * @secure
      */
-    propertyControllerDeletePhotos: (
-      id: string,
-      data: PhotoIdsDto,
-      params: RequestParams = {}
-    ) =>
-      this.request<Property, any>({
+    propertyControllerDeletePhotos: (id: string, data: PhotoIdsDto, params: RequestParams = {}) =>
+      this.request<MessageDto, any>({
         path: `/properties/${id}/photos`,
         method: "DELETE",
         body: data,
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name PropertyControllerGetPropertyHost
+     * @request GET:/properties/{id}/hosts
+     * @secure
+     */
+    propertyControllerGetPropertyHost: (id: string, params: RequestParams = {}) =>
+      this.request<Host, any>({
+        path: `/properties/${id}/hosts`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
       }),
 
     /**
@@ -1928,110 +2013,225 @@ export class Api<
      * @request PATCH:/properties/{id}/host
      * @secure
      */
-    propertyControllerUpdateHost: (
-      id: string,
-      data: UpdateHostDto,
-      params: RequestParams = {}
-    ) =>
-      this.request<FileDto, any>({
+    propertyControllerUpdateHost: (id: string, data: UpdateHostDto, params: RequestParams = {}) =>
+      this.request<Host, any>({
         path: `/properties/${id}/host`,
         method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
   };
-  hosts = {
+  rooms = {
     /**
      * No description
      *
-     * @tags Host
-     * @name HostAuthControllerSignUp
-     * @request POST:/hosts/sign-up
-     */
-    hostAuthControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/hosts/sign-up`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostAuthControllerLogin
-     * @request POST:/hosts/sign-in
-     */
-    hostAuthControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/hosts/sign-in`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostAuthControllerSign
-     * @request POST:/hosts/sign
+     * @tags Room
+     * @name RoomControllerIndex
+     * @request GET:/rooms
      * @secure
      */
-    hostAuthControllerSign: (params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/hosts/sign`,
-        method: "POST",
+    roomControllerIndex: (
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+        name?: string;
+        type?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<RoomPagination, any>({
+        path: `/rooms`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Host
-     * @name HostControllerPatchDefault
-     * @request PATCH:/hosts/default
+     * @tags Room
+     * @name RoomControllerCreate
+     * @request POST:/rooms
      * @secure
      */
-    hostControllerPatchDefault: (
-      data: UpdateHostDto,
-      params: RequestParams = {}
-    ) =>
-      this.request<Host, any>({
-        path: `/hosts/default`,
+    roomControllerCreate: (data: CreateRoomDto, params: RequestParams = {}) =>
+      this.request<Room, any>({
+        path: `/rooms`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Room
+     * @name RoomControllerGet
+     * @request GET:/rooms/{id}
+     * @secure
+     */
+    roomControllerGet: (id: string, params: RequestParams = {}) =>
+      this.request<Room, any>({
+        path: `/rooms/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Room
+     * @name RoomControllerUpdate
+     * @request PATCH:/rooms/{id}
+     * @secure
+     */
+    roomControllerUpdate: (id: string, data: UpdateRoomDto, params: RequestParams = {}) =>
+      this.request<Room, any>({
+        path: `/rooms/${id}`,
         method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params
+        ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Host
-     * @name HostControllerGetDefaultHost
-     * @request GET:/hosts/default
+     * @tags Room
+     * @name RoomControllerPatchPhotos
+     * @request PATCH:/rooms/{id}/photos
      * @secure
      */
-    hostControllerGetDefaultHost: (params: RequestParams = {}) =>
-      this.request<Host, any>({
-        path: `/hosts/default`,
+    roomControllerPatchPhotos: (id: string, data: UpdatePhotosDto, params: RequestParams = {}) =>
+      this.request<Room, any>({
+        path: `/rooms/${id}/photos`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Room
+     * @name RoomControllerDeletePhotos
+     * @request DELETE:/rooms/{id}/photos
+     * @secure
+     */
+    roomControllerDeletePhotos: (id: string, data: PhotoIdsDto, params: RequestParams = {}) =>
+      this.request<MessageDto, any>({
+        path: `/rooms/${id}/photos`,
+        method: "DELETE",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  students = {
+    /**
+     * No description
+     *
+     * @tags Students
+     * @name StudentControllerPatchDefault
+     * @request PATCH:/students/default
+     * @secure
+     */
+    studentControllerPatchDefault: (data: UpdateStudentDto, params: RequestParams = {}) =>
+      this.request<Student, any>({
+        path: `/students/default`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Students
+     * @name StudentControllerGetDefaultHost
+     * @request GET:/students/default
+     * @secure
+     */
+    studentControllerGetDefaultHost: (params: RequestParams = {}) =>
+      this.request<Student, any>({
+        path: `/students/default`,
         method: "GET",
         secure: true,
         format: "json",
-        ...params
-      })
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Students
+     * @name AuthStudentControllerSignUp
+     * @request POST:/students/sign-up
+     */
+    authStudentControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+      this.request<HostAuthenticatedDto, any>({
+        path: `/students/sign-up`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Students
+     * @name AuthStudentControllerLogin
+     * @request POST:/students/sign-in
+     */
+    authStudentControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
+      this.request<HostAuthenticatedDto, any>({
+        path: `/students/sign-in`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Students
+     * @name AuthStudentControllerSign
+     * @request POST:/students/sign
+     * @secure
+     */
+    authStudentControllerSign: (params: RequestParams = {}) =>
+      this.request<StudentAuthenticatedDto, any>({
+        path: `/students/sign`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
   };
 }

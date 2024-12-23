@@ -7,30 +7,53 @@ import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyOtp from "../pages/auth/VerifyOtp";
 
 import TwoFactorAuth from "../pages/auth/TwoFactorAuth";
+import RouteGuard from "../guards/RouteGuard";
+import DashboardLayout from "../pages/dashboard/DashboardLayout";
 
 const routes = createBrowserRouter([
   {
-    path: "/",
-    element: <SignIn />,
-  },
+    path: "/auth",
+    children: [
+      {
+        path: "sign-in",
+        element: <SignIn />
+      },
 
-  {
-    path: "forgot-password",
-    element: <ForgotPassword />,
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />
+      },
+      {
+        path: "verify-otp",
+        element: <VerifyOtp />
+      },
+      {
+        path: "two-factor-auth",
+        element: <TwoFactorAuth />
+      }
+    ]
   },
   {
-    path: "reset-password",
-    element: <ResetPassword />,
+    path: "/",
+    element: <RouteGuard />,
+    children: [
+      {
+        path: "/",
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "/",
+            element: <div>Admin Home</div>
+          }
+        ]
+      }
+    ]
   },
-  {
-    path: "verify-otp",
-    element: <VerifyOtp />,
-  },
-  {
-    path: "two-factor-auth",
-    element: <TwoFactorAuth />,
-  },
-  { path: "*", element: <PageNotFound /> },
+  { path: "*", element: <PageNotFound /> }
 ]);
 
 export default routes;

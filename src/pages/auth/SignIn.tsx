@@ -1,6 +1,5 @@
 import {
   Anchor,
-  Box,
   Button,
   Card,
   Checkbox,
@@ -10,17 +9,22 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useForm, yupResolver } from "@mantine/form";
 
 import * as yup from "yup";
 
-import { useEffect } from "react";
 import { useMediaQuery } from "@mantine/hooks";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../../contexts/AuthContext";
+import { SignInDto } from "../../http/Api";
+import http from "../../http";
 function SignIn() {
   //Hooks
+  const queryClient = useQueryClient();
+  const { setAccessToken, setUser, accessToken } = useAuth();
   const navigate = useNavigate();
 
   const isSmall = useMediaQuery("(max-width: 768px)");
@@ -37,18 +41,39 @@ function SignIn() {
         .string()
         .trim()
         .min(6, "Password must be at least 6 characters long")
-        .required("Password is required"),
+        .required("Password is required")
     });
-    const form = useForm({
+    const form = useForm<SignInDto>({
       initialValues: {
         email: "",
-        password: "",
+        password: ""
       },
-      validate: yupResolver(schema),
+      validate: yupResolver(schema)
+    });
+    const { mutate: signIn, isPending: loading } = useMutation({
+      mutationFn: http.users.userControllerSignIn
     });
 
+    async function handleSignInSubmit(values: SignInDto) {
+      signIn(values, {
+        onSuccess: async (data) => {
+          setAccessToken(data.data.accessToken || "");
+
+          if (data.data.user) {
+            setUser(data.data.user);
+          }
+
+          queryClient.invalidateQueries({ queryKey: ["auth"] });
+        }
+      });
+    }
+
+    if (accessToken) {
+      return <Navigate to="/" />;
+    }
+
     return (
-      <form>
+      <form onSubmit={form.onSubmit(handleSignInSubmit)}>
         <Stack align="center" mx={"xl"}>
           <Stack gap={1} align="center">
             <Title ta={isSmall ? "center" : "start"} order={1}>
@@ -85,7 +110,7 @@ function SignIn() {
                 </Anchor>
               </Group>
               <br />
-              <Button type="submit" fullWidth>
+              <Button type="submit" fullWidth loading={loading}>
                 Sign In
               </Button>
             </Stack>

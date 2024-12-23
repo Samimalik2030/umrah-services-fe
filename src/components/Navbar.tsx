@@ -7,8 +7,7 @@ import {
   Group,
   Stack,
   Title,
-  Text,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,14 +18,14 @@ const navLinks = [
   { label: "Properties", route: "/" },
   { label: "Revenue", route: "/revenue" },
   { label: "Settings", route: "/settings" },
-  { label: "Incoming rent request", route: "/incoming-rent-request" },
+  { label: "Incoming rent request", route: "/incoming-rent-request" }
 ];
 
 function Navbar() {
   const navigate = useNavigate();
   const pathName = useLocation().pathname;
   console.log(pathName);
-  const { logout, host, auth } = useAuth();
+  const { logout } = useAuth();
 
   const theme = useMantineTheme();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
@@ -73,11 +72,11 @@ function Navbar() {
                 bg={"#606060"}
                 color={"#FFFFFF"}
               >
-                {!host?.personalInformation
+                {/* {!host?.personalInformation
                   ? `${auth?.firstName?.[0] ?? ""}${auth?.lastName?.[0] ?? ""}`
-                  : `${host?.personalInformation?.firstName?.[0] ?? ""}${host?.personalInformation?.lastName?.[0] ?? ""}`}
+                  : `${host?.personalInformation?.firstName?.[0] ?? ""}${host?.personalInformation?.lastName?.[0] ?? ""}`} */}
               </Avatar>
-              <Stack gap={0}>
+              {/* <Stack gap={0}>
                 <Text fw={600} truncate="end" lineClamp={1}>
                   {!host?.personalInformation
                     ? auth?.fullName
@@ -88,7 +87,7 @@ function Navbar() {
                     ? auth?.email
                     : host?.personalInformation?.email}
                 </Text>
-              </Stack>
+              </Stack> */}
             </Group>
             <Stack>
               <ActionIcon variant="subtle" size={40} onClick={() => logout()}>
