@@ -136,7 +136,7 @@ export interface ResetPasswordDto {
 }
 
 export interface ChangePasswordDto {
-  oldPassowrd: string;
+  oldPassword: string;
   newPassword: string;
 }
 
@@ -198,6 +198,129 @@ export interface ActivityLog {
   context: ActivityLogReference;
 }
 
+export interface UpdateInterviewDto {
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewDate?: string;
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewTime?: string;
+  /** @example "Passed" */
+  status?: string;
+}
+
+export interface PersonalInfoDto {
+  /** @example "+1" */
+  countryCode: string;
+  /** @example "+1234567890" */
+  contact: string;
+  gender: string;
+  country: string;
+  city: string;
+  state: string;
+  postalCode: number;
+  religion: string;
+  /** @example "2000-01-01T00:00:00.000Z" */
+  dob: string;
+  /** @example "123 Main Street, Springfield, USA" */
+  addressLine1: string;
+  /** @example "123 Main Street, Springfield, USA" */
+  addressLine2: string;
+}
+
+export interface EmergencyContactDto {
+  /** @example "John" */
+  name: string;
+  /** @example "+1234567890" */
+  contact: string;
+  /** @example "Father" */
+  relationShip: string;
+}
+
+export interface MedicalInformationDTO {
+  /** @example "A+" */
+  bloodGroup: string;
+  /** @example "Diabetes" */
+  disease: string;
+  /** @example "Dogs, Jellyfish, Peanuts" */
+  allergies: string;
+  /** @example "Your medical status" */
+  medicalStatus: string;
+}
+
+export interface Education {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  schoolName: string;
+  degree: string;
+  document: FileDto;
+}
+
+export interface InternshipPreferencesDto {
+  /** @example ["Technology"] */
+  industryPreferences?: string[];
+  /** @example ["Software Developer Intern"] */
+  desiredInternshipRoles?: string[];
+  /** @example "Remote" */
+  jobType?: string;
+  /** @example "No" */
+  areYouOpenToInternshipInAnyCity?: string;
+  /** @example "No" */
+  handicapAccessability?: string;
+  /** @example "Workplace with a mentorship program" */
+  specificRequirements?: string;
+}
+
+export interface StudentPartnerDTO {
+  /** @example "John" */
+  name: string;
+  /** @example "john.doe@example.com" */
+  email: string;
+  /** @example "+1" */
+  countryCode: string;
+  /** @example "123-456-7890" */
+  contact: string;
+}
+
+export interface HostPreferenceDto {
+  /** @example ["Apartment"] */
+  accommodationTypes?: string[];
+  /** @example "Shared" */
+  preferredPrivateOrSharedAccommodation?: string;
+  partnerDetails?: StudentPartnerDTO;
+  /** @example ["Arab"] */
+  preferredEthnicity?: string[];
+  /** @example ["Islam"] */
+  preferredReligion?: string[];
+  /** @example "No" */
+  mealIncluded?: string;
+  preferredDietary?: string;
+  /** @example "No" */
+  preferredSmoking?: string;
+  /** @example "No" */
+  preferredPets?: string;
+  /** @example "lorem ipsum dolor sit , consectetur " */
+  additionalRequirements?: string;
+}
+
+export interface Student {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  personalInfo: PersonalInfoDto;
+  emergencyContacts: EmergencyContactDto[];
+  medicalInformation: MedicalInformationDTO;
+  educations: Education[];
+  internshipPreferences: InternshipPreferencesDto;
+  hostPreferences: HostPreferenceDto;
+  status: string;
+  profileStatus: string;
+  user: User;
+}
+
 export interface Business {
   /** @format date-time */
   createdAt: string;
@@ -231,11 +354,119 @@ export interface Business {
   code: number;
 }
 
+export interface Interview {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  scheduledWith: string;
+  scheduledBy: string;
+  student: Student;
+  business: Business;
+  status: string;
+  /** @format date-time */
+  date: string;
+  /** @format date-time */
+  time: string;
+  duration: string;
+}
+
+export interface StudentData {
+  matched: Student[];
+  matchedCount: number;
+  others: Student[];
+  othersCount: number;
+}
+
 export interface PaginationMeta {
   page: number;
   limit: number;
   pages: number;
   records: number;
+}
+
+export interface StudentPagination {
+  data: StudentData;
+  pagination: PaginationMeta;
+}
+
+export interface UpdateStudentDto {
+  personalInfo?: PersonalInfoDto;
+  emergencyContacts?: EmergencyContactDto[];
+  medicalInformation: MedicalInformationDTO;
+  internshipPreferences?: InternshipPreferencesDto;
+  hostPreferences?: HostPreferenceDto;
+}
+
+export interface EducationPagination {
+  data: Education[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateEducationDto {
+  degree: string;
+  schoolName: string;
+  /** @format binary */
+  documentFile: File;
+}
+
+export interface UpdateEducationDto {
+  degree: string;
+  schoolName?: string;
+  /** @format binary */
+  documentFile?: object;
+}
+
+export interface DocumentIdsDto {
+  fileIds: string[];
+}
+
+export interface Document {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  /** @example "Passport" */
+  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  file: FileDto;
+}
+
+export interface DocumentPagination {
+  data: Document[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateDocumentDto {
+  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  /** @format binary */
+  file: File;
+}
+
+export interface UpdateDocumentDto {
+  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  /** @format binary */
+  file?: File;
+}
+
+export interface InterviewData {
+  matched: Interview[];
+  matchedCount: number;
+  others: Interview[];
+  othersCount: number;
+}
+
+export interface InterviewPagination {
+  data: InterviewData;
+  pagination: PaginationMeta;
+}
+
+export interface CreateInterviewDto {
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewDate: string;
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewTime: string;
 }
 
 export interface BusinessPagination {
@@ -345,6 +576,7 @@ export interface OfficeReportingDto {
   firstName: string;
   /** @example "Doe" */
   lastName: string;
+  /** @example "Manager" */
   position: string;
 }
 
@@ -356,6 +588,9 @@ export interface Job {
   id: string;
   title: string;
   description: string;
+  industryPreference: string;
+  desiredInternshipRole: string;
+  jobType: string;
   isFareIncluded: boolean;
   isLunchIncluded: boolean;
   isArchived: boolean;
@@ -366,37 +601,71 @@ export interface Job {
   dailyFinishTime: string;
   /** @default null */
   onWhichPlatform: string;
+  business: Business;
 }
 
-export interface JobPagination {
-  data: Job[];
+export interface JobData {
+  matched: Job[];
+  matchedCount: number;
+  others: Job[];
+  othersCount: number;
+}
+
+export interface JobPaginationWithData {
+  data: JobData;
   pagination: PaginationMeta;
 }
 
 export interface CreateJobDto {
+  /** @example "Sr. Software Engineer" */
   title: string;
+  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description: string;
+  /** @example "Science and Technology" */
+  industryPreference: string;
+  /** @example "Sr. Fullstack Developer" */
+  desiredInternshipRole: string;
+  /** @example "Remote" */
+  jobType: string;
   /** @example false */
   isFareIncluded: boolean;
   /** @example false */
   isLunchIncluded: boolean;
+  /** @example ["Summer"] */
   whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
+  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
   daysOfWork: string[];
+  /** @example "2025-01-09T06:54:44.692Z" */
   dailyStartTime: string;
+  /** @example "2025-01-09T14:54:44.692Z" */
   dailyFinishTime: string;
+  /** @example "Facebook" */
   onWhichPlatform?: string;
   reportingInformation: OfficeReportingDto;
 }
 
 export interface UpdateJobDto {
+  /** @example "Sr. Software Engineer" */
   title?: string;
+  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description?: string;
+  /** @example "Health and Medicine" */
+  industryPreference?: string;
+  /** @example "Sr. Fullstack Developer" */
+  desiredInternshipRole?: string;
+  /** @example "On-site" */
+  jobType?: string;
   isFareIncluded?: boolean;
   isLunchIncluded?: boolean;
+  /** @example ["Winter"] */
   whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
+  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
   daysOfWork?: string[];
+  /** @example "2025-01-09T06:54:44.694Z" */
   dailyStartTime?: string;
+  /** @example "2025-01-09T14:54:44.694Z" */
   dailyFinishTime?: string;
+  /** @example "LinkedIn" */
   onWhichPlatform?: string;
   reportingInformation?: OfficeReportingDto;
   isArchived?: boolean;
@@ -531,7 +800,7 @@ export interface HostFamilyAndReferralsDto {
 
 export interface HostingPreferenceDto {
   /** @example ["Single"] */
-  roomType: string[];
+  roomTypes: string[];
   /** @example ["Half-Board"] */
   mealPlanOffered: string[];
   /** @example ["Single bed"] */
@@ -730,8 +999,15 @@ export interface Property {
   garage: string;
 }
 
-export interface PropertyPagination {
-  data: Property[];
+export interface PropertyData {
+  matched: Property[];
+  matchedCount: number;
+  others: Property[];
+  othersCount: number;
+}
+
+export interface PropertyPaginationWithData {
+  data: PropertyData;
   pagination: PaginationMeta;
 }
 
@@ -853,46 +1129,29 @@ export interface UpdateRoomDto {
   accessibilityAndCompliance?: AccessibilityAndComplianceDTO;
 }
 
-export interface StudentPersonalInfoDto {
-  /** @example "https://example.com/user/profile-picture.jpg" */
-  profileUrl: string;
-  /** @example "John" */
-  firstName: string;
-  /** @example "Doe" */
-  lastName: string;
-  /** @example "john@gmail.com" */
-  email: string;
-  /** @example "111-1111111-111" */
-  contact: string;
-  /**
-   * @format date-time
-   * @example "2010-11-09T00:00:00.000Z"
-   */
-  dob: string;
-  /** @example "123 Maple Street, Apt 4B, Springfield, IL 62701" */
-  address: string;
+export interface JobPagination {
+  data: Job[];
+  pagination: PaginationMeta;
 }
 
-export interface UpdateStudentDto {
-  personalInformation?: StudentPersonalInfoDto;
-}
-
-export interface Student {
+export interface Tenant {
   /** @format date-time */
   createdAt: string;
   /** @format date-time */
   updatedAt: string;
   id: string;
-  personalInformation: StudentPersonalInfoDto;
+  idNumber: string;
 }
 
-export interface StudentAuthenticatedDto {
+export interface TenantAuthenticatedDto {
   /** @example "Success Message!" */
   message?: string;
   accessToken?: string;
   user?: AuthUserDto;
-  student: Student | null;
+  tenant: Tenant | null;
 }
+
+export type UpdateTenantDTO = object;
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
 import axios from "axios";
@@ -1456,6 +1715,492 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  admins = {
+    /**
+     * No description
+     *
+     * @tags Admin
+     * @name AdminControllerPatchInterview
+     * @request PATCH:/admins/interviews/{id}
+     * @secure
+     */
+    adminControllerPatchInterview: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/admins/interviews/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  students = {
+    /**
+     * No description
+     *
+     * @tags Student
+     * @name AuthStudentControllerSignUp
+     * @request POST:/students/sign-up
+     */
+    authStudentControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+      this.request<TokenDto, any>({
+        path: `/students/sign-up`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Student
+     * @name AuthStudentControllerLogin
+     * @request POST:/students/sign-in
+     */
+    authStudentControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
+      this.request<TokenDto, any>({
+        path: `/students/sign-in`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Student
+     * @name AuthStudentControllerAuth
+     * @request GET:/students/auth
+     * @secure
+     */
+    authStudentControllerAuth: (params: RequestParams = {}) =>
+      this.request<Student, any>({
+        path: `/students/auth`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Student
+     * @name StudentControllerIndex
+     * @request GET:/students
+     */
+    studentControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        /** @example [] */
+        degrees?: string[];
+        /** @example [] */
+        educationLevels?: string[];
+        /** @example [] */
+        jobTypes?: string[];
+        /** @example [] */
+        industries?: string[];
+        /** @example [] */
+        roles?: string[];
+        /** Yes | No */
+        handicapAccessibility?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<StudentPagination, any>({
+        path: `/students`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Student
+     * @name StudentControllerPatchStudent
+     * @request PATCH:/students
+     * @secure
+     */
+    studentControllerPatchStudent: (data: UpdateStudentDto, params: RequestParams = {}) =>
+      this.request<Student, any>({
+        path: `/students`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Student
+     * @name StudentControllerGetStudent
+     * @request GET:/students/{id}
+     * @secure
+     */
+    studentControllerGetStudent: (id: string, params: RequestParams = {}) =>
+      this.request<Student, any>({
+        path: `/students/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  educations = {
+    /**
+     * No description
+     *
+     * @tags Education
+     * @name EducationControllerIndex
+     * @request GET:/educations
+     * @secure
+     */
+    educationControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        degree?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EducationPagination, any>({
+        path: `/educations`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Education
+     * @name EducationControllerCreate
+     * @request POST:/educations
+     * @secure
+     */
+    educationControllerCreate: (data: CreateEducationDto, params: RequestParams = {}) =>
+      this.request<Education, any>({
+        path: `/educations`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Education
+     * @name EducationControllerShow
+     * @request GET:/educations/{id}
+     * @secure
+     */
+    educationControllerShow: (id: string, params: RequestParams = {}) =>
+      this.request<Education, any>({
+        path: `/educations/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Education
+     * @name EducationControllerPatch
+     * @request PATCH:/educations/{id}
+     * @secure
+     */
+    educationControllerPatch: (id: string, data: UpdateEducationDto, params: RequestParams = {}) =>
+      this.request<Education, any>({
+        path: `/educations/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Education
+     * @name EducationControllerDestroy
+     * @request DELETE:/educations/{id}
+     * @secure
+     */
+    educationControllerDestroy: (id: string, params: RequestParams = {}) =>
+      this.request<Education, any>({
+        path: `/educations/${id}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Education
+     * @name EducationControllerDestroyDocuments
+     * @request DELETE:/educations/{id}/documents
+     * @secure
+     */
+    educationControllerDestroyDocuments: (id: string, data: DocumentIdsDto, params: RequestParams = {}) =>
+      this.request<Education, any>({
+        path: `/educations/${id}/documents`,
+        method: "DELETE",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  documents = {
+    /**
+     * No description
+     *
+     * @tags Documents
+     * @name DocumentsControllerIndex
+     * @request GET:/documents
+     * @secure
+     */
+    documentsControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        name?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<DocumentPagination, any>({
+        path: `/documents`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Documents
+     * @name DocumentsControllerCreate
+     * @request POST:/documents
+     * @secure
+     */
+    documentsControllerCreate: (data: CreateDocumentDto, params: RequestParams = {}) =>
+      this.request<Document, any>({
+        path: `/documents`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Documents
+     * @name DocumentsControllerShow
+     * @request GET:/documents/{id}
+     * @secure
+     */
+    documentsControllerShow: (id: string, params: RequestParams = {}) =>
+      this.request<Document, any>({
+        path: `/documents/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Documents
+     * @name DocumentsControllerPatch
+     * @request PATCH:/documents/{id}
+     * @secure
+     */
+    documentsControllerPatch: (id: string, data: UpdateDocumentDto, params: RequestParams = {}) =>
+      this.request<Document, any>({
+        path: `/documents/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Documents
+     * @name DocumentsControllerDestroy
+     * @request DELETE:/documents/{id}
+     * @secure
+     */
+    documentsControllerDestroy: (id: string, params: RequestParams = {}) =>
+      this.request<Document, any>({
+        path: `/documents/${id}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  interviews = {
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerIndex
+     * @request GET:/interviews
+     * @secure
+     */
+    interviewControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        /** @example "2024-12-20T06:54:45.591Z" */
+        startDate?: string;
+        /** @example "2025-01-09T06:54:45.592Z" */
+        endDate?: string;
+        studentId?: string;
+        businessId?: string;
+        upcoming?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<InterviewPagination, any>({
+        path: `/interviews`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerCreateStudentInterview
+     * @request POST:/interviews
+     * @secure
+     */
+    interviewControllerCreateStudentInterview: (data: CreateInterviewDto, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerGet
+     * @request GET:/interviews/{id}
+     * @secure
+     */
+    interviewControllerGet: (id: string, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerPatch
+     * @request PATCH:/interviews/{id}
+     * @secure
+     */
+    interviewControllerPatch: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerDestroy
+     * @request DELETE:/interviews/{id}
+     * @secure
+     */
+    interviewControllerDestroy: (id: string, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerGetStudentInterview
+     * @request GET:/interviews/{id}/student
+     * @secure
+     */
+    interviewControllerGetStudentInterview: (id: string, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}/student`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   businesses = {
     /**
      * No description
@@ -1666,7 +2411,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Job
      * @name JobControllerIndex
      * @request GET:/jobs
-     * @secure
      */
     jobControllerIndex: (
       query?: {
@@ -1674,17 +2418,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page?: number;
         /** @example 10 */
         limit?: number;
+        /** Search by Title or Description */
         search?: string;
+        /** Science and Technology | Health and Medicine */
+        industries?: string[];
+        /** Sr. Fullstack Developer | UI/UX Designer */
+        roles?: string[];
+        /** Remote | On-site | Hybrid */
+        jobTypes?: string[];
+        /** @example "2024-12-20T06:54:44.691Z" */
+        startDate?: string;
+        /** @example "2025-01-09T06:54:44.691Z" */
+        endDate?: string;
         isArchived?: boolean;
         businessId?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<JobPagination, any>({
+      this.request<JobPaginationWithData, any>({
         path: `/jobs`,
         method: "GET",
         query: query,
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -1714,13 +2468,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Job
      * @name JobControllerShow
      * @request GET:/jobs/{id}
-     * @secure
      */
     jobControllerShow: (id: string, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/jobs/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -1856,7 +2608,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Property
      * @name PropertyControllerIndex
      * @request GET:/properties
-     * @secure
      */
     propertyControllerIndex: (
       query?: {
@@ -1864,16 +2615,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page?: number;
         /** @example 10 */
         limit?: number;
-        name?: string;
         type?: string;
+        location?: string;
+        sharingPreference?: string;
+        ethnicityPreference?: string;
+        religionPreference?: string;
+        mealIncluded?: boolean;
+        dietaryRestriction?: boolean;
+        smoking?: boolean;
+        pets?: boolean;
+        rent?: number;
+        hostId?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<PropertyPagination, any>({
+      this.request<PropertyPaginationWithData, any>({
         path: `/properties`,
         method: "GET",
         query: query,
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -1903,13 +2662,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Property
      * @name PropertyControllerFind
      * @request GET:/properties/{id}
-     * @secure
      */
     propertyControllerFind: (id: string, params: RequestParams = {}) =>
       this.request<Property, any>({
         path: `/properties/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -2146,21 +2903,119 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  students = {
+  sandboxes = {
     /**
      * No description
      *
-     * @tags Students
-     * @name StudentControllerPatchDefault
-     * @request PATCH:/students/default
+     * @tags Sandbox
+     * @name SandboxControllerCreate
+     * @request POST:/sandboxes/users
+     */
+    sandboxControllerCreate: (
+      query: {
+        /** @example "51QEkjgFT171SaOwuTOIIthE" */
+        key: string;
+      },
+      data: SignUpDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<MessageDto, any>({
+        path: `/sandboxes/users`,
+        method: "POST",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Sandbox
+     * @name SandboxControllerDestroy
+     * @request DELETE:/sandboxes/users/{id}
+     */
+    sandboxControllerDestroy: (
+      id: string,
+      query: {
+        /** @example "51QEkjgFT171SaOwuTOIIthE" */
+        key: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<MessageDto, any>({
+        path: `/sandboxes/users/${id}`,
+        method: "DELETE",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
+  tenants = {
+    /**
+     * No description
+     *
+     * @tags Tenants
+     * @name TenantAuthControllerSignUp
+     * @request POST:/tenants/sign-up
+     */
+    tenantAuthControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+      this.request<TenantAuthenticatedDto, any>({
+        path: `/tenants/sign-up`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tenants
+     * @name TenantAuthControllerLogin
+     * @request POST:/tenants/sign-in
+     */
+    tenantAuthControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
+      this.request<HostAuthenticatedDto, any>({
+        path: `/tenants/sign-in`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tenants
+     * @name TenantAuthControllerSign
+     * @request POST:/tenants/sign
      * @secure
      */
-    studentControllerPatchDefault: (data: UpdateStudentDto, params: RequestParams = {}) =>
-      this.request<Student, any>({
-        path: `/students/default`,
+    tenantAuthControllerSign: (params: RequestParams = {}) =>
+      this.request<TenantAuthenticatedDto, any>({
+        path: `/tenants/sign`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tenants
+     * @name TenantControllerPatchDefault
+     * @request PATCH:/tenants/default
+     */
+    tenantControllerPatchDefault: (data: UpdateTenantDTO, params: RequestParams = {}) =>
+      this.request<Tenant, any>({
+        path: `/tenants/default`,
         method: "PATCH",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -2169,67 +3024,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Students
-     * @name StudentControllerGetDefaultHost
-     * @request GET:/students/default
-     * @secure
+     * @tags Tenants
+     * @name TenantControllerGetDefaultHost
+     * @request GET:/tenants/default
      */
-    studentControllerGetDefaultHost: (params: RequestParams = {}) =>
-      this.request<Student, any>({
-        path: `/students/default`,
+    tenantControllerGetDefaultHost: (params: RequestParams = {}) =>
+      this.request<Tenant, any>({
+        path: `/tenants/default`,
         method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Students
-     * @name AuthStudentControllerSignUp
-     * @request POST:/students/sign-up
-     */
-    authStudentControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/students/sign-up`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Students
-     * @name AuthStudentControllerLogin
-     * @request POST:/students/sign-in
-     */
-    authStudentControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/students/sign-in`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Students
-     * @name AuthStudentControllerSign
-     * @request POST:/students/sign
-     * @secure
-     */
-    authStudentControllerSign: (params: RequestParams = {}) =>
-      this.request<StudentAuthenticatedDto, any>({
-        path: `/students/sign`,
-        method: "POST",
-        secure: true,
         format: "json",
         ...params,
       }),

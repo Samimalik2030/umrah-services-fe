@@ -9,6 +9,7 @@ import VerifyOtp from "../pages/auth/VerifyOtp";
 import TwoFactorAuth from "../pages/auth/TwoFactorAuth";
 import RouteGuard from "../guards/RouteGuard";
 import DashboardLayout from "../pages/dashboard/DashboardLayout";
+import Dashboard from "../pages/dashboard/Dashboard";
 
 const routes = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const routes = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <div>Admin Home</div>
+            element: <Dashboard />
           }
         ]
       }
