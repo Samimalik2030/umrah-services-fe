@@ -7,6 +7,7 @@ import {
   LoadingOverlay,
   Menu,
   Modal,
+  Pagination,
   Stack,
   Table,
   Title
@@ -21,7 +22,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 const Dashboard = () => {
-  const { interviews, isLoading } = useGetInterviews();
+  const [page, setPage] = useState(1);
+  const { interviews, isLoading } = useGetInterviews(page);
   const queryClient = useQueryClient();
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedInterview, setSelectedInterview] = useState<Interview | null>(
@@ -46,8 +48,7 @@ const Dashboard = () => {
       mutationFn: ({ id, date }: { id: string; date: Date }) => {
         const interviewDate = date.toISOString();
         return http.admins.adminControllerPatchInterview(id, {
-          interviewDate: interviewDate,
-          interviewTime: interviewDate
+          interviewDate: interviewDate
         });
       },
       onSuccess: () => {
@@ -87,12 +88,11 @@ const Dashboard = () => {
               <Table.Th ta={"center"}>Email</Table.Th>
               <Table.Th ta={"center"}>Status</Table.Th>
               <Table.Th ta={"center"}>Scheduled Date</Table.Th>
-              <Table.Th ta={"center"}>Scheduled Time</Table.Th>
               <Table.Th ta={"center"}>Actions</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {interviews?.others?.map((interview: Interview) => (
+            {interviews?.data?.others?.map((interview: Interview) => (
               <Table.Tr key={interview.id} ta={"center"}>
                 <Table.Td>{interview.student.user.fullName}</Table.Td>
                 <Table.Td>{interview.student.user.email}</Table.Td>
@@ -113,9 +113,6 @@ const Dashboard = () => {
                 </Table.Td>
                 <Table.Td>
                   {new Date(interview.date).toLocaleDateString("en-US")}
-                </Table.Td>
-                <Table.Td>
-                  {new Date(interview.time).toLocaleTimeString()}
                 </Table.Td>
                 <Table.Td>
                   <Group justify="center">
@@ -150,20 +147,20 @@ const Dashboard = () => {
                         <Menu.Item
                           onClick={() =>
                             handleStatusChange(interview.id, {
-                              status: "Rejected"
+                              status: "Failed"
                             })
                           }
                         >
-                          Reject
+                          Fail
                         </Menu.Item>
                         <Menu.Item
                           onClick={() =>
                             handleStatusChange(interview.id, {
-                              status: "Postponed"
+                              status: "Cancelled"
                             })
                           }
                         >
-                          Postpone
+                          Cancel
                         </Menu.Item>
                       </Menu.Dropdown>
                     </Menu>
@@ -173,6 +170,12 @@ const Dashboard = () => {
             ))}
           </Table.Tbody>
         </Table>
+        <Group justify="flex-end" p={"lg"}>
+          <Pagination
+            total={interviews?.pagination.pages || 1}
+            onChange={setPage}
+          />
+        </Group>
       </Card>
       <Modal opened={opened} onClose={close} title="Edit Interview Time">
         <Stack>

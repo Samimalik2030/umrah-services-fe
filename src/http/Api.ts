@@ -201,8 +201,6 @@ export interface ActivityLog {
 export interface UpdateInterviewDto {
   /** @example "2025-01-05T10:00:00Z" */
   interviewDate?: string;
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewTime?: string;
   /** @example "Passed" */
   status?: string;
 }
@@ -231,6 +229,8 @@ export interface EmergencyContactDto {
   name: string;
   /** @example "+1234567890" */
   contact: string;
+  /** @example "+123" */
+  countryCode: string;
   /** @example "Father" */
   relationShip: string;
 }
@@ -270,6 +270,8 @@ export interface InternshipPreferencesDto {
   handicapAccessability?: string;
   /** @example "Workplace with a mentorship program" */
   specificRequirements?: string;
+  /** @example false */
+  hasAlreadyInternship?: boolean;
 }
 
 export interface StudentPartnerDTO {
@@ -302,6 +304,19 @@ export interface HostPreferenceDto {
   preferredPets?: string;
   /** @example "lorem ipsum dolor sit , consectetur " */
   additionalRequirements?: string;
+  /** @example false */
+  hasAlreadyHost?: boolean;
+}
+
+export interface Document {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  /** @example "Passport" */
+  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  file: FileDto;
 }
 
 export interface Student {
@@ -319,6 +334,7 @@ export interface Student {
   status: string;
   profileStatus: string;
   user: User;
+  additionalDocuments: Document;
 }
 
 export interface Business {
@@ -367,8 +383,6 @@ export interface Interview {
   status: string;
   /** @format date-time */
   date: string;
-  /** @format date-time */
-  time: string;
   duration: string;
 }
 
@@ -422,17 +436,6 @@ export interface DocumentIdsDto {
   fileIds: string[];
 }
 
-export interface Document {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  /** @example "Passport" */
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
-  file: FileDto;
-}
-
 export interface DocumentPagination {
   data: Document[];
   pagination: PaginationMeta;
@@ -465,8 +468,6 @@ export interface InterviewPagination {
 export interface CreateInterviewDto {
   /** @example "2025-01-05T10:00:00Z" */
   interviewDate: string;
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewTime: string;
 }
 
 export interface BusinessPagination {
@@ -604,6 +605,39 @@ export interface Job {
   business: Business;
 }
 
+export interface Application {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  achievedStatus: string[];
+  student: Student;
+  job: Job;
+  status: string;
+}
+
+export interface ApplicationData {
+  matched: Application[];
+  matchedCount: number;
+  others: Application[];
+  othersCount: number;
+}
+
+export interface ApplicationPagination {
+  data: ApplicationData;
+  pagination: PaginationMeta;
+}
+
+export interface CreateApplicationDto {
+  jobId: string;
+}
+
+export interface UpdateApplicationDto {
+  /** @example "Cancel" */
+  status?: string;
+}
+
 export interface JobData {
   matched: Job[];
   matchedCount: number;
@@ -635,9 +669,9 @@ export interface CreateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
   daysOfWork: string[];
-  /** @example "2025-01-09T06:54:44.692Z" */
+  /** @example "2025-01-10T12:07:12.143Z" */
   dailyStartTime: string;
-  /** @example "2025-01-09T14:54:44.692Z" */
+  /** @example "2025-01-10T20:07:12.143Z" */
   dailyFinishTime: string;
   /** @example "Facebook" */
   onWhichPlatform?: string;
@@ -661,9 +695,9 @@ export interface UpdateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
   daysOfWork?: string[];
-  /** @example "2025-01-09T06:54:44.694Z" */
+  /** @example "2025-01-10T12:07:12.145Z" */
   dailyStartTime?: string;
-  /** @example "2025-01-09T14:54:44.694Z" */
+  /** @example "2025-01-10T20:07:12.145Z" */
   dailyFinishTime?: string;
   /** @example "LinkedIn" */
   onWhichPlatform?: string;
@@ -1803,8 +1837,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example [] */
         degrees?: string[];
         /** @example [] */
-        educationLevels?: string[];
-        /** @example [] */
         jobTypes?: string[];
         /** @example [] */
         industries?: string[];
@@ -2093,12 +2125,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2024-12-20T06:54:45.591Z" */
+        /** @example "2024-12-21T12:07:13.042Z" */
         startDate?: string;
-        /** @example "2025-01-09T06:54:45.592Z" */
+        /** @example "2025-01-10T12:07:13.043Z" */
         endDate?: string;
         studentId?: string;
         businessId?: string;
+        /**
+         *
+         *     | Scheduled
+         *     | Postponed
+         *     | Cancelled
+         *     | Passed
+         *     | Failed
+         */
+        status?: string;
+        /** Admin | Student | Business */
+        scheduledWith?: string;
+        /** true | false */
         upcoming?: string;
       },
       params: RequestParams = {},
@@ -2127,6 +2171,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerGetStudentInterview
+     * @request GET:/interviews/latest
+     * @secure
+     */
+    interviewControllerGetStudentInterview: (params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/latest`,
+        method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -2179,23 +2240,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Interview, any>({
         path: `/interviews/${id}`,
         method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerGetStudentInterview
-     * @request GET:/interviews/{id}/student
-     * @secure
-     */
-    interviewControllerGetStudentInterview: (id: string, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}/student`,
-        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -2404,6 +2448,121 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  applications = {
+    /**
+     * No description
+     *
+     * @tags Application
+     * @name ApplicationControllerIndex
+     * @request GET:/applications
+     * @secure
+     */
+    applicationControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        /** @example "2024-12-21T12:07:13.243Z" */
+        startDate?: string;
+        /** @example "2025-01-10T12:07:13.243Z" */
+        endDate?: string;
+        /**
+         * New
+         *     | 1st Interview
+         *     | 2nd Interview
+         *     | Waiting for student
+         *     | Pending for approval
+         *     | Rejected
+         *     | Approved
+         */
+        status?: string;
+        studentId?: string;
+        businessId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ApplicationPagination, any>({
+        path: `/applications`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Application
+     * @name ApplicationControllerCreate
+     * @request POST:/applications
+     * @secure
+     */
+    applicationControllerCreate: (data: CreateApplicationDto, params: RequestParams = {}) =>
+      this.request<Application, any>({
+        path: `/applications`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Application
+     * @name ApplicationControllerGet
+     * @request GET:/applications/{id}
+     * @secure
+     */
+    applicationControllerGet: (id: string, params: RequestParams = {}) =>
+      this.request<Application, any>({
+        path: `/applications/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Application
+     * @name ApplicationControllerPatch
+     * @request PATCH:/applications/{id}
+     * @secure
+     */
+    applicationControllerPatch: (id: string, data: UpdateApplicationDto, params: RequestParams = {}) =>
+      this.request<Application, any>({
+        path: `/applications/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Application
+     * @name ApplicationControllerDestroy
+     * @request DELETE:/applications/{id}
+     * @secure
+     */
+    applicationControllerDestroy: (id: string, params: RequestParams = {}) =>
+      this.request<Application, any>({
+        path: `/applications/${id}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   jobs = {
     /**
      * No description
@@ -2426,9 +2585,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2024-12-20T06:54:44.691Z" */
+        /** @example "2024-12-21T12:07:12.138Z" */
         startDate?: string;
-        /** @example "2025-01-09T06:54:44.691Z" */
+        /** @example "2025-01-10T12:07:12.139Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;

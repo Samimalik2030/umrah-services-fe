@@ -1,19 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "../contexts/AuthContext";
 import http from "../http";
 
-const useGetInterviews = () => {
-  const { accessToken } = useAuth();
+const useGetInterviews = (page: number) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["interviews"],
+    queryKey: ["interviews", page],
     queryFn: () =>
       http.interviews.interviewControllerIndex({
-        page: 1,
+        page: page,
         limit: 10
-      }),
-    enabled: !!accessToken
+      })
   });
-  const interviews = data?.data.data;
+  const interviews = data?.data;
   return { interviews, isLoading };
 };
 
