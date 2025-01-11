@@ -10,7 +10,7 @@ import {
   Pagination,
   Stack,
   Table,
-  Title
+  Title,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import useGetInterviews from "../../hooks/useGetInterviews";
@@ -25,10 +25,8 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const { interviews, isLoading } = useGetInterviews(page);
   const queryClient = useQueryClient();
-  const [opened, { open, close }] = useDisclosure(false);
-  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(
-    null
-  );
+  const [opened, { close }] = useDisclosure(false);
+  const [selectedInterview] = useState<Interview | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { mutate: changeStatus, isPending: changingStatus } = useMutation({
@@ -36,7 +34,7 @@ const Dashboard = () => {
       http.admins.adminControllerPatchInterview(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
-    }
+    },
   });
 
   const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
@@ -48,7 +46,7 @@ const Dashboard = () => {
       mutationFn: ({ id, date }: { id: string; date: Date }) => {
         const interviewDate = date.toISOString();
         return http.admins.adminControllerPatchInterview(id, {
-          interviewDate: interviewDate
+          interviewDate: interviewDate,
         });
       },
       onSuccess: () => {
@@ -57,14 +55,14 @@ const Dashboard = () => {
       },
       onError: (error) => {
         console.error("Error scheduling interview:", error);
-      }
+      },
     });
 
-  const handleEditClick = (interview: Interview) => {
-    setSelectedInterview(interview);
-    setSelectedDate(new Date(interview.date));
-    open();
-  };
+  // const handleEditClick = (interview: Interview) => {
+  //   setSelectedInterview(interview);
+  //   setSelectedDate(new Date(interview.date));
+  //   open();
+  // };
 
   const handleUpdateClick = () => {
     if (selectedInterview && selectedDate) {
@@ -105,7 +103,11 @@ const Dashboard = () => {
                         ? "yellow"
                         : interview.status === "Passed"
                           ? "green"
-                          : "blue"
+                          : interview.status === "Failed"
+                            ? "red"
+                            : interview.status === "Cancelled"
+                              ? "red"
+                              : "blue"
                     }
                   >
                     {interview.status}
@@ -129,16 +131,16 @@ const Dashboard = () => {
                         </ActionIcon>
                       </Menu.Target>
                       <Menu.Dropdown>
-                        <Menu.Label>Actions</Menu.Label>
-                        <Menu.Item onClick={() => handleEditClick(interview)}>
+                        {/* <Menu.Label>Actions</Menu.Label> */}
+                        {/* <Menu.Item onClick={() => handleEditClick(interview)}>
                           Edit
-                        </Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Label>Status Actions</Menu.Label>
+                        </Menu.Item> */}
+                        {/* <Menu.Divider /> */}
+                        {/* <Menu.Label>Status Actions</Menu.Label> */}
                         <Menu.Item
                           onClick={() =>
                             handleStatusChange(interview.id, {
-                              status: "Passed"
+                              status: "Passed",
                             })
                           }
                         >
@@ -147,7 +149,7 @@ const Dashboard = () => {
                         <Menu.Item
                           onClick={() =>
                             handleStatusChange(interview.id, {
-                              status: "Failed"
+                              status: "Failed",
                             })
                           }
                         >
@@ -156,7 +158,7 @@ const Dashboard = () => {
                         <Menu.Item
                           onClick={() =>
                             handleStatusChange(interview.id, {
-                              status: "Cancelled"
+                              status: "Cancelled",
                             })
                           }
                         >
