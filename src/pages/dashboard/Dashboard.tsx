@@ -133,7 +133,7 @@ const Dashboard = () => {
                       <Menu.Dropdown>
                         {/* <Menu.Label>Actions</Menu.Label> */}
                         {/* <Menu.Item onClick={() => handleEditClick(interview)}>
-                          update
+                          Edit
                         </Menu.Item> */}
                         {/* <Menu.Divider /> */}
                         {/* <Menu.Label>Status Actions</Menu.Label> */}
