@@ -144,7 +144,7 @@ const Dashboard = () => {
                             })
                           }
                         >
-                          Pass
+                          Approve
                         </Menu.Item>
                         <Menu.Item
                           onClick={() =>
@@ -153,7 +153,7 @@ const Dashboard = () => {
                             })
                           }
                         >
-                          Fail
+                          Reject
                         </Menu.Item>
                         <Menu.Item
                           onClick={() =>
