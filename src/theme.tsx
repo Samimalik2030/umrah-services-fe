@@ -101,7 +101,6 @@ const theme: MantineThemeOverride = {
     NavLink: {
       defaultProps: {
         variant: "filled",
-        radius: "lg",
       },
       styles: { root: { borderRadius: 9 } },
     },
@@ -129,32 +128,32 @@ const theme: MantineThemeOverride = {
         },
       },
     },
-    AppShell: {
-      styles: {
-        header: {
-          backgroundColor: "#FFFFFF",
-          fontWeight: 600,
-          fontSize: "14px",
-          marginLeft: "25px",
-          marginRight: "25px",
-          marginTop: "10px",
-          borderRadius: "30px",
-        },
-        navbar: {
-          marginTop: "30px",
-          backgroundColor: "#FFFFFF",
-          borderRadius: "30px",
-          height: "88%",
-        },
-        footer: {
-          backgroundColor: "#FFFFFF",
-          borderRadius: "30px",
-          marginLeft: "25px",
-          marginRight: "25px",
-          marginBottom: "10px",
-        },
-      },
-    },
+    // AppShell: {
+    //   styles: {
+    //     header: {
+    //       backgroundColor: "#FFFFFF",
+    //       fontWeight: 600,
+    //       fontSize: "14px",
+    //       marginLeft: "25px",
+    //       marginRight: "25px",
+    //       marginTop: "10px",
+    //       borderRadius: "30px",
+    //     },
+    //     navbar: {
+    //       marginTop: "30px",
+    //       backgroundColor: "#FFFFFF",
+    //       borderRadius: "30px",
+    //       height: "88%",
+    //     },
+    //     footer: {
+    //       backgroundColor: "#FFFFFF",
+    //       borderRadius: "30px",
+    //       marginLeft: "25px",
+    //       marginRight: "25px",
+    //       marginBottom: "10px",
+    //     },
+    //   },
+    // },
   },
 };
 

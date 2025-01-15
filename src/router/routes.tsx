@@ -10,6 +10,14 @@ import TwoFactorAuth from "../pages/auth/TwoFactorAuth";
 import RouteGuard from "../guards/RouteGuard";
 import DashboardLayout from "../pages/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Businesses from "../pages/businesses/Businesses";
+import Students from "../pages/students/Students";
+import Analytics from "../pages/analytics/Analytics";
+import Hosts from "../pages/hosts/Hosts";
+import Projects from "../pages/projects/Projects";
+import Settings from "../pages/settings/Settings";
+import Subscriptions from "../pages/subscriptions/Subscriptions";
+import Support from "../pages/support/Support";
 
 const routes = createBrowserRouter([
   {
@@ -17,26 +25,26 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "sign-in",
-        element: <SignIn />
+        element: <SignIn />,
       },
 
       {
         path: "forgot-password",
-        element: <ForgotPassword />
+        element: <ForgotPassword />,
       },
       {
         path: "reset-password",
-        element: <ResetPassword />
+        element: <ResetPassword />,
       },
       {
         path: "verify-otp",
-        element: <VerifyOtp />
+        element: <VerifyOtp />,
       },
       {
         path: "two-factor-auth",
-        element: <TwoFactorAuth />
-      }
-    ]
+        element: <TwoFactorAuth />,
+      },
+    ],
   },
   {
     path: "/",
@@ -48,13 +56,22 @@ const routes = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <Dashboard />
-          }
-        ]
-      }
-    ]
+            element: <Dashboard />,
+          },
+
+          { path: "/business", element: <Businesses /> },
+          { path: "/students", element: <Students /> },
+          { path: "/host", element: <Hosts /> },
+          { path: "/subscriptions", element: <Subscriptions /> },
+          { path: "/analytics", element: <Analytics /> },
+          { path: "/support", element: <Support /> },
+          { path: "/projects", element: <Projects /> },
+          { path: "/settings", element: <Settings /> },
+        ],
+      },
+    ],
   },
-  { path: "*", element: <PageNotFound /> }
+  { path: "*", element: <PageNotFound /> },
 ]);
 
 export default routes;

@@ -78,7 +78,11 @@ export interface TwoFAOtpDto {
   /** @example 123456 */
   otp: string;
   /** @example "Two Factor Authentication" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
 }
 
 export interface VerifyEmailDto {
@@ -86,7 +90,11 @@ export interface VerifyEmailDto {
   email?: string;
   otp: string;
   /** @example "Email Verification" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
 }
 
 export interface MessageDto {
@@ -100,14 +108,22 @@ export interface UnlockAccountDto {
   /** @example 123456 */
   otp: string;
   /** @example "Account Unlock" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
 }
 
 export interface SendOtpDto {
   /** @default "example@example.com" */
   email?: string;
   /** @example "Reset Password" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
 }
 
 export interface VerifyOtpDto {
@@ -116,7 +132,11 @@ export interface VerifyOtpDto {
   /** @example 123456 */
   otp: string;
   /** @example "Email Verification" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
 }
 
 export interface ForgotPasswordDto {
@@ -130,7 +150,11 @@ export interface ResetPasswordDto {
   /** @default "123456" */
   otp: string;
   /** @example "Reset Password" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
   password: string;
   confirm_password: string;
 }
@@ -151,7 +175,11 @@ export interface RefreshTokenDto {
   /** @default "example@example.com" */
   email?: string;
   /** @example "Reset Password" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
+  type:
+    | "Reset Password"
+    | "Email Verification"
+    | "Two Factor Authentication"
+    | "Account Unlock";
 }
 
 export interface SocialLoginUrlDto {
@@ -315,7 +343,12 @@ export interface Document {
   updatedAt: string;
   id: string;
   /** @example "Passport" */
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  name:
+    | "Passport"
+    | "Training Agreement"
+    | "Travel Insurance"
+    | "CV"
+    | "Cover Letter";
   file: FileDto;
 }
 
@@ -408,9 +441,9 @@ export interface StudentPagination {
 export interface UpdateStudentDto {
   personalInfo?: PersonalInfoDto;
   emergencyContacts?: EmergencyContactDto[];
-  medicalInformation: MedicalInformationDTO;
-  internshipPreferences?: InternshipPreferencesDto;
-  hostPreferences?: HostPreferenceDto;
+  medicalInformation?: MedicalInformationDTO;
+  internshipPreferences?: InternshipPreferencesDto | null;
+  hostPreferences?: HostPreferenceDto | null;
 }
 
 export interface EducationPagination {
@@ -426,7 +459,7 @@ export interface CreateEducationDto {
 }
 
 export interface UpdateEducationDto {
-  degree: string;
+  degree?: string;
   schoolName?: string;
   /** @format binary */
   documentFile?: object;
@@ -442,13 +475,23 @@ export interface DocumentPagination {
 }
 
 export interface CreateDocumentDto {
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  name:
+    | "Passport"
+    | "Training Agreement"
+    | "Travel Insurance"
+    | "CV"
+    | "Cover Letter";
   /** @format binary */
   file: File;
 }
 
 export interface UpdateDocumentDto {
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  name:
+    | "Passport"
+    | "Training Agreement"
+    | "Travel Insurance"
+    | "CV"
+    | "Cover Letter";
   /** @format binary */
   file?: File;
 }
@@ -468,6 +511,10 @@ export interface InterviewPagination {
 export interface CreateInterviewDto {
   /** @example "2025-01-05T10:00:00Z" */
   interviewDate: string;
+}
+
+export interface LatestInterviewDto {
+  interview: Interview | null;
 }
 
 export interface BusinessPagination {
@@ -669,9 +716,9 @@ export interface CreateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
   daysOfWork: string[];
-  /** @example "2025-01-10T12:07:12.143Z" */
+  /** @example "2025-01-15T06:24:57.458Z" */
   dailyStartTime: string;
-  /** @example "2025-01-10T20:07:12.143Z" */
+  /** @example "2025-01-15T14:24:57.458Z" */
   dailyFinishTime: string;
   /** @example "Facebook" */
   onWhichPlatform?: string;
@@ -695,9 +742,9 @@ export interface UpdateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
   daysOfWork?: string[];
-  /** @example "2025-01-10T12:07:12.145Z" */
+  /** @example "2025-01-15T06:24:57.460Z" */
   dailyStartTime?: string;
-  /** @example "2025-01-10T20:07:12.145Z" */
+  /** @example "2025-01-15T14:24:57.460Z" */
   dailyFinishTime?: string;
   /** @example "LinkedIn" */
   onWhichPlatform?: string;
@@ -981,7 +1028,7 @@ export interface Host {
   petsAndHouseholdInformation: PetsAndHouseholdInformationDto;
   hostFamilyAndReferrals: HostFamilyAndReferralsDto;
   hostingPreference: HostingPreferenceDto;
-  references: ReferenceDto;
+  references: ReferenceDto[];
   bankDetail: BankDetailsDto;
   dataProtection: DataProtectionDto;
   status: string;
@@ -1187,12 +1234,56 @@ export interface TenantAuthenticatedDto {
 
 export type UpdateTenantDTO = object;
 
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
+export interface Feedback {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  type: string;
+  comment: string;
+  user: User;
+}
+
+export interface FeedbackData {
+  matched: Feedback[];
+  matchedCount: number;
+  others: Feedback[];
+  othersCount: number;
+}
+
+export interface FeedbackPagination {
+  data: FeedbackData;
+  pagination: PaginationMeta;
+}
+
+export interface CreateFeedbackDto {
+  /** @example "Feedback" */
+  type: string;
+  /** @example "lorem ipsum dolor sit " */
+  comment: string;
+}
+
+export interface UpdateFeedbackDto {
+  /** @example "Feedback" */
+  type: string;
+  /** @example "lorem ipsum dolor sit " */
+  comment: string;
+}
+
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  HeadersDefaults,
+  ResponseType,
+} from "axios";
 import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
-export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
+export interface FullRequestParams
+  extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -1207,11 +1298,15 @@ export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "pa
   body?: unknown;
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
+>;
 
-export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+export interface ApiConfig<SecurityDataType = unknown>
+  extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
   securityWorker?: (
-    securityData: SecurityDataType | null,
+    securityData: SecurityDataType | null
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
   secure?: boolean;
   format?: ResponseType;
@@ -1231,8 +1326,16 @@ export class HttpClient<SecurityDataType = unknown> {
   private secure?: boolean;
   private format?: ResponseType;
 
-  constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
+  constructor({
+    securityWorker,
+    secure,
+    format,
+    ...axiosConfig
+  }: ApiConfig<SecurityDataType> = {}) {
+    this.instance = axios.create({
+      ...axiosConfig,
+      baseURL: axiosConfig.baseURL || "",
+    });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
@@ -1242,7 +1345,10 @@ export class HttpClient<SecurityDataType = unknown> {
     this.securityData = data;
   };
 
-  protected mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
+  protected mergeRequestParams(
+    params1: AxiosRequestConfig,
+    params2?: AxiosRequestConfig
+  ): AxiosRequestConfig {
     const method = params1.method || (params2 && params2.method);
 
     return {
@@ -1250,7 +1356,11 @@ export class HttpClient<SecurityDataType = unknown> {
       ...params1,
       ...(params2 || {}),
       headers: {
-        ...((method && this.instance.defaults.headers[method.toLowerCase() as keyof HeadersDefaults]) || {}),
+        ...((method &&
+          this.instance.defaults.headers[
+            method.toLowerCase() as keyof HeadersDefaults
+          ]) ||
+          {}),
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
@@ -1271,11 +1381,15 @@ export class HttpClient<SecurityDataType = unknown> {
     }
     return Object.keys(input || {}).reduce((formData, key) => {
       const property = input[key];
-      const propertyContent: any[] = property instanceof Array ? property : [property];
+      const propertyContent: any[] =
+        property instanceof Array ? property : [property];
 
       for (const formItem of propertyContent) {
         const isFileType = formItem instanceof Blob || formItem instanceof File;
-        formData.append(key, isFileType ? formItem : this.stringifyFormItem(formItem));
+        formData.append(
+          key,
+          isFileType ? formItem : this.stringifyFormItem(formItem)
+        );
       }
 
       return formData;
@@ -1299,11 +1413,21 @@ export class HttpClient<SecurityDataType = unknown> {
     const requestParams = this.mergeRequestParams(params, secureParams);
     const responseFormat = format || this.format || undefined;
 
-    if (type === ContentType.FormData && body && body !== null && typeof body === "object") {
+    if (
+      type === ContentType.FormData &&
+      body &&
+      body !== null &&
+      typeof body === "object"
+    ) {
       body = this.createFormData(body as Record<string, unknown>);
     }
 
-    if (type === ContentType.Text && body && body !== null && typeof body !== "string") {
+    if (
+      type === ContentType.Text &&
+      body &&
+      body !== null &&
+      typeof body !== "string"
+    ) {
       body = JSON.stringify(body);
     }
 
@@ -1326,7 +1450,9 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version 0.0.20
  * @contact
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown,
+> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
@@ -1414,7 +1540,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerSignInWith2FaOtp
      * @request POST:/users/users/2fa-sign-in
      */
-    userControllerSignInWith2FaOtp: (data: TwoFAOtpDto, params: RequestParams = {}) =>
+    userControllerSignInWith2FaOtp: (
+      data: TwoFAOtpDto,
+      params: RequestParams = {}
+    ) =>
       this.request<TokenDto, any>({
         path: `/users/users/2fa-sign-in`,
         method: "POST",
@@ -1431,7 +1560,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerVerifyEmail
      * @request POST:/users/verify-email
      */
-    userControllerVerifyEmail: (data: VerifyEmailDto, params: RequestParams = {}) =>
+    userControllerVerifyEmail: (
+      data: VerifyEmailDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/users/verify-email`,
         method: "POST",
@@ -1448,7 +1580,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerUnlockAccount
      * @request POST:/users/users/unlock-account
      */
-    userControllerUnlockAccount: (data: UnlockAccountDto, params: RequestParams = {}) =>
+    userControllerUnlockAccount: (
+      data: UnlockAccountDto,
+      params: RequestParams = {}
+    ) =>
       this.request<TokenDto, any>({
         path: `/users/users/unlock-account`,
         method: "POST",
@@ -1499,7 +1634,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerForgotPassword
      * @request POST:/users/forgot-password
      */
-    userControllerForgotPassword: (data: ForgotPasswordDto, params: RequestParams = {}) =>
+    userControllerForgotPassword: (
+      data: ForgotPasswordDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/users/forgot-password`,
         method: "POST",
@@ -1516,7 +1654,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerResetPassword
      * @request PATCH:/users/reset-password
      */
-    userControllerResetPassword: (data: ResetPasswordDto, params: RequestParams = {}) =>
+    userControllerResetPassword: (
+      data: ResetPasswordDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/users/reset-password`,
         method: "PATCH",
@@ -1534,7 +1675,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/users/change-password
      * @secure
      */
-    userControllerChangePassword: (data: ChangePasswordDto, params: RequestParams = {}) =>
+    userControllerChangePassword: (
+      data: ChangePasswordDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/users/change-password`,
         method: "PATCH",
@@ -1553,7 +1697,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/users/update-profile
      * @secure
      */
-    userControllerUpdateProfile: (data: UpdateProfileDto, params: RequestParams = {}) =>
+    userControllerUpdateProfile: (
+      data: UpdateProfileDto,
+      params: RequestParams = {}
+    ) =>
       this.request<AuthUserDto, any>({
         path: `/users/update-profile`,
         method: "PATCH",
@@ -1577,7 +1724,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @format binary */
         file?: File;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<AuthUserDto, any>({
         path: `/users/change-avatar`,
@@ -1613,7 +1760,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerRefreshToken
      * @request POST:/users/refresh-token
      */
-    userControllerRefreshToken: (data: RefreshTokenDto, params: RequestParams = {}) =>
+    userControllerRefreshToken: (
+      data: RefreshTokenDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/users/refresh-token`,
         method: "POST",
@@ -1648,7 +1798,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/users/two-fa-verification
      * @secure
      */
-    userControllerVerifyTwoFa: (data: TwoFAOtpDto, params: RequestParams = {}) =>
+    userControllerVerifyTwoFa: (
+      data: TwoFAOtpDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/users/two-fa-verification`,
         method: "PATCH",
@@ -1685,7 +1838,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query: {
         code: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<User, any>({
         path: `/users/google/callback`,
@@ -1721,7 +1874,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query: {
         code: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<User, any>({
         path: `/users/facebook/callback`,
@@ -1758,7 +1911,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/admins/interviews/{id}
      * @secure
      */
-    adminControllerPatchInterview: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
+    adminControllerPatchInterview: (
+      id: string,
+      data: UpdateInterviewDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Interview, any>({
         path: `/admins/interviews/${id}`,
         method: "PATCH",
@@ -1777,7 +1934,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuthStudentControllerSignUp
      * @request POST:/students/sign-up
      */
-    authStudentControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+    authStudentControllerSignUp: (
+      data: SignUpDto,
+      params: RequestParams = {}
+    ) =>
       this.request<TokenDto, any>({
         path: `/students/sign-up`,
         method: "POST",
@@ -1845,7 +2005,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** Yes | No */
         handicapAccessibility?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<StudentPagination, any>({
         path: `/students`,
@@ -1863,7 +2023,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/students
      * @secure
      */
-    studentControllerPatchStudent: (data: UpdateStudentDto, params: RequestParams = {}) =>
+    studentControllerPatchStudent: (
+      data: UpdateStudentDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Student, any>({
         path: `/students`,
         method: "PATCH",
@@ -1908,7 +2071,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         limit: number;
         degree?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<EducationPagination, any>({
         path: `/educations`,
@@ -1927,7 +2090,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/educations
      * @secure
      */
-    educationControllerCreate: (data: CreateEducationDto, params: RequestParams = {}) =>
+    educationControllerCreate: (
+      data: CreateEducationDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Education, any>({
         path: `/educations`,
         method: "POST",
@@ -1963,7 +2129,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/educations/{id}
      * @secure
      */
-    educationControllerPatch: (id: string, data: UpdateEducationDto, params: RequestParams = {}) =>
+    educationControllerPatch: (
+      id: string,
+      data: UpdateEducationDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Education, any>({
         path: `/educations/${id}`,
         method: "PATCH",
@@ -1999,7 +2169,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/educations/{id}/documents
      * @secure
      */
-    educationControllerDestroyDocuments: (id: string, data: DocumentIdsDto, params: RequestParams = {}) =>
+    educationControllerDestroyDocuments: (
+      id: string,
+      data: DocumentIdsDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Education, any>({
         path: `/educations/${id}/documents`,
         method: "DELETE",
@@ -2027,7 +2201,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         limit: number;
         name?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<DocumentPagination, any>({
         path: `/documents`,
@@ -2046,7 +2220,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/documents
      * @secure
      */
-    documentsControllerCreate: (data: CreateDocumentDto, params: RequestParams = {}) =>
+    documentsControllerCreate: (
+      data: CreateDocumentDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Document, any>({
         path: `/documents`,
         method: "POST",
@@ -2082,7 +2259,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/documents/{id}
      * @secure
      */
-    documentsControllerPatch: (id: string, data: UpdateDocumentDto, params: RequestParams = {}) =>
+    documentsControllerPatch: (
+      id: string,
+      data: UpdateDocumentDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Document, any>({
         path: `/documents/${id}`,
         method: "PATCH",
@@ -2125,9 +2306,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2024-12-21T12:07:13.042Z" */
+        /** @example "2024-12-19T06:24:58.450Z" */
         startDate?: string;
-        /** @example "2025-01-10T12:07:13.043Z" */
+        /** @example "2025-01-15T06:24:58.450Z" */
         endDate?: string;
         studentId?: string;
         businessId?: string;
@@ -2145,7 +2326,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** true | false */
         upcoming?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<InterviewPagination, any>({
         path: `/interviews`,
@@ -2164,7 +2345,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/interviews
      * @secure
      */
-    interviewControllerCreateStudentInterview: (data: CreateInterviewDto, params: RequestParams = {}) =>
+    interviewControllerCreateStudentInterview: (
+      data: CreateInterviewDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Interview, any>({
         path: `/interviews`,
         method: "POST",
@@ -2184,7 +2368,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     interviewControllerGetStudentInterview: (params: RequestParams = {}) =>
-      this.request<Interview, any>({
+      this.request<LatestInterviewDto, any>({
         path: `/interviews/latest`,
         method: "GET",
         secure: true,
@@ -2217,7 +2401,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/interviews/{id}
      * @secure
      */
-    interviewControllerPatch: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
+    interviewControllerPatch: (
+      id: string,
+      data: UpdateInterviewDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Interview, any>({
         path: `/interviews/${id}`,
         method: "PATCH",
@@ -2263,7 +2451,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         name?: string;
         isArchived?: boolean;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<BusinessPagination, any>({
         path: `/businesses`,
@@ -2282,7 +2470,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/businesses
      * @secure
      */
-    businessControllerCreate: (data: CreateBusinessDto, params: RequestParams = {}) =>
+    businessControllerCreate: (
+      data: CreateBusinessDto,
+      params: RequestParams = {}
+    ) =>
       this.request<SignedBusinessDto, any>({
         path: `/businesses`,
         method: "POST",
@@ -2315,7 +2506,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name BusinessControllerRootSignIn
      * @request POST:/businesses/root/sign-in
      */
-    businessControllerRootSignIn: (data: RootBusinessSignInDto, params: RequestParams = {}) =>
+    businessControllerRootSignIn: (
+      data: RootBusinessSignInDto,
+      params: RequestParams = {}
+    ) =>
       this.request<TokenDto, any>({
         path: `/businesses/root/sign-in`,
         method: "POST",
@@ -2332,7 +2526,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name BusinessControllerCodeBasedSignIn
      * @request POST:/businesses/code-based-sign-in
      */
-    businessControllerCodeBasedSignIn: (data: CodeBasedSignInDto, params: RequestParams = {}) =>
+    businessControllerCodeBasedSignIn: (
+      data: CodeBasedSignInDto,
+      params: RequestParams = {}
+    ) =>
       this.request<TokenDto, any>({
         path: `/businesses/code-based-sign-in`,
         method: "POST",
@@ -2384,7 +2581,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/businesses/{id}
      * @secure
      */
-    businessControllerUpdate: (id: string, data: UpdateBusinessDto, params: RequestParams = {}) =>
+    businessControllerUpdate: (
+      id: string,
+      data: UpdateBusinessDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Business, any>({
         path: `/businesses/${id}`,
         method: "PATCH",
@@ -2437,7 +2638,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/businesses/{id}/archive
      * @secure
      */
-    businessControllerArchive: (id: string, data: BusinessArchiveDto, params: RequestParams = {}) =>
+    businessControllerArchive: (
+      id: string,
+      data: BusinessArchiveDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Business, any>({
         path: `/businesses/${id}/archive`,
         method: "PATCH",
@@ -2463,9 +2668,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2024-12-21T12:07:13.243Z" */
+        /** @example "2024-12-19T06:24:58.651Z" */
         startDate?: string;
-        /** @example "2025-01-10T12:07:13.243Z" */
+        /** @example "2025-01-15T06:24:58.651Z" */
         endDate?: string;
         /**
          * New
@@ -2477,10 +2682,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          *     | Approved
          */
         status?: string;
-        studentId?: string;
-        businessId?: string;
+        jobId?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<ApplicationPagination, any>({
         path: `/applications`,
@@ -2499,7 +2703,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/applications
      * @secure
      */
-    applicationControllerCreate: (data: CreateApplicationDto, params: RequestParams = {}) =>
+    applicationControllerCreate: (
+      data: CreateApplicationDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Application, any>({
         path: `/applications`,
         method: "POST",
@@ -2535,7 +2742,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/applications/{id}
      * @secure
      */
-    applicationControllerPatch: (id: string, data: UpdateApplicationDto, params: RequestParams = {}) =>
+    applicationControllerPatch: (
+      id: string,
+      data: UpdateApplicationDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Application, any>({
         path: `/applications/${id}`,
         method: "PATCH",
@@ -2570,6 +2781,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Job
      * @name JobControllerIndex
      * @request GET:/jobs
+     * @secure
      */
     jobControllerIndex: (
       query?: {
@@ -2585,19 +2797,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2024-12-21T12:07:12.138Z" */
+        /** @example "2024-12-19T06:24:57.455Z" */
         startDate?: string;
-        /** @example "2025-01-10T12:07:12.139Z" */
+        /** @example "2025-01-15T06:24:57.455Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
+        studentId?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<JobPaginationWithData, any>({
         path: `/jobs`,
         method: "GET",
         query: query,
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -2644,7 +2858,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/jobs/{id}
      * @secure
      */
-    jobControllerUpdate: (id: string, data: UpdateJobDto, params: RequestParams = {}) =>
+    jobControllerUpdate: (
+      id: string,
+      data: UpdateJobDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Job, any>({
         path: `/jobs/${id}`,
         method: "PATCH",
@@ -2732,7 +2950,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/hosts/default
      * @secure
      */
-    hostControllerPatchDefault: (data: UpdateHostDto, params: RequestParams = {}) =>
+    hostControllerPatchDefault: (
+      data: UpdateHostDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Host, any>({
         path: `/hosts/default`,
         method: "PATCH",
@@ -2786,7 +3007,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         rent?: number;
         hostId?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<PropertyPaginationWithData, any>({
         path: `/properties`,
@@ -2804,7 +3025,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/properties
      * @secure
      */
-    propertyControllerCreate: (data: CreatePropertyDto, params: RequestParams = {}) =>
+    propertyControllerCreate: (
+      data: CreatePropertyDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Property, any>({
         path: `/properties`,
         method: "POST",
@@ -2838,7 +3062,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/properties/{id}
      * @secure
      */
-    propertyControllerPatch: (id: string, data: UpdatePropertyDto, params: RequestParams = {}) =>
+    propertyControllerPatch: (
+      id: string,
+      data: UpdatePropertyDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Property, any>({
         path: `/properties/${id}`,
         method: "PATCH",
@@ -2874,7 +3102,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/properties/{id}/photos
      * @secure
      */
-    propertyControllerPatchImages: (id: string, data: UpdatePhotosDto, params: RequestParams = {}) =>
+    propertyControllerPatchImages: (
+      id: string,
+      data: UpdatePhotosDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Property, any>({
         path: `/properties/${id}/photos`,
         method: "PATCH",
@@ -2893,7 +3125,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/properties/{id}/photos
      * @secure
      */
-    propertyControllerDeletePhotos: (id: string, data: PhotoIdsDto, params: RequestParams = {}) =>
+    propertyControllerDeletePhotos: (
+      id: string,
+      data: PhotoIdsDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/properties/${id}/photos`,
         method: "DELETE",
@@ -2912,7 +3148,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/properties/{id}/hosts
      * @secure
      */
-    propertyControllerGetPropertyHost: (id: string, params: RequestParams = {}) =>
+    propertyControllerGetPropertyHost: (
+      id: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Host, any>({
         path: `/properties/${id}/hosts`,
         method: "GET",
@@ -2929,7 +3168,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/properties/{id}/host
      * @secure
      */
-    propertyControllerUpdateHost: (id: string, data: UpdateHostDto, params: RequestParams = {}) =>
+    propertyControllerUpdateHost: (
+      id: string,
+      data: UpdateHostDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Host, any>({
         path: `/properties/${id}/host`,
         method: "PATCH",
@@ -2958,7 +3201,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         name?: string;
         type?: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<RoomPagination, any>({
         path: `/rooms`,
@@ -3013,7 +3256,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/rooms/{id}
      * @secure
      */
-    roomControllerUpdate: (id: string, data: UpdateRoomDto, params: RequestParams = {}) =>
+    roomControllerUpdate: (
+      id: string,
+      data: UpdateRoomDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Room, any>({
         path: `/rooms/${id}`,
         method: "PATCH",
@@ -3032,7 +3279,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/rooms/{id}/photos
      * @secure
      */
-    roomControllerPatchPhotos: (id: string, data: UpdatePhotosDto, params: RequestParams = {}) =>
+    roomControllerPatchPhotos: (
+      id: string,
+      data: UpdatePhotosDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Room, any>({
         path: `/rooms/${id}/photos`,
         method: "PATCH",
@@ -3051,7 +3302,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/rooms/{id}/photos
      * @secure
      */
-    roomControllerDeletePhotos: (id: string, data: PhotoIdsDto, params: RequestParams = {}) =>
+    roomControllerDeletePhotos: (
+      id: string,
+      data: PhotoIdsDto,
+      params: RequestParams = {}
+    ) =>
       this.request<MessageDto, any>({
         path: `/rooms/${id}/photos`,
         method: "DELETE",
@@ -3076,7 +3331,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         key: string;
       },
       data: SignUpDto,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<MessageDto, any>({
         path: `/sandboxes/users`,
@@ -3101,7 +3356,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example "51QEkjgFT171SaOwuTOIIthE" */
         key: string;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<MessageDto, any>({
         path: `/sandboxes/users/${id}`,
@@ -3170,7 +3425,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name TenantControllerPatchDefault
      * @request PATCH:/tenants/default
      */
-    tenantControllerPatchDefault: (data: UpdateTenantDTO, params: RequestParams = {}) =>
+    tenantControllerPatchDefault: (
+      data: UpdateTenantDTO,
+      params: RequestParams = {}
+    ) =>
       this.request<Tenant, any>({
         path: `/tenants/default`,
         method: "PATCH",
@@ -3191,6 +3449,118 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Tenant, any>({
         path: `/tenants/default`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  feedback = {
+    /**
+     * No description
+     *
+     * @tags Feedback
+     * @name FeedbackControllerIndex
+     * @request GET:/feedback
+     * @secure
+     */
+    feedbackControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        /** @example "2024-12-19T06:24:58.746Z" */
+        startDate?: string;
+        /** @example "2025-01-15T06:24:58.747Z" */
+        endDate?: string;
+        /** @example "Feedback" */
+        type?: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<FeedbackPagination, any>({
+        path: `/feedback`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feedback
+     * @name FeedbackControllerCreateStudentFeedback
+     * @request POST:/feedback
+     * @secure
+     */
+    feedbackControllerCreateStudentFeedback: (
+      data: CreateFeedbackDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<Feedback, any>({
+        path: `/feedback`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feedback
+     * @name FeedbackControllerGet
+     * @request GET:/feedback/{id}
+     * @secure
+     */
+    feedbackControllerGet: (id: string, params: RequestParams = {}) =>
+      this.request<Feedback, any>({
+        path: `/feedback/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feedback
+     * @name FeedbackControllerPatch
+     * @request PATCH:/feedback/{id}
+     * @secure
+     */
+    feedbackControllerPatch: (
+      id: string,
+      data: UpdateFeedbackDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<Feedback, any>({
+        path: `/feedback/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feedback
+     * @name FeedbackControllerDestroy
+     * @request DELETE:/feedback/{id}
+     * @secure
+     */
+    feedbackControllerDestroy: (id: string, params: RequestParams = {}) =>
+      this.request<Feedback, any>({
+        path: `/feedback/${id}`,
+        method: "DELETE",
+        secure: true,
         format: "json",
         ...params,
       }),

@@ -12,7 +12,7 @@ function BaseIcon({
   size = COMMON_ICON_PROPS.size,
   withOutline = false,
   fill = COMMON_ICON_PROPS.fill,
-  children
+  children,
 }: BaseIconProps) {
   if (withOutline) {
     return (

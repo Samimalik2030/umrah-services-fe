@@ -1,95 +1,127 @@
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-  Title,
-  useMantineTheme
-} from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { useLocation, useNavigate } from "react-router-dom";
-import IconLogout from "../assets/icons/IconLogout";
-import { useAuth } from "../contexts/AuthContext";
+import { NavLink } from "@mantine/core";
+import { useLocation } from "react-router-dom";
+import IconLayoutDashboard from "../assets/icons/IconDotsUnion";
+import IconWorld from "../assets/icons/IconWorld";
+import IconBrandDatabricks from "../assets/icons/IconBrandDatabricks";
+import IconChartHistogram from "../assets/icons/IconChartHistogram";
+import IconMessageChatbot from "../assets/icons/IconMessageChatbot";
+import IconTopologyStar from "../assets/icons/IconTopologyStar";
+import IconUsersGroup from "../assets/icons/IconUsersGroup";
+import IconReceiptDollar from "../assets/icons/IconReceiptDollar";
 
-const navLinks = [{ label: "Dashboard", route: "/" }];
-
+interface Links {
+  label: string;
+  path: string;
+  icon: string;
+}
 function Navbar() {
-  const navigate = useNavigate();
-  const pathName = useLocation().pathname;
-  console.log(pathName);
-  const { logout, user } = useAuth();
+  const { pathname } = useLocation();
 
-  const theme = useMantineTheme();
-  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  function Icon({ name, isActive }: { name: string; isActive: boolean }) {
+    const icons: Record<string, React.ReactNode> = {
+      IconLayoutDashboard: (
+        <IconLayoutDashboard
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconWorld: (
+        <IconWorld
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconUsersGroup: (
+        <IconUsersGroup
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconTopologyStar: (
+        <IconTopologyStar
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconReceiptDollar: (
+        <IconReceiptDollar
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconChartHistogram: (
+        <IconChartHistogram
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconMessageChatbot: (
+        <IconMessageChatbot
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+      IconBrandDatabricks: (
+        <IconBrandDatabricks
+          fill="none"
+          withOutline
+          color={isActive ? "white" : "#909090"}
+        />
+      ),
+    };
+
+    return <>{icons[name] || null}</>;
+  }
+
+  const links: Links[] = [
+    {
+      label: "Dashboard",
+      icon: "IconLayoutDashboard",
+      path: "/",
+    },
+    {
+      label: "Businesses",
+      icon: "IconWorld",
+      path: "/business",
+    },
+    { label: "Students", icon: "IconUsersGroup", path: "/students" },
+    { label: "Hosts", icon: "IconTopologyStar", path: "/host" },
+    {
+      label: "Subscriptions",
+      icon: "IconReceiptDollar",
+      path: "/subscriptions",
+    },
+    { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
+    { label: "Support", icon: "IconMessageChatbot", path: "/support" },
+    { label: "Projects", icon: "IconBrandDatabricks", path: "/projects" },
+  ];
 
   return (
-    <Card
-      w={"100%"}
-      withBorder={false}
-      shadow="xs"
-      radius={0}
-      pos={"sticky"}
-      top={0}
-      style={{ zIndex: 1000 }}
-    >
-      <Group justify="space-between" align="center">
-        <Box visibleFrom="md">
-          <Title c={theme.primaryColor} order={2}>
-            MPA Coaching
-          </Title>
-        </Box>
-
-        <Box>
-          <Group align="center" gap={0}>
-            {navLinks.map((item, i) => (
-              <Button
-                key={i}
-                c={pathName === item.route ? theme.primaryColor : "#313131"}
-                variant="subtle"
-                fw={pathName === item.route ? "700" : "400"}
-                size={isSmallScreen ? "sm" : "lg"}
-                onClick={() => navigate(item.route)}
-              >
-                {item.label}
-              </Button>
-            ))}
-          </Group>
-        </Box>
-
-        <Box>
-          <Group align="center">
-            <Group>
-              <Avatar
-                src={null}
-                size={isSmallScreen ? "sm" : "lg"}
-                bg={"#606060"}
-                color={"#FFFFFF"}
-              >
-                {user?.firstName.charAt(0).toUpperCase()}
-                {user?.lastName.charAt(0).toUpperCase()}
-              </Avatar>
-              <Stack gap={0}>
-                <Text fw={600} truncate="end" lineClamp={1}>
-                  {user?.fullName}
-                </Text>
-                <Text truncate="end" lineClamp={1}>
-                  {user?.email}
-                </Text>
-              </Stack>
-            </Group>
-            <Stack>
-              <ActionIcon variant="subtle" size={40} onClick={() => logout()}>
-                <IconLogout size={40} fill="none" />
-              </ActionIcon>
-            </Stack>
-          </Group>
-        </Box>
-      </Group>
-    </Card>
+    <div>
+      {links.map((l, i) => {
+        return (
+          <NavLink
+            key={i}
+            label={l.label}
+            leftSection={
+              l.icon ? (
+                <Icon name={l.icon} isActive={pathname === l.path} />
+              ) : null
+            }
+            variant="filled"
+            active={pathname === l.path}
+            href={l.path}
+          />
+        );
+      })}
+    </div>
   );
 }
 
