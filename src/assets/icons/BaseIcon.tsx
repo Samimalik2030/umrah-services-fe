@@ -12,7 +12,7 @@ function BaseIcon({
   size = COMMON_ICON_PROPS.size,
   withOutline = false,
   fill = COMMON_ICON_PROPS.fill,
-  children
+  children,
 }: BaseIconProps) {
   if (withOutline) {
     return (
@@ -23,9 +23,9 @@ function BaseIcon({
         viewBox="0 0 24 24"
         fill={fill}
         stroke={color}
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         {children}
       </svg>
