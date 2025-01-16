@@ -16,6 +16,10 @@ const RouteGuard = () => {
     }
   }, [accessToken]);
 
+  if (!accessToken) {
+    return null;
+  }
+
   return <Outlet />;
 };
 

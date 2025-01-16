@@ -2,7 +2,7 @@ import { AppShell, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Header from "../../components/Header";
 import { Outlet } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import Sidenav from "../../components/Sidenav";
 function DashboardLayout() {
   const [opened, { toggle }] = useDisclosure();
 
@@ -10,7 +10,7 @@ function DashboardLayout() {
     <AppShell
       header={{ height: 90 }}
       navbar={{
-        width: 300,
+        width: 220,
         breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
@@ -24,7 +24,7 @@ function DashboardLayout() {
       </AppShell.Header>
 
       <AppShell.Navbar p="md" bg={"#F4F4F7"}>
-        <Navbar />
+        <Sidenav />
       </AppShell.Navbar>
 
       <AppShell.Main bg={"white"}>

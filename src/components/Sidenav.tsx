@@ -1,4 +1,4 @@
-import { NavLink } from "@mantine/core";
+import { NavLink, useMantineTheme } from "@mantine/core";
 import { useLocation } from "react-router-dom";
 import IconLayoutDashboard from "../assets/icons/IconDotsUnion";
 import IconWorld from "../assets/icons/IconWorld";
@@ -14,65 +14,73 @@ interface Links {
   path: string;
   icon: string;
 }
-function Navbar() {
+function Sidenav() {
   const { pathname } = useLocation();
+  const theme = useMantineTheme();
 
-  function Icon({ name, isActive }: { name: string; isActive: boolean }) {
+  function Icon({
+    name,
+    isActive,
+    size,
+  }: {
+    name: string;
+    isActive: boolean;
+    size: number;
+  }) {
+    const newColor = isActive ? theme.colors.blue[4] : theme.colors.gray[5];
     const icons: Record<string, React.ReactNode> = {
       IconLayoutDashboard: (
         <IconLayoutDashboard
           fill="none"
           withOutline
-          color={isActive ? "white" : "#909090"}
+          color={newColor}
+          size={size}
         />
       ),
       IconWorld: (
-        <IconWorld
-          fill="none"
-          withOutline
-          color={isActive ? "white" : "#909090"}
-        />
+        <IconWorld fill="none" withOutline color={newColor} size={size} />
       ),
       IconUsersGroup: (
-        <IconUsersGroup
-          fill="none"
-          withOutline
-          color={isActive ? "white" : "#909090"}
-        />
+        <IconUsersGroup fill="none" withOutline color={newColor} size={size} />
       ),
       IconTopologyStar: (
         <IconTopologyStar
           fill="none"
           withOutline
-          color={isActive ? "white" : "#909090"}
+          color={newColor}
+          size={size}
         />
       ),
       IconReceiptDollar: (
         <IconReceiptDollar
           fill="none"
           withOutline
-          color={isActive ? "white" : "#909090"}
+          color={newColor}
+          size={size}
         />
       ),
       IconChartHistogram: (
         <IconChartHistogram
           fill="none"
           withOutline
-          color={isActive ? "white" : "#909090"}
+          color={newColor}
+          size={size}
         />
       ),
       IconMessageChatbot: (
         <IconMessageChatbot
           fill="none"
           withOutline
-          color={isActive ? "white" : "#909090"}
+          color={newColor}
+          size={size}
         />
       ),
       IconBrandDatabricks: (
         <IconBrandDatabricks
           fill="none"
           withOutline
-          color={isActive ? "white" : "#909090"}
+          color={newColor}
+          size={size}
         />
       ),
     };
@@ -112,12 +120,12 @@ function Navbar() {
             label={l.label}
             leftSection={
               l.icon ? (
-                <Icon name={l.icon} isActive={pathname === l.path} />
+                <Icon name={l.icon} isActive={pathname === l.path} size={18} />
               ) : null
             }
-            variant="filled"
             active={pathname === l.path}
             href={l.path}
+            color="blue"
           />
         );
       })}
@@ -125,4 +133,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Sidenav;

@@ -58,7 +58,7 @@ function Header() {
               </Menu.Label>
               <Menu.Divider />
               <Menu.Item
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/settings")}
                 leftSection={<IconSettings fill="none" withOutline />}
               >
                 Profile Settings
