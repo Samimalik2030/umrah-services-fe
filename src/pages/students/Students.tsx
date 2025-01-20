@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import useGetInterviews from "../../hooks/useGetInterviews";
-import { Interview } from "../../http/Api";
+import { Interview, UpdateInterviewDto } from "../../http/Api";
 import IconDots from "../../assets/icons/IconDots";
 import http from "../../http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -34,20 +34,22 @@ const Students = () => {
   const { interviews, isLoading: gettingInterviews } = useGetInterviews(page);
   const queryClient = useQueryClient();
   const [opened, { close }] = useDisclosure(false);
-  const [selectedInterview] = useState<Interview | null>(null);
+  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(
+    null
+  );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  // const { mutate: changeStatus, isPending: changingStatus } = useMutation({
-  //   mutationFn: ({ id, data }: { id: string; data: UpdateInterviewDto }) =>
-  //     http.admins.adminControllerPatchInterview(id, data),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["interviews"] });
-  //   },
-  // });
+  const { mutate: changeStatus, isPending: changingStatus } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateInterviewDto }) =>
+      http.admins.adminControllerPatchInterview(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
+    },
+  });
 
-  // const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
-  //   changeStatus({ id, data });
-  // };
+  const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
+    changeStatus({ id, data });
+  };
 
   const { mutate: scheduleInterview, isPending: schedulingInterview } =
     useMutation({
@@ -66,11 +68,11 @@ const Students = () => {
       },
     });
 
-  // const handleEditClick = (interview: Interview) => {
-  //   setSelectedInterview(interview);
-  //   setSelectedDate(new Date(interview.date));
-  //   open();
-  // };
+  const handleEditClick = (interview: Interview) => {
+    setSelectedInterview(interview);
+    setSelectedDate(new Date(interview.date));
+    open();
+  };
 
   const handleUpdateClick = () => {
     if (selectedInterview && selectedDate) {
@@ -180,32 +182,29 @@ const Students = () => {
                     </Menu.Target>
                     <Menu.Dropdown>
                       <Menu.Item
-                        onClick={(e) => {
-                          console.log(e);
+                        onClick={() => {
+                          handleStatusChange(interview.id, {
+                            status: "Passed",
+                          });
                         }}
-                        //   handleStatusChange(interview.id, {
-                        //     status: "Passed",
-                        //   })
                       >
                         Approve
                       </Menu.Item>
                       <Menu.Item
-                        onClick={(e) => {
-                          console.log(e);
+                        onClick={() => {
+                          handleStatusChange(interview.id, {
+                            status: "Failed",
+                          });
                         }}
-                        // handleStatusChange(interview.id, {
-                        //   status: "Failed",
-                        // })
                       >
                         Reject
                       </Menu.Item>
                       <Menu.Item
-                        onClick={(e) => {
-                          console.log(e);
+                        onClick={() => {
+                          handleStatusChange(interview.id, {
+                            status: "Cancelled",
+                          });
                         }}
-                        // handleStatusChange(interview.id, {
-                        //   status: "Cancelled",
-                        // })
                       >
                         Cancel
                       </Menu.Item>
