@@ -1,8 +1,7 @@
 import { NavLink, useMantineTheme } from "@mantine/core";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import IconLayoutDashboard from "../assets/icons/IconDotsUnion";
 import IconWorld from "../assets/icons/IconWorld";
-import IconBrandDatabricks from "../assets/icons/IconBrandDatabricks";
 import IconChartHistogram from "../assets/icons/IconChartHistogram";
 import IconMessageChatbot from "../assets/icons/IconMessageChatbot";
 import IconTopologyStar from "../assets/icons/IconTopologyStar";
@@ -14,9 +13,33 @@ interface Links {
   path: string;
   icon: string;
 }
+
+const links: Links[] = [
+  {
+    label: "Dashboard",
+    icon: "IconLayoutDashboard",
+    path: "/",
+  },
+  {
+    label: "Businesses",
+    icon: "IconWorld",
+    path: "/business",
+  },
+  { label: "Students", icon: "IconUsersGroup", path: "/students" },
+  { label: "Hosts", icon: "IconTopologyStar", path: "/host" },
+  {
+    label: "Subscriptions",
+    icon: "IconReceiptDollar",
+    path: "/subscriptions",
+  },
+  { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
+  { label: "Support", icon: "IconMessageChatbot", path: "/support" },
+];
+
 function Sidenav() {
   const { pathname } = useLocation();
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   function Icon({
     name,
@@ -75,41 +98,10 @@ function Sidenav() {
           size={size}
         />
       ),
-      IconBrandDatabricks: (
-        <IconBrandDatabricks
-          fill="none"
-          withOutline
-          color={newColor}
-          size={size}
-        />
-      ),
     };
 
     return <>{icons[name] || null}</>;
   }
-
-  const links: Links[] = [
-    {
-      label: "Dashboard",
-      icon: "IconLayoutDashboard",
-      path: "/",
-    },
-    {
-      label: "Businesses",
-      icon: "IconWorld",
-      path: "/business",
-    },
-    { label: "Students", icon: "IconUsersGroup", path: "/students" },
-    { label: "Hosts", icon: "IconTopologyStar", path: "/host" },
-    {
-      label: "Subscriptions",
-      icon: "IconReceiptDollar",
-      path: "/subscriptions",
-    },
-    { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
-    { label: "Support", icon: "IconMessageChatbot", path: "/support" },
-    { label: "Projects", icon: "IconBrandDatabricks", path: "/projects" },
-  ];
 
   return (
     <div>
@@ -123,8 +115,8 @@ function Sidenav() {
                 <Icon name={l.icon} isActive={pathname === l.path} size={18} />
               ) : null
             }
-            active={pathname === l.path}
-            href={l.path}
+            active={pathname === l?.path}
+            onClick={() => navigate(l?.path)}
             color="blue"
           />
         );

@@ -34,7 +34,9 @@ const Students = () => {
   const { interviews, isLoading: gettingInterviews } = useGetInterviews(page);
   const queryClient = useQueryClient();
   const [opened, { close }] = useDisclosure(false);
-  const [selectedInterview] = useState<Interview | null>(null);
+  const [selectedInterview, setSelectedInterview] = useState<Interview | null>(
+    null
+  );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { mutate: changeStatus, isPending: changingStatus } = useMutation({
@@ -183,8 +185,7 @@ const Students = () => {
                     </Menu.Target>
                     <Menu.Dropdown>
                       <Menu.Item
-                        onClick={(e) => {
-                          console.log(e);
+                        onClick={() => {
                           handleStatusChange(interview.id, {
                             status: "Passed"
                           });
@@ -193,8 +194,7 @@ const Students = () => {
                         Approve
                       </Menu.Item>
                       <Menu.Item
-                        onClick={(e) => {
-                          console.log(e);
+                        onClick={() => {
                           handleStatusChange(interview.id, {
                             status: "Failed"
                           });
@@ -203,8 +203,7 @@ const Students = () => {
                         Reject
                       </Menu.Item>
                       <Menu.Item
-                        onClick={(e) => {
-                          console.log(e);
+                        onClick={() => {
                           handleStatusChange(interview.id, {
                             status: "Cancelled"
                           });

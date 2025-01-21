@@ -35,8 +35,3 @@ function DashboardLayout() {
 }
 
 export default DashboardLayout;
-
-// <div>
-//   <Navbar />
-//   <Outlet />
-// </div>
