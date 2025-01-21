@@ -14,11 +14,11 @@ import {
   Text,
   TextInput,
   Title,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import useGetInterviews from "../../hooks/useGetInterviews";
-import { Interview } from "../../http/Api";
+import { Interview, UpdateInterviewDto } from "../../http/Api";
 import IconDots from "../../assets/icons/IconDots";
 import http from "../../http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -37,24 +37,24 @@ const Students = () => {
   const [selectedInterview] = useState<Interview | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  // const { mutate: changeStatus, isPending: changingStatus } = useMutation({
-  //   mutationFn: ({ id, data }: { id: string; data: UpdateInterviewDto }) =>
-  //     http.admins.adminControllerPatchInterview(id, data),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["interviews"] });
-  //   },
-  // });
+  const { mutate: changeStatus, isPending: changingStatus } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateInterviewDto }) =>
+      http.admins.adminControllerPatchInterview(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
+    }
+  });
 
-  // const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
-  //   changeStatus({ id, data });
-  // };
+  const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
+    changeStatus({ id, data });
+  };
 
   const { mutate: scheduleInterview, isPending: schedulingInterview } =
     useMutation({
       mutationFn: ({ id, date }: { id: string; date: Date }) => {
         const interviewDate = date.toISOString();
         return http.admins.adminControllerPatchInterview(id, {
-          interviewDate: interviewDate,
+          interviewDate: interviewDate
         });
       },
       onSuccess: () => {
@@ -63,7 +63,7 @@ const Students = () => {
       },
       onError: (error) => {
         console.error("Error scheduling interview:", error);
-      },
+      }
     });
 
   // const handleEditClick = (interview: Interview) => {
@@ -82,7 +82,10 @@ const Students = () => {
 
   return (
     <Stack>
-      {gettingInterviews && <LoadingOverlay visible={gettingInterviews} />}
+      {gettingInterviews ||
+        (changingStatus && (
+          <LoadingOverlay visible={gettingInterviews || changingStatus} />
+        ))}
       <Group justify="space-between">
         <Title order={3}>Students</Title>
         <Group>
@@ -182,30 +185,30 @@ const Students = () => {
                       <Menu.Item
                         onClick={(e) => {
                           console.log(e);
+                          handleStatusChange(interview.id, {
+                            status: "Passed"
+                          });
                         }}
-                        //   handleStatusChange(interview.id, {
-                        //     status: "Passed",
-                        //   })
                       >
                         Approve
                       </Menu.Item>
                       <Menu.Item
                         onClick={(e) => {
                           console.log(e);
+                          handleStatusChange(interview.id, {
+                            status: "Failed"
+                          });
                         }}
-                        // handleStatusChange(interview.id, {
-                        //   status: "Failed",
-                        // })
                       >
                         Reject
                       </Menu.Item>
                       <Menu.Item
                         onClick={(e) => {
                           console.log(e);
+                          handleStatusChange(interview.id, {
+                            status: "Cancelled"
+                          });
                         }}
-                        // handleStatusChange(interview.id, {
-                        //   status: "Cancelled",
-                        // })
                       >
                         Cancel
                       </Menu.Item>
