@@ -21,9 +21,9 @@ const links: Links[] = [
     path: "/",
   },
   {
-    label: "Businesses",
+    label: "Companies",
     icon: "IconWorld",
-    path: "/business",
+    path: "/companies",
   },
   { label: "Students", icon: "IconUsersGroup", path: "/students" },
   { label: "Hosts", icon: "IconTopologyStar", path: "/host" },

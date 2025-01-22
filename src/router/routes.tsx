@@ -10,7 +10,7 @@ import TwoFactorAuth from "../pages/auth/TwoFactorAuth";
 import RouteGuard from "../guards/RouteGuard";
 import DashboardLayout from "../pages/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
-import Businesses from "../pages/businesses/Businesses";
+import Companies from "../pages/companies/Companies";
 import Students from "../pages/students/Students";
 import Analytics from "../pages/analytics/Analytics";
 import Hosts from "../pages/hosts/Hosts";
@@ -18,6 +18,7 @@ import Projects from "../pages/projects/Projects";
 import Settings from "../pages/settings/Settings";
 import Subscriptions from "../pages/subscriptions/Subscriptions";
 import Support from "../pages/support/Support";
+import CompanyDetail from "../pages/companies/CompanyDetail";
 
 const routes = createBrowserRouter([
   {
@@ -59,7 +60,8 @@ const routes = createBrowserRouter([
             element: <Dashboard />,
           },
 
-          { path: "/business", element: <Businesses /> },
+          { path: "/companies", element: <Companies /> },
+          { path: "/companies/:id", element: <CompanyDetail /> },
           { path: "/students", element: <Students /> },
           { path: "/host", element: <Hosts /> },
           { path: "/subscriptions", element: <Subscriptions /> },
