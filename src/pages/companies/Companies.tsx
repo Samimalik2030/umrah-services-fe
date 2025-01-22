@@ -90,7 +90,7 @@ function Companies() {
                   <Table.Td>{company?.addressLine1}</Table.Td>
                   <Table.Td>
                     <Badge variant="outline" color="green">
-                      {"status"}
+                      {company?.status ?? "N/A"}
                     </Badge>
                   </Table.Td>
                   <Table.Td>

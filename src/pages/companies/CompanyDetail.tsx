@@ -14,14 +14,17 @@ import {
   Badge,
   Menu,
 } from "@mantine/core";
-import {  useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetCompany, useGetCompanyJobs } from "../../hooks/useGetCompanies";
 import IconArrowNarrowLeft from "../../assets/icons/IconArrowNarrowLeft";
 import IconDots from "../../assets/icons/IconDots";
 import { useDisclosure } from "@mantine/hooks";
 import CompanyJobDetailDrawer from "./CompanyJobDetailDrawer";
-
+import { UpdateJobStatusDTO } from "../../http/Api";
+import { notifications } from "@mantine/notifications";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import http from "../../http";
 
 function CompanyDetail() {
   const [page, setPage] = useState(1);
@@ -30,6 +33,26 @@ function CompanyDetail() {
   const { company, isLoading } = useGetCompany(id ?? "");
   const { jobs, isLoading: jobsLoader } = useGetCompanyJobs(id ?? "");
   const [job, setJob] = useState<string>("");
+
+  const queryClient = useQueryClient();
+  const { mutate: changeJobStatus, isPending } = useMutation({
+    mutationKey: ["changeStatusJob"],
+    mutationFn: ({ id, data }: { id: string; data: UpdateJobStatusDTO }) =>
+      http.jobs.jobControllerPatchStatus(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      notifications.show({
+        title: "Success",
+        message: "Job status updated successfully",
+        color: "green",
+      });
+    },
+  });
+
+  const handleStatusChange = (id: string, data: UpdateJobStatusDTO) => {
+    changeJobStatus({ id, data });
+  };
+
   const navigate = useNavigate();
   return (
     <Stack>
@@ -66,6 +89,17 @@ function CompanyDetail() {
                   <Text fw={600} size="sm">
                     {company?.phone ?? "N/A"}
                   </Text>
+                  <Badge
+                    color={
+                      company?.status === "Active"
+                        ? "green"
+                        : company?.status === "Blocked"
+                          ? "red"
+                          : "orange"
+                    }
+                  >
+                    {company?.status ?? "N/A"}
+                  </Badge>
                 </Stack>
               </Group>
 
@@ -182,7 +216,7 @@ function CompanyDetail() {
         Jobs
       </Text>
       <Stack>
-        {jobsLoader ? (
+        {jobsLoader || isPending ? (
           <Stack>
             <Skeleton height={50} animate />
             <Skeleton height={50} animate />
@@ -221,8 +255,17 @@ function CompanyDetail() {
                     <Table.Td tt={"capitalize"}>{job?.jobType}</Table.Td>
                     <Table.Td>{job?.desiredInternshipRole}</Table.Td>
                     <Table.Td>
-                      <Badge variant="outline" color="green">
-                        {"status"}
+                      <Badge
+                        variant="outline"
+                        color={
+                          job?.status === "Approved"
+                            ? "green"
+                            : job?.status === "Rejected"
+                              ? "red"
+                              : "orange"
+                        }
+                      >
+                        {job?.status ?? "N/A"}
                       </Badge>
                     </Table.Td>
                     <Table.Td>
@@ -242,9 +285,26 @@ function CompanyDetail() {
                           </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
-                          <Menu.Item>Approve</Menu.Item>
-                          <Menu.Item>Reject</Menu.Item>
-                          <Menu.Item>Cancel</Menu.Item>
+                          <Menu.Item
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(job?.id ?? "", {
+                                status: "Approved",
+                              });
+                            }}
+                          >
+                            Approve
+                          </Menu.Item>
+                          <Menu.Item
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(job?.id ?? "", {
+                                status: "Rejected",
+                              });
+                            }}
+                          >
+                            Reject
+                          </Menu.Item>
                         </Menu.Dropdown>
                       </Menu>
                     </Table.Td>

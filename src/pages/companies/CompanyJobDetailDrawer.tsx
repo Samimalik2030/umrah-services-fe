@@ -3,6 +3,7 @@ import {
   Button,
   Drawer,
   Group,
+  NativeSelect,
   Select,
   SimpleGrid,
   Skeleton,
@@ -12,10 +13,11 @@ import {
 } from "@mantine/core";
 import dayjs from "dayjs";
 
-import { useGetJob, usePatchJobStatus } from "../../hooks/useGetJobs";
+import { useGetJob } from "../../hooks/useGetJobs";
 import { UpdateJobStatusDTO } from "../../http/Api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
+import { notifications } from "@mantine/notifications";
 
 type JobDetailsDrawerProps = {
   opened: boolean;
@@ -37,6 +39,11 @@ const CompanyJobDetailDrawer = ({
       http.jobs.jobControllerPatchStatus(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      notifications.show({
+        title: "Success",
+        message: "Job status updated successfully",
+        color: "green",
+      });
     },
   });
 
@@ -52,7 +59,7 @@ const CompanyJobDetailDrawer = ({
       position="right"
       withCloseButton={false}
     >
-      {jobLoading ? (
+      {jobLoading || isPending ? (
         <Stack>
           <Skeleton height={50} circle animate />
           {Array.from({ length: 8 }).map((_, index) => (
@@ -61,10 +68,20 @@ const CompanyJobDetailDrawer = ({
         </Stack>
       ) : (
         <Stack gap="xl" p="md">
-          <Stack gap={gap}>
+          <Group gap={gap} justify="space-between" align="center">
             <Title order={4}>{job?.title}</Title>
-            {job?.isArchived && <Badge color="red">Archived</Badge>}
-          </Stack>
+            <Badge
+              color={
+                job?.status === "Approved"
+                  ? "green"
+                  : job?.status === "Rejected"
+                    ? "red"
+                    : "orange"
+              }
+            >
+              {job?.status ?? "N/A"}
+            </Badge>
+          </Group>
 
           <Stack gap={gap}>
             <Title order={5}>Description</Title>
@@ -177,11 +194,10 @@ const CompanyJobDetailDrawer = ({
           </Stack>
 
           <Select
-            placeholder={"Status"}
-            data={["Pending For Approval", "Approved", "Rejected"]}
+          label="Change Status"
+            placeholder={job?.status}
+            data={["Approved", "Rejected"]}
             onChange={(value: any) => {
-              console.log("value", value);
-
               handleStatusChange(job?.id || "", {
                 status: value,
               });
