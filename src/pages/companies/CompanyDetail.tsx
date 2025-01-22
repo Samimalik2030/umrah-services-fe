@@ -14,18 +14,22 @@ import {
   Badge,
   Menu,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetCompany, useGetCompanyJobs } from "../../hooks/useGetCompanies";
 import IconArrowNarrowLeft from "../../assets/icons/IconArrowNarrowLeft";
 import IconDots from "../../assets/icons/IconDots";
+import { useDisclosure } from "@mantine/hooks";
+import CompanyJobDetailDrawer from "./CompanyJobDetailDrawer";
+
 
 function CompanyDetail() {
   const [page, setPage] = useState(1);
+  const [opened, { open, close }] = useDisclosure(false);
   const { id } = useParams();
   const { company, isLoading } = useGetCompany(id ?? "");
   const { jobs, isLoading: jobsLoader } = useGetCompanyJobs(id ?? "");
-
+  const [job, setJob] = useState<string>("");
   const navigate = useNavigate();
   return (
     <Stack>
@@ -192,14 +196,20 @@ function CompanyDetail() {
                   <Table.Th>Industry Preference</Table.Th>
                   <Table.Th>Job Type</Table.Th>
                   <Table.Th>Desired InternshipRole</Table.Th>
-                  <Table.Th>Location</Table.Th>
+
                   <Table.Th>Status</Table.Th>
                   <Table.Th>Action</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
                 {jobs?.data?.map((job: any, index: number) => (
-                  <Table.Tr key={index}>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => {
+                      open();
+                      setJob(job?.id ?? "");
+                    }}
+                  >
                     <Table.Td>
                       <Text fw={500} fz={14}>
                         {job?.title}
@@ -210,7 +220,6 @@ function CompanyDetail() {
                     </Table.Td>
                     <Table.Td tt={"capitalize"}>{job?.jobType}</Table.Td>
                     <Table.Td>{job?.desiredInternshipRole}</Table.Td>
-                    <Table.Td>{company?.addressLine1}</Table.Td>
                     <Table.Td>
                       <Badge variant="outline" color="green">
                         {"status"}
@@ -249,6 +258,8 @@ function CompanyDetail() {
           <Pagination total={jobs?.pagination.pages || 1} onChange={setPage} />
         </Group>
       </Stack>
+
+      <CompanyJobDetailDrawer opened={opened} onClose={close} id={job} />
     </Stack>
   );
 }

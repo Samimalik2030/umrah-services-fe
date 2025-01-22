@@ -14,7 +14,7 @@ import {
   Text,
   TextInput,
   Title,
-  useMantineTheme
+  useMantineTheme,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import useGetInterviews from "../../hooks/useGetInterviews";
@@ -40,11 +40,12 @@ const Students = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { mutate: changeStatus, isPending: changingStatus } = useMutation({
+    mutationKey: ["changeStatusInterview"],
     mutationFn: ({ id, data }: { id: string; data: UpdateInterviewDto }) =>
       http.admins.adminControllerPatchInterview(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
-    }
+    },
   });
 
   const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
@@ -56,7 +57,7 @@ const Students = () => {
       mutationFn: ({ id, date }: { id: string; date: Date }) => {
         const interviewDate = date.toISOString();
         return http.admins.adminControllerPatchInterview(id, {
-          interviewDate: interviewDate
+          interviewDate: interviewDate,
         });
       },
       onSuccess: () => {
@@ -65,7 +66,7 @@ const Students = () => {
       },
       onError: (error) => {
         console.error("Error scheduling interview:", error);
-      }
+      },
     });
 
   // const handleEditClick = (interview: Interview) => {
@@ -187,7 +188,7 @@ const Students = () => {
                       <Menu.Item
                         onClick={() => {
                           handleStatusChange(interview.id, {
-                            status: "Passed"
+                            status: "Passed",
                           });
                         }}
                       >
@@ -196,7 +197,7 @@ const Students = () => {
                       <Menu.Item
                         onClick={() => {
                           handleStatusChange(interview.id, {
-                            status: "Failed"
+                            status: "Failed",
                           });
                         }}
                       >
@@ -205,7 +206,7 @@ const Students = () => {
                       <Menu.Item
                         onClick={() => {
                           handleStatusChange(interview.id, {
-                            status: "Cancelled"
+                            status: "Cancelled",
                           });
                         }}
                       >
