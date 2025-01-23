@@ -19,6 +19,7 @@ import Settings from "../pages/settings/Settings";
 import Subscriptions from "../pages/subscriptions/Subscriptions";
 import Support from "../pages/support/Support";
 import CompanyDetail from "../pages/companies/CompanyDetail";
+import Properties from "../pages/hosts/properties/Properties";
 
 const routes = createBrowserRouter([
   {
@@ -61,9 +62,11 @@ const routes = createBrowserRouter([
           },
 
           { path: "/companies", element: <Companies /> },
-          { path: "/companies/:id", element: <CompanyDetail /> },
+          { path: "/companies/:id/jobs", element: <CompanyDetail /> },
           { path: "/students", element: <Students /> },
           { path: "/host", element: <Hosts /> },
+          { path: "/host/:id/properties", element: <Properties /> },
+
           { path: "/subscriptions", element: <Subscriptions /> },
           { path: "/analytics", element: <Analytics /> },
           { path: "/support", element: <Support /> },

@@ -10,7 +10,6 @@ import {
   Title,
   ActionIcon,
   Table,
-  Pagination,
   Badge,
   Menu,
 } from "@mantine/core";
@@ -27,7 +26,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
 
 function CompanyDetail() {
-  const [page, setPage] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const { id } = useParams();
   const { company, isLoading } = useGetCompany(id ?? "");
@@ -314,9 +312,6 @@ function CompanyDetail() {
             </Table>
           </Table.ScrollContainer>
         )}
-        <Group justify="flex-end" p={"lg"}>
-          <Pagination total={jobs?.pagination.pages || 1} onChange={setPage} />
-        </Group>
       </Stack>
 
       <CompanyJobDetailDrawer opened={opened} onClose={close} id={job} />

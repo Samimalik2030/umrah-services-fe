@@ -3,10 +3,10 @@ import {
   Button,
   Drawer,
   Group,
-  NativeSelect,
   Select,
   SimpleGrid,
   Skeleton,
+  Spoiler,
   Stack,
   Text,
   Title,
@@ -53,7 +53,7 @@ const CompanyJobDetailDrawer = ({
 
   return (
     <Drawer
-      size="md"
+      size="xl"
       opened={opened}
       onClose={onClose}
       position="right"
@@ -85,7 +85,9 @@ const CompanyJobDetailDrawer = ({
 
           <Stack gap={gap}>
             <Title order={5}>Description</Title>
-            <Text opacity={0.7}>{job?.description}</Text>
+            <Spoiler mih={80} showLabel="Show More" hideLabel="Show Less">
+              <Text opacity={0.7}>{job?.description}</Text>
+            </Spoiler>
           </Stack>
 
           <SimpleGrid cols={2}>
@@ -194,7 +196,7 @@ const CompanyJobDetailDrawer = ({
           </Stack>
 
           <Select
-          label="Change Status"
+            label="Change Status"
             placeholder={job?.status}
             data={["Approved", "Rejected"]}
             onChange={(value: any) => {

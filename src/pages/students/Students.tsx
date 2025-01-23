@@ -9,6 +9,7 @@ import {
   Menu,
   Modal,
   Pagination,
+  Skeleton,
   Stack,
   Table,
   Text,
@@ -85,10 +86,6 @@ const Students = () => {
 
   return (
     <Stack>
-      {gettingInterviews ||
-        (changingStatus && (
-          <LoadingOverlay visible={gettingInterviews || changingStatus} />
-        ))}
       <Group justify="space-between">
         <Title order={3}>Students</Title>
         <Group>
@@ -107,118 +104,134 @@ const Students = () => {
         </Group>
       </Group>
       <Card>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>#</Table.Th>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Degree</Table.Th>
-              <Table.Th>Country</Table.Th>
-              <Table.Th>Interview Date</Table.Th>
-              <Table.Th>Host Assigned</Table.Th>
-              <Table.Th>Status</Table.Th>
-              <Table.Th>Action</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {interviews?.data?.others?.map((interview: Interview, i) => (
-              <Table.Tr key={interview.id}>
-                <Table.Td>{i + 1}</Table.Td>
-                <Table.Td>
-                  <Group>
-                    <Avatar src={interview.student.user?.avatar?.url || ""} />
-                    <Stack gap={0}>
-                      <Text fw={500} fz={14}>
-                        {interview.student.user.fullName}
-                      </Text>
-                      <Text fw={300} fz={12}>
-                        {interview.student.user.email}
-                      </Text>
-                      <Text fw={300} fz={12}>
-                        {interview.student.personalInfo?.contact}
-                      </Text>
-                    </Stack>
-                  </Group>
-                </Table.Td>
-                <Table.Td>
-                  {interview.student.educations
-                    .flatMap((d) => d.degree)
-                    .join(", ") || "N/A"}
-                </Table.Td>
-                <Table.Td>
-                  {interview.student.personalInfo?.country || "N/A"}
-                </Table.Td>
-                <Table.Td>
-                  {new Date(interview.date).toLocaleDateString("en-US")}
-                </Table.Td>
-                <Table.Td>{"Yes"}</Table.Td>
-                <Table.Td>
-                  <Badge
-                    variant="light"
-                    radius={"xl"}
-                    color={
-                      interview.status === "Scheduled"
-                        ? "yellow"
-                        : interview.status === "Passed"
-                          ? "green"
-                          : interview.status === "Failed"
-                            ? "red"
-                            : interview.status === "Cancelled"
-                              ? "red"
-                              : "blue"
-                    }
-                  >
-                    {interview.status}
-                  </Badge>
-                </Table.Td>
-                <Table.Td>
-                  <Menu
-                    withArrow
-                    width={300}
-                    position="bottom"
-                    transitionProps={{ transition: "pop" }}
-                    withinPortal
-                  >
-                    <Menu.Target>
-                      <ActionIcon variant="subtle">
-                        <IconDots size={18} />
-                      </ActionIcon>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                      <Menu.Item
-                        onClick={() => {
-                          handleStatusChange(interview.id, {
-                            status: "Passed",
-                          });
-                        }}
+        {gettingInterviews || changingStatus ? (
+          <Stack>
+            <Skeleton height={50} circle animate />
+            <Skeleton height={50} animate />
+            <Skeleton height={50} animate />
+          </Stack>
+        ) : (
+          <Table.ScrollContainer minWidth={500}>
+            <Table highlightOnHover>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>#</Table.Th>
+                  <Table.Th>Name</Table.Th>
+                  <Table.Th>Degree</Table.Th>
+                  <Table.Th>Country</Table.Th>
+                  <Table.Th>Interview Date</Table.Th>
+                  <Table.Th>Host Assigned</Table.Th>
+                  <Table.Th>Status</Table.Th>
+                  <Table.Th>Plan Name</Table.Th>
+                  <Table.Th>Action</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {interviews?.data?.others?.map((interview: Interview, i) => (
+                  <Table.Tr key={interview.id}>
+                    <Table.Td>{i + 1}</Table.Td>
+                    <Table.Td>
+                      <Group>
+                        <Avatar
+                          src={interview.student.user?.avatar?.url || ""}
+                        />
+                        <Stack gap={0}>
+                          <Text fw={500} fz={14}>
+                            {interview.student.user.fullName}
+                          </Text>
+                          <Text fw={300} fz={12}>
+                            {interview.student.user.email}
+                          </Text>
+                          <Text fw={300} fz={12}>
+                            {interview.student.personalInfo?.contact}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </Table.Td>
+                    <Table.Td>
+                      {interview.student.educations
+                        .flatMap((d) => d.degree)
+                        .join(", ") || "N/A"}
+                    </Table.Td>
+                    <Table.Td>
+                      {interview.student.personalInfo?.country || "N/A"}
+                    </Table.Td>
+                    <Table.Td>
+                      {new Date(interview.date).toLocaleDateString("en-US")}
+                    </Table.Td>
+                    <Table.Td>{'adds'}</Table.Td>
+
+                    <Table.Td>
+                      <Badge
+                        variant="light"
+                        radius={"xl"}
+                        color={
+                          interview.status === "Scheduled"
+                            ? "yellow"
+                            : interview.status === "Passed"
+                              ? "green"
+                              : interview.status === "Failed"
+                                ? "red"
+                                : interview.status === "Cancelled"
+                                  ? "red"
+                                  : "blue"
+                        }
                       >
-                        Approve
-                      </Menu.Item>
-                      <Menu.Item
-                        onClick={() => {
-                          handleStatusChange(interview.id, {
-                            status: "Failed",
-                          });
-                        }}
+                        {interview.status}
+                      </Badge>
+                    </Table.Td>
+                    <Table.Td>{interview.student?.planName ?? "N/A"}</Table.Td>
+                    <Table.Td>
+                      <Menu
+                        withArrow
+                        width={300}
+                        position="bottom"
+                        transitionProps={{ transition: "pop" }}
+                        withinPortal
                       >
-                        Reject
-                      </Menu.Item>
-                      <Menu.Item
-                        onClick={() => {
-                          handleStatusChange(interview.id, {
-                            status: "Cancelled",
-                          });
-                        }}
-                      >
-                        Cancel
-                      </Menu.Item>
-                    </Menu.Dropdown>
-                  </Menu>
-                </Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
+                        <Menu.Target>
+                          <ActionIcon variant="subtle">
+                            <IconDots size={18} />
+                          </ActionIcon>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                          <Menu.Item
+                            onClick={() => {
+                              handleStatusChange(interview.id, {
+                                status: "Passed",
+                              });
+                            }}
+                          >
+                            Approve
+                          </Menu.Item>
+                          <Menu.Item
+                            onClick={() => {
+                              handleStatusChange(interview.id, {
+                                status: "Failed",
+                              });
+                            }}
+                          >
+                            Reject
+                          </Menu.Item>
+                          <Menu.Item
+                            onClick={() => {
+                              handleStatusChange(interview.id, {
+                                status: "Cancelled",
+                              });
+                            }}
+                          >
+                            Cancel
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </Table.ScrollContainer>
+        )}
+
         <Group justify="flex-end" p={"lg"}>
           <Pagination
             total={interviews?.pagination.pages || 1}

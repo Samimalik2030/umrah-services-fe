@@ -3,7 +3,6 @@ import {
   Avatar,
   Badge,
   Button,
-  Card,
   Group,
   Menu,
   Pagination,
@@ -19,11 +18,35 @@ import IconSearch from "../../assets/icons/IconSearch";
 import { useState } from "react";
 import { useGetCompanies } from "../../hooks/useGetCompanies";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+import http from "../../http";
+import { UpdateBusinessStatusDTO } from "../../http/Api";
 
 function Companies() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { companies, isLoading } = useGetCompanies(page);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: changeBusinessStatus, isPending } = useMutation({
+    mutationKey: ["changeStatusBusiness"],
+    mutationFn: ({ id, data }: { id: string; data: UpdateBusinessStatusDTO }) =>
+      http.businesses.businessControllerPatchStatus(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["companies"] });
+      notifications.show({
+        title: "Success",
+        message: "Business status updated successfully",
+        color: "green",
+      });
+    },
+  });
+
+  const handleStatusChange = (id: string, data: UpdateBusinessStatusDTO) => {
+    changeBusinessStatus({ id, data });
+  };
 
   return (
     <Stack>
@@ -39,7 +62,7 @@ function Companies() {
         </Group>
       </Group>
 
-      {isLoading ? (
+      {isLoading || isPending ? (
         <Stack>
           <Skeleton height={50} circle animate />
           <Skeleton height={50} animate />
@@ -65,7 +88,7 @@ function Companies() {
                   key={index}
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    navigate(`/companies/${company?.id}`);
+                    navigate(`/companies/${company?.id}/jobs`);
                   }}
                 >
                   <Table.Td>
@@ -89,7 +112,16 @@ function Companies() {
                   <Table.Td>{company?.operationSite}</Table.Td>
                   <Table.Td>{company?.addressLine1}</Table.Td>
                   <Table.Td>
-                    <Badge variant="outline" color="green">
+                    <Badge
+                      variant="outline"
+                      color={
+                        company?.status === "Active"
+                          ? "green"
+                          : company?.status === "Blocked"
+                            ? "red"
+                            : "orange"
+                      }
+                    >
                       {company?.status ?? "N/A"}
                     </Badge>
                   </Table.Td>
@@ -110,9 +142,26 @@ function Companies() {
                         </ActionIcon>
                       </Menu.Target>
                       <Menu.Dropdown>
-                        <Menu.Item>Approve</Menu.Item>
-                        <Menu.Item>Reject</Menu.Item>
-                        <Menu.Item>Cancel</Menu.Item>
+                        <Menu.Item
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleStatusChange(company?.id ?? "", {
+                              status: "Active",
+                            });
+                          }}
+                        >
+                          Approve
+                        </Menu.Item>
+                        <Menu.Item
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleStatusChange(company?.id ?? "", {
+                              status: "Blocked",
+                            });
+                          }}
+                        >
+                          Reject
+                        </Menu.Item>
                       </Menu.Dropdown>
                     </Menu>
                   </Table.Td>
