@@ -20,9 +20,9 @@ import {
 import useGetInterviews from "../../hooks/useGetInterviews";
 import {
   Interview,
-  PatchStudentStatus,
+  PatchPaymentStatus,
   Student,
-  UpdateInterviewDto
+  UpdateInterviewStatus
 } from "../../http/Api";
 import IconDots from "../../assets/icons/IconDots";
 import http from "../../http";
@@ -43,20 +43,20 @@ const Students = () => {
 
   const { mutate: changeStatus, isPending: changingStatus } = useMutation({
     mutationKey: ["changeStatusInterview"],
-    mutationFn: ({ id, data }: { id: string; data: UpdateInterviewDto }) =>
-      http.admins.adminControllerPatchInterview(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateInterviewStatus }) =>
+      http.interviews.interviewControllerPatchInterview(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
     }
   });
 
-  const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
+  const handleStatusChange = (id: string, data: UpdateInterviewStatus) => {
     changeStatus({ id, data });
   };
 
   const { mutate: updateStudentStatus, isPending: updatingStudentStatus } =
     useMutation({
-      mutationFn: ({ id, data }: { id: string; data: PatchStudentStatus }) => {
+      mutationFn: ({ id, data }: { id: string; data: PatchPaymentStatus }) => {
         return http.students.studentControllerPatchStatus(id, data);
       },
       onSuccess: () => {
@@ -69,7 +69,7 @@ const Students = () => {
       }
     });
 
-  const handleStudentStatusChange = (id: string, data: PatchStudentStatus) => {
+  const handleStudentStatusChange = (id: string, data: PatchPaymentStatus) => {
     updateStudentStatus({ id, data });
   };
 
@@ -123,7 +123,7 @@ const Students = () => {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {interviews?.data?.others?.map((interview: Interview, i) => (
+                {interviews?.data?.map((interview: Interview, i) => (
                   <Table.Tr key={interview.id}>
                     <Table.Td>{i + 1}</Table.Td>
                     <Table.Td>
@@ -261,7 +261,7 @@ const Students = () => {
         }
       >
         <Stack>
-          <Image fit="contain" src={"https://picsum.photos/200"} />
+          <Image fit="contain" src={selectedStudent?.paymentInvoice?.url} />
           <Group grow>
             <Button
               onClick={() =>

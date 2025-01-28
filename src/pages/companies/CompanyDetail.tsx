@@ -11,7 +11,7 @@ import {
   ActionIcon,
   Table,
   Badge,
-  Menu,
+  Menu
 } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,7 +20,7 @@ import IconArrowNarrowLeft from "../../assets/icons/IconArrowNarrowLeft";
 import IconDots from "../../assets/icons/IconDots";
 import { useDisclosure } from "@mantine/hooks";
 import CompanyJobDetailDrawer from "./CompanyJobDetailDrawer";
-import { UpdateJobStatusDTO } from "../../http/Api";
+import { UpdateJobStatus } from "../../http/Api";
 import { notifications } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
@@ -35,19 +35,19 @@ function CompanyDetail() {
   const queryClient = useQueryClient();
   const { mutate: changeJobStatus, isPending } = useMutation({
     mutationKey: ["changeStatusJob"],
-    mutationFn: ({ id, data }: { id: string; data: UpdateJobStatusDTO }) =>
+    mutationFn: ({ id, data }: { id: string; data: UpdateJobStatus }) =>
       http.jobs.jobControllerPatchStatus(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       notifications.show({
         title: "Success",
         message: "Job status updated successfully",
-        color: "green",
+        color: "green"
       });
-    },
+    }
   });
 
-  const handleStatusChange = (id: string, data: UpdateJobStatusDTO) => {
+  const handleStatusChange = (id: string, data: UpdateJobStatus) => {
     changeJobStatus({ id, data });
   };
 
@@ -234,7 +234,7 @@ function CompanyDetail() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {jobs?.data?.map((job: any, index: number) => (
+                {jobs?.data?.map((job, index) => (
                   <Table.Tr
                     key={index}
                     onClick={() => {
@@ -287,7 +287,7 @@ function CompanyDetail() {
                             onClick={(e) => {
                               e.stopPropagation();
                               handleStatusChange(job?.id ?? "", {
-                                status: "Approved",
+                                status: "Approved"
                               });
                             }}
                           >
@@ -297,7 +297,7 @@ function CompanyDetail() {
                             onClick={(e) => {
                               e.stopPropagation();
                               handleStatusChange(job?.id ?? "", {
-                                status: "Rejected",
+                                status: "Rejected"
                               });
                             }}
                           >

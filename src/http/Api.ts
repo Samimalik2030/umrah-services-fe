@@ -198,13 +198,6 @@ export interface ActivityLog {
   context: ActivityLogReference;
 }
 
-export interface UpdateInterviewDto {
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewDate?: string;
-  /** @example "Passed" */
-  status?: string;
-}
-
 export interface PersonalInfoDto {
   /** @example "+1" */
   countryCode: string;
@@ -317,8 +310,30 @@ export interface Document {
   updatedAt: string;
   id: string;
   /** @example "Passport" */
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
+  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
   file: FileDto;
+}
+
+export interface AuthStudent {
+  id: string;
+  personalInfo: PersonalInfoDto;
+  emergencyContacts: EmergencyContactDto[];
+  medicalInformation: MedicalInformationDTO;
+  educations: Education[];
+  internshipPreferences: InternshipPreferencesDto;
+  hostPreferences: HostPreferenceDto;
+  user: User;
+  status: "Pending for approval" | "Approved" | "Blocked" | "Active" | "Inactive" | "Not Eligible";
+  paymentStatus: string;
+  planName: string;
+  profileStatus: string;
+  additionalDocuments: Document[];
+  internshipStatus: string;
+  paymentInvoice: FileDto;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface Student {
@@ -341,6 +356,83 @@ export interface Student {
   paymentInvoice: FileDto;
   user: User;
   additionalDocuments: Document;
+}
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  pages: number;
+  records: number;
+}
+
+export interface StudentPagination {
+  data: Student[];
+  pagination: PaginationMeta;
+}
+
+export interface StudentData {
+  matched: Student[];
+  matchedCount: number;
+  others: Student[];
+  othersCount: number;
+}
+
+export interface StudentDataPagination {
+  data: StudentData;
+  pagination: PaginationMeta;
+}
+
+export interface UpdateStudentDto {
+  personalInfo?: PersonalInfoDto;
+  emergencyContacts?: EmergencyContactDto[];
+  medicalInformation?: MedicalInformationDTO;
+  internshipPreferences?: InternshipPreferencesDto | null;
+  hostPreferences?: HostPreferenceDto | null;
+  planName?: string;
+}
+
+export interface PatchPaymentStatus {
+  paymentStatus: "Paid" | "Unpaid" | "Pending for approval";
+}
+
+export interface EducationPagination {
+  data: Education[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateEducationDto {
+  degree: string;
+  schoolName: string;
+  /** @format binary */
+  documentFile: File;
+}
+
+export interface UpdateEducationDto {
+  degree?: string;
+  schoolName?: string;
+  /** @format binary */
+  documentFile?: object;
+}
+
+export interface DocumentIdsDto {
+  fileIds: string[];
+}
+
+export interface DocumentPagination {
+  data: Document[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateDocumentDto {
+  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
+  /** @format binary */
+  file: File;
+}
+
+export interface UpdateDocumentDto {
+  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
+  /** @format binary */
+  file?: File;
 }
 
 export type JobCounts = object;
@@ -379,119 +471,6 @@ export interface Business {
   /** @default "Pending For Approval" */
   status: "Active" | "Blocked" | "Pending For Approval";
   jobCounts: JobCounts;
-}
-
-export interface Interview {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  scheduledWith: string;
-  scheduledBy: string;
-  student: Student;
-  business: Business;
-  status: string;
-  /** @format date-time */
-  date: string;
-  duration: string;
-}
-
-export interface PaginationMeta {
-  page: number;
-  limit: number;
-  pages: number;
-  records: number;
-}
-
-export interface StudentPagination {
-  data: Student[];
-  pagination: PaginationMeta;
-}
-
-export interface StudentData {
-  matched: Student[];
-  matchedCount: number;
-  others: Student[];
-  othersCount: number;
-}
-
-export interface StudentDataPagination {
-  data: StudentData;
-  pagination: PaginationMeta;
-}
-
-export interface AuthStudent {
-  id: string;
-  personalInfo: PersonalInfoDto;
-  emergencyContacts: EmergencyContactDto[];
-  medicalInformation: MedicalInformationDTO;
-  educations: Education[];
-  internshipPreferences: InternshipPreferencesDto;
-  hostPreferences: HostPreferenceDto;
-  user: User;
-  status: string;
-  paymentStatus: string;
-  planName: string;
-  profileStatus: string;
-  additionalDocuments: Document[];
-  internshipStatus: string;
-}
-
-export interface UpdateStudentDto {
-  personalInfo?: PersonalInfoDto;
-  emergencyContacts?: EmergencyContactDto[];
-  medicalInformation?: MedicalInformationDTO;
-  internshipPreferences?: InternshipPreferencesDto | null;
-  hostPreferences?: HostPreferenceDto | null;
-  planName?: string;
-}
-
-export interface PatchStudentStatus {
-  /** Paid | Unpaid */
-  paymentStatus?: "Paid" | "Unpaid" | "Pending for approval";
-  /** Not Approved | Approved | Blocked | Active | Inactive */
-  status?: string;
-}
-
-export interface EducationPagination {
-  data: Education[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateEducationDto {
-  degree: string;
-  schoolName: string;
-  /** @format binary */
-  documentFile: File;
-}
-
-export interface UpdateEducationDto {
-  degree?: string;
-  schoolName?: string;
-  /** @format binary */
-  documentFile?: object;
-}
-
-export interface DocumentIdsDto {
-  fileIds: string[];
-}
-
-export interface DocumentPagination {
-  data: Document[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateDocumentDto {
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
-  /** @format binary */
-  file: File;
-}
-
-export interface UpdateDocumentDto {
-  name: "Passport" | "Training Agreement" | "Travel Insurance" | "CV" | "Cover Letter";
-  /** @format binary */
-  file?: File;
 }
 
 export interface BusinessPagination {
@@ -635,12 +614,51 @@ export interface Job {
   onWhichPlatform: string;
   status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
   business: Business;
-  interns: Student;
+  interns: Student[];
 }
 
 export interface JobPagination {
   data: Job[];
   pagination: PaginationMeta;
+}
+
+export interface Interview {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  scheduledWith: string;
+  scheduledBy: string;
+  student: Student;
+  business: Business;
+  status: string;
+  /** @format date-time */
+  date: string;
+  duration: string;
+}
+
+export interface InterviewPagination {
+  data: Interview[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateInterviewDto {
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewDate: string;
+}
+
+export interface LatestInterviewDto {
+  interview: Interview | null;
+}
+
+export interface UpdateInterviewDto {
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewDate?: string;
+}
+
+export interface UpdateInterviewStatus {
+  status: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
 }
 
 export interface JobData {
@@ -658,9 +676,9 @@ export interface JobIndexDataPagination {
 export interface CreateJobDto {
   /** @example "Sr. Software Engineer" */
   title: string;
-  /** @example "2025-01-24T13:17:56.616Z" */
+  /** @example "2025-01-28T13:05:01.998Z" */
   start: string;
-  /** @example "2025-01-24T13:17:56.616Z" */
+  /** @example "2025-01-28T13:05:01.998Z" */
   end: string;
   /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description: string;
@@ -678,9 +696,9 @@ export interface CreateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
   daysOfWork: string[];
-  /** @example "2025-01-24T13:17:56.617Z" */
+  /** @example "2025-01-28T13:05:01.999Z" */
   dailyStartTime: string;
-  /** @example "2025-01-24T21:17:56.617Z" */
+  /** @example "2025-01-28T21:05:01.999Z" */
   dailyFinishTime: string;
   /** @example "Facebook" */
   onWhichPlatform?: string;
@@ -690,9 +708,9 @@ export interface CreateJobDto {
 export interface UpdateJobDto {
   /** @example "Sr. Software Engineer" */
   title?: string;
-  /** @example "2025-01-24T13:17:56.706Z" */
+  /** @example "2025-01-28T13:05:02.000Z" */
   start?: string;
-  /** @example "2025-01-24T13:17:56.706Z" */
+  /** @example "2025-01-28T13:05:02.000Z" */
   end?: string;
   /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description?: string;
@@ -708,108 +726,19 @@ export interface UpdateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
   daysOfWork?: string[];
-  /** @example "2025-01-24T13:17:56.707Z" */
+  /** @example "2025-01-28T13:05:02.001Z" */
   dailyStartTime?: string;
-  /** @example "2025-01-24T21:17:56.707Z" */
+  /** @example "2025-01-28T21:05:02.001Z" */
   dailyFinishTime?: string;
   /** @example "LinkedIn" */
   onWhichPlatform?: string;
   reportingInformation?: OfficeReportingDto;
   isArchived?: boolean;
-  status?: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
 }
 
-export interface UpdateJobStatusDTO {
+export interface UpdateJobStatus {
   /** @example "Approved" */
   status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
-}
-
-export interface Property {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  name: string;
-  type: string;
-  city: string;
-  location: string;
-  areaUnit: string;
-  propertySize: number;
-  currency: string;
-  rent: number;
-  bedrooms: number;
-  bathrooms: number;
-  kitchen: number;
-  garage: string;
-  description: string;
-  condition: string;
-  photos: FileDto[];
-  status: string;
-  availability: string;
-}
-
-export interface Application {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  achievedStatuses: string[];
-  student: Student;
-  job: Job;
-  property: Property;
-  status: string;
-  agreementUrl: string;
-  type: string;
-  isCreatedByCompanyInvitation: boolean;
-}
-
-export interface ApplicationPagination {
-  data: Application[];
-  pagination: PaginationMeta;
-}
-
-export interface Invitation {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  student: Student;
-  job: Job;
-  status: "Pending" | "Accepted" | "Rejected" | "Archived";
-}
-
-export interface InvitationPagination {
-  data: Invitation[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateApplicationDto {
-  jobId?: string | null;
-  propertyId?: string | null;
-  /** @example "Job" */
-  type: "Job" | "Property";
-}
-
-export interface UpdateApplicationStatus {
-  /** @example "Approved" */
-  status?: string;
-  /** @example "https://ik.imagekit.io/xf3wbji6t/docx.png?updatedAt=1710992680045" */
-  agreementUrl?: string;
-}
-
-export interface CreateInvitationDTO {
-  /** @example "678253817674a9a4f93cdf31" */
-  studentId: string;
-  /** @example "678255de091a3496948fee8e" */
-  jobId: string;
-}
-
-export interface UpdateInvitationDTO {
-  /** @example "Accepted" */
-  status?: string;
 }
 
 export interface PersonalInformationDto {
@@ -819,6 +748,8 @@ export interface PersonalInformationDto {
   firstName: string;
   /** @example "Doe" */
   lastName: string;
+  country: string;
+  state: string;
   city: string;
   /** @example "111-1111111-111" */
   contact: string;
@@ -1077,6 +1008,121 @@ export interface DataProtectionDto {
   termsAndConditionsAgreement: string;
 }
 
+export interface UpdateHostDto {
+  personalInformation?: PersonalInformationDto;
+  livingArrangements?: LivingInformationDto;
+  lifeStyleAndBackground?: LifestyleAndBackgroundDto;
+  petsAndHouseholdInformation?: PetsAndHouseholdInformationDto;
+  hostFamilyAndReferrals?: HostFamilyAndReferralsDto;
+  hostingPreference?: HostingPreferenceDto;
+  references?: ReferenceDto[];
+  bankDetail?: BankDetailsDto;
+  dataProtection?: DataProtectionDto;
+}
+
+export interface Property {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  name: string;
+  type: string;
+  country: string;
+  state: string;
+  city: string;
+  location: string;
+  areaUnit: string;
+  propertySize: number;
+  currency: string;
+  rent: number;
+  bedrooms: number;
+  bathrooms: number;
+  kitchen: number;
+  garage: string;
+  description: string;
+  condition: string;
+  photos: FileDto[];
+  status: string;
+  availability: string;
+  host: UpdateHostDto;
+}
+
+export interface Application {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  achievedStatuses: string[];
+  student: Student;
+  job: Job;
+  property: Property;
+  status: string;
+  type: string;
+  isCreatedByCompanyInvitation: boolean;
+  trainingAgreementUrl: string;
+  isCompanyAgreementSigned: boolean;
+  isStudentAgreementSigned: boolean;
+}
+
+export interface ApplicationPagination {
+  data: Application[];
+  pagination: PaginationMeta;
+}
+
+export interface Invitation {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  student: Student;
+  job: Job;
+  status: "Pending" | "Accepted" | "Rejected" | "Archived";
+}
+
+export interface InvitationPagination {
+  data: Invitation[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateApplicationDto {
+  jobId?: string | null;
+  propertyId?: string | null;
+  /** @example "Job" */
+  type: "Job" | "Property";
+}
+
+export interface PatchTrainingAgreement {
+  /** @example "https://app.hellosign.com/s/dummy1234567890" */
+  trainingAgreementUrl: string;
+}
+
+export interface UpdateApplicationStatus {
+  /** @example "Approved" */
+  status?:
+    | "New"
+    | "1st Interview"
+    | "2nd Interview"
+    | "Waiting for student"
+    | "Pending for approval"
+    | "Rejected"
+    | "Approved";
+}
+
+export interface CreateInvitationDTO {
+  /** @example "678253817674a9a4f93cdf31" */
+  studentId: string;
+  /** @example "678255de091a3496948fee8e" */
+  jobId: string;
+}
+
+export interface UpdateInvitationDTO {
+  /** @example "Accepted" */
+  status?: string;
+}
+
 export interface Host {
   /** @format date-time */
   createdAt: string;
@@ -1126,18 +1172,6 @@ export interface AuthHost {
   updatedAt: string;
 }
 
-export interface UpdateHostDto {
-  personalInformation?: PersonalInformationDto;
-  livingArrangements?: LivingInformationDto;
-  lifeStyleAndBackground?: LifestyleAndBackgroundDto;
-  petsAndHouseholdInformation?: PetsAndHouseholdInformationDto;
-  hostFamilyAndReferrals?: HostFamilyAndReferralsDto;
-  hostingPreference?: HostingPreferenceDto;
-  references?: ReferenceDto[];
-  bankDetail?: BankDetailsDto;
-  dataProtection?: DataProtectionDto;
-}
-
 export interface HostPagination {
   data: Host[];
   pagination: PaginationMeta;
@@ -1175,7 +1209,11 @@ export interface UpdatePropertyDto {
   name?: string;
   /** @example "House" */
   type?: string;
-  /** @example "Los Angeles" */
+  /** @example "France" */
+  country?: string;
+  /** @example "Normandy" */
+  state?: string;
+  /** @example "Rouen" */
   city?: string;
   /** @example "Downtown" */
   location?: string;
@@ -1217,27 +1255,6 @@ export interface UpdatePhotosDto {
 
 export interface PhotoIdsDto {
   ids: string[];
-}
-
-export interface InterviewData {
-  matched: Interview[];
-  matchedCount: number;
-  others: Interview[];
-  othersCount: number;
-}
-
-export interface InterviewPagination {
-  data: InterviewData;
-  pagination: PaginationMeta;
-}
-
-export interface CreateInterviewDto {
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewDate: string;
-}
-
-export interface LatestInterviewDto {
-  interview: Interview | null;
 }
 
 export interface AreaDto {
@@ -1395,6 +1412,310 @@ export interface UpdateFeedbackDto {
   type: string;
   /** @example "lorem ipsum dolor sit" */
   comment: string;
+}
+
+export interface ConnectResponseDto {
+  /** @example "https://connect.stripe.com/link/..." */
+  url: string;
+}
+
+export interface TransferAmountDto {
+  /** @default "example@example.com" */
+  email?: string;
+  /** @example 100 */
+  amount: number;
+  /** @example "ANjKdkKlm411124k3kd45adf5adf" */
+  payoutId: string;
+  /** @example "usd" */
+  currency?: string;
+}
+
+export interface CreatePriceDto {
+  currency: string;
+  amount: number;
+  name: string;
+  interval: string;
+}
+
+export interface ResponsePlanDto {
+  /** @example "price_1PaE5ZRuvHeoLbzFbWOx523F" */
+  id: string;
+  /** @example "Monthly Plan" */
+  name: string;
+  /** @example 50 */
+  amount: number;
+  /** @example "CAD" */
+  currency:
+    | "USD"
+    | "EUR"
+    | "GBP"
+    | "JPY"
+    | "AUD"
+    | "CAD"
+    | "CHF"
+    | "CNY"
+    | "DKK"
+    | "HKD"
+    | "HUF"
+    | "INR"
+    | "ILS"
+    | "MXN"
+    | "MYR"
+    | "NZD"
+    | "PHP"
+    | "PLN"
+    | "RON"
+    | "RUB"
+    | "SEK"
+    | "SGD"
+    | "TRY"
+    | "ZAR"
+    | "BRL"
+    | "CLP";
+  /** @example "month" */
+  interval: string;
+  /** @example 0 */
+  subSeats: number;
+  /** @example {} */
+  metadata: object;
+  /** @example 2 */
+  trialPeriodDays: number;
+}
+
+export interface KeyResponseDto {
+  key: string;
+}
+
+export interface ResponseSubscriptionDto {
+  /** @example "sub_1MowQVLkdIwHu7ixeRlqHVzs" */
+  id: string;
+  /** @example "Customer 123" */
+  currentPeriodStart: number;
+  /** @example 1640939200 */
+  currentPeriodEnd: number;
+  /** @example "Customer 123" */
+  cancelAt: number;
+  /** @example true */
+  cancelAtPeriodEnd: boolean;
+  /** @example true */
+  canceledAt: number;
+  /** @example "charge_automatically" */
+  collectionMethod: string;
+  /** @example "active" */
+  status: "trialing" | "active" | "incomplete" | "incomplete_expired" | "past_due" | "canceled" | "unpaid" | "paused";
+  /** @example 1 */
+  items: number;
+  plan: ResponsePlanDto;
+}
+
+export interface CreateSubscriptionDto {
+  /** @example "price_1MoBy5LkdIwHu7ixZhnattbh" */
+  planId: string;
+  /** @example "idempotency-key-123" */
+  idempotencyKey: string;
+}
+
+export interface ResponsePaymentIntentDto {
+  /** @example "seti_1Mm8s8LkdIwHu7ix0OXBfTRG" */
+  clientSecret: string;
+}
+
+export interface CartDto {
+  /** @example "visa" */
+  brand: string;
+  /** @example "US" */
+  country: string;
+  /** @example "credit" */
+  funding: string;
+  /** @example "4242" */
+  last4: string;
+  /** @example 12 */
+  exp_month: number;
+  /** @example 2034 */
+  exp_year: number;
+}
+
+export interface ResponsePaymentMethodDto {
+  /** @example "pm_1Q0PsIJvEtkwdCNYMSaVuRz6" */
+  id: string;
+  /** @example "payment_method" */
+  object: string;
+  card: CartDto;
+  /** @example false */
+  default: boolean;
+}
+
+export interface ResponseInvoiceDto {
+  /** @example "in_1F6abcD2dfgHjk1L2m3pR" */
+  id: string;
+  /** @example "invoice" */
+  object: string;
+  /** @example "US" */
+  account_country: string;
+  /** @example "My Account" */
+  account_name: string;
+  /** @example ["txi_1F6abcD2dfgHjk1L2m3pR"] */
+  account_tax_ids: string[];
+  /** @example 5000 */
+  amount_due: number;
+  /** @example 2000 */
+  amount_paid: number;
+  /** @example 3000 */
+  amount_remaining: number;
+  /** @example 100 */
+  amount_shipping: number;
+  /** @example "app_12345" */
+  application: string;
+  /** @example 500 */
+  application_fee_amount: number;
+  /** @example 1 */
+  attempt_count: number;
+  /** @example true */
+  attempted: boolean;
+  /** @example true */
+  auto_advance?: boolean;
+  /** @example {"enabled":true,"status":"complete"} */
+  automatic_tax: object;
+  /** @example 1629278400 */
+  automatically_finalizes_at: number;
+  /** @example "subscription_create" */
+  billing_reason: string;
+  /** @example "ch_1F6abcD2dfgHjk1L2m3pR" */
+  charge: string;
+  /** @example "charge_automated" */
+  collection_method: string;
+  /** @example 1629278400 */
+  created: number;
+  /** @example "usd" */
+  currency: string;
+  /** @example [{"name":"VAT","value":"12345"}] */
+  custom_fields: object[];
+  /** @example "cus_123456789" */
+  customer: string;
+  /** @example {"city":"New York","country":"US"} */
+  customer_address: object;
+  /** @example "customer@example.com" */
+  customer_email: string;
+  /** @example "John Doe" */
+  customer_name: string;
+  /** @example "+1234567890" */
+  customer_phone: string;
+  /** @example {"name":"Jane Doe","phone":"+9876543210"} */
+  customer_shipping: object;
+  /** @example "none" */
+  customer_tax_exempt: string;
+  /** @example [{"type":"vat","value":"12345"}] */
+  customer_tax_ids?: object[];
+  /** @example "pm_1GqrD5Csdhjl8bV1z9Pgh" */
+  default_payment_method: string;
+  /** @example "src_1GqrD5Csdhjl8bV1z9Pgh" */
+  default_source: string;
+  /** @example [{"id":"txr_1234","rate":0.2}] */
+  default_tax_rates: object[];
+  /** @example "" */
+  deleted?: string;
+  /** @example "Invoice for services rendered" */
+  description: string;
+  /** @example {"id":"di_1234","amount":500} */
+  discount: object;
+  /** @example [{"id":"di_1234","amount":500}] */
+  discounts: object[];
+  /** @example 1629278400 */
+  due_date: number;
+  /** @example 1629278400 */
+  effective_at: number;
+  /** @example 1000 */
+  ending_balance: number;
+  /** @example "Thank you for your business" */
+  footer: string;
+  /** @example {"id":"in_1abc"} */
+  from_invoice: object;
+  /** @example "https://invoice.stripe.com/i/acb123" */
+  hosted_invoice_url?: string;
+  /** @example "https://invoice.stripe.com/pdf/acb123" */
+  invoice_pdf?: string;
+  /** @example {"id":"iss_1abc"} */
+  issuer: object;
+  /** @example {"message":"Error in finalizing invoice"} */
+  last_finalization_error: object;
+  /** @example "in_1def" */
+  latest_revision: string;
+  /** @example {"data":[],"has_more":false} */
+  lines: object;
+  /** @example true */
+  livemode: boolean;
+  /** @example {"custom_key":"custom_value"} */
+  metadata: object;
+  /** @example 1629278400 */
+  next_payment_attempt: number;
+  /** @example "INV-2021-0001" */
+  number: string;
+  /** @example "acct_1GqrD5Csdhjl8bV1z9Pgh" */
+  on_behalf_of: string;
+  /** @example true */
+  paid: boolean;
+  /** @example false */
+  paid_out_of_band: boolean;
+  /** @example "pi_1F6abcD2dfgHjk1L2m3pR" */
+  payment_intent: string;
+  /** @example {"payment_method_options":{}} */
+  payment_settings: object;
+  /** @example 1629278400 */
+  period_end: number;
+  /** @example 1629274800 */
+  period_start: number;
+  /** @example 100 */
+  post_payment_credit_notes_amount: number;
+  /** @example 0 */
+  pre_payment_credit_notes_amount: number;
+  /** @example "qt_1F6abcD2dfgHjk1L2m3pR" */
+  quote: string;
+  /** @example "12345" */
+  receipt_number: string;
+  /** @example {"template":"template_1"} */
+  rendering: object;
+  /** @example {"amount":100,"tax":10} */
+  shipping_cost: object;
+  /** @example {"name":"Shipping Details","address":{}} */
+  shipping_details: object;
+  /** @example 0 */
+  starting_balance: number;
+  /** @example "Statement descriptor text" */
+  statement_descriptor: string;
+  /** @example "paid" */
+  status: string;
+  /** @example {"finalized_at":1629278400} */
+  status_transitions: object;
+  /** @example "sub_1F6abcD2dfgHjk1L2m3pR" */
+  subscription: string;
+  /** @example 500 */
+  subtotal: number;
+  /** @example 0 */
+  subtotal_excluding_tax: number;
+  /** @example true */
+  test_clock: boolean;
+  /** @example 100 */
+  total: number;
+  /** @example 0 */
+  total_excluding_tax: number;
+  /** @example 0 */
+  tax: number;
+  /** @example {"id":"sub_1H2kR2Eli6xYZy3"} */
+  subscription_details: object;
+  /** @example 1629278400 */
+  subscription_proration_date?: number;
+  /** @example {"amount_gte":500,"item_reasons":[]} */
+  threshold_reason?: object;
+  /** @example [{"amount":200,"discount":"di_1H2kR2Eli6xYZy3"}] */
+  total_discount_amounts: object[];
+  /** @example [{"amount":100}] */
+  total_pretax_credit_amounts?: object[];
+  /** @example [{"amount":50,"tax_rate":"txr_1H2kR2Eli6xYZy3"}] */
+  total_tax_amounts: object[];
+  /** @example {"destination":"acct_1F6abcD2dfgHjk1L2m3pR"} */
+  transfer_data: object;
+  /** @example 1629278400 */
+  webhooks_delivered_at: number;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -1959,26 +2280,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  admins = {
-    /**
-     * No description
-     *
-     * @tags Admin
-     * @name AdminControllerPatchInterview
-     * @request PATCH:/admins/interviews/{id}
-     * @secure
-     */
-    adminControllerPatchInterview: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/admins/interviews/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
   students = {
     /**
      * No description
@@ -2018,11 +2319,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Student
-     * @name StudentControllerGetAuth
+     * @name AuthStudentControllerGetAuth
      * @request GET:/students/auth
      * @secure
      */
-    studentControllerGetAuth: (params: RequestParams = {}) =>
+    authStudentControllerGetAuth: (params: RequestParams = {}) =>
       this.request<AuthStudent, any>({
         path: `/students/auth`,
         method: "GET",
@@ -2056,10 +2357,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Yes | No */
         handicapAccessibility?: string;
-        /** Not Approved | Approved | Block | Active | InActive */
-        status?: string;
-        /** Paid | Unpaid */
-        paymentStatus?: string;
+        status?: "Pending for approval" | "Approved" | "Blocked" | "Active" | "Inactive" | "Not Eligible";
+        paymentStatus?: "Paid" | "Unpaid" | "Pending for approval";
       },
       params: RequestParams = {},
     ) =>
@@ -2116,10 +2415,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Yes | No */
         handicapAccessibility?: string;
-        /** Not Approved | Approved | Block | Active | InActive */
-        status?: string;
-        /** Paid | Unpaid */
-        paymentStatus?: string;
+        status?: "Pending for approval" | "Approved" | "Blocked" | "Active" | "Inactive" | "Not Eligible";
+        paymentStatus?: "Paid" | "Unpaid" | "Pending for approval";
       },
       params: RequestParams = {},
     ) =>
@@ -2140,11 +2437,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/students/payment-invoice
      * @secure
      */
-    studentControllerPatchPaymentInvoice: (params: RequestParams = {}) =>
+    studentControllerPatchPaymentInvoice: (
+      data: {
+        /** @format binary */
+        paymentInvoice?: File;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<Student, any>({
         path: `/students/payment-invoice`,
         method: "PATCH",
+        body: data,
         secure: true,
+        type: ContentType.FormData,
         format: "json",
         ...params,
       }),
@@ -2174,7 +2479,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/students/{id}/statuses
      * @secure
      */
-    studentControllerPatchStatus: (id: string, data: PatchStudentStatus, params: RequestParams = {}) =>
+    studentControllerPatchStatus: (id: string, data: PatchPaymentStatus, params: RequestParams = {}) =>
       this.request<Student, any>({
         path: `/students/${id}/statuses`,
         method: "PATCH",
@@ -2670,6 +2975,161 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: "json",
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags Business
+     * @name BusinessControllerInterviews
+     * @request GET:/businesses/{id}/interviews
+     * @secure
+     */
+    businessControllerInterviews: (id: string, params: RequestParams = {}) =>
+      this.request<InterviewPagination, any>({
+        path: `/businesses/${id}/interviews`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  interviews = {
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerIndex
+     * @request GET:/interviews
+     * @secure
+     */
+    interviewControllerIndex: (
+      query: {
+        /** @example 1 */
+        page: number;
+        /** @example 10 */
+        limit: number;
+        status?: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
+        /** true | false */
+        upcoming?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<InterviewPagination, any>({
+        path: `/interviews`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerCreateStudentInterview
+     * @request POST:/interviews
+     * @secure
+     */
+    interviewControllerCreateStudentInterview: (data: CreateInterviewDto, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerGetStudentInterview
+     * @request GET:/interviews/latest
+     * @secure
+     */
+    interviewControllerGetStudentInterview: (params: RequestParams = {}) =>
+      this.request<LatestInterviewDto, any>({
+        path: `/interviews/latest`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerGet
+     * @request GET:/interviews/{id}
+     * @secure
+     */
+    interviewControllerGet: (id: string, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerPatch
+     * @request PATCH:/interviews/{id}
+     * @secure
+     */
+    interviewControllerPatch: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerDestroy
+     * @request DELETE:/interviews/{id}
+     * @secure
+     */
+    interviewControllerDestroy: (id: string, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Interview
+     * @name InterviewControllerPatchInterview
+     * @request PATCH:/interviews/{id}/statuses
+     * @secure
+     */
+    interviewControllerPatchInterview: (id: string, data: UpdateInterviewStatus, params: RequestParams = {}) =>
+      this.request<Interview, any>({
+        path: `/interviews/${id}/statuses`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
   };
   jobs = {
     /**
@@ -2694,9 +3154,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2024-12-21T13:17:56.615Z" */
+        /** @example "2024-12-18T13:05:01.996Z" */
         startDate?: string;
-        /** @example "2025-01-24T13:17:56.615Z" */
+        /** @example "2025-01-28T13:05:01.996Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -2754,9 +3214,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2024-12-21T13:17:56.615Z" */
+        /** @example "2024-12-18T13:05:01.996Z" */
         startDate?: string;
-        /** @example "2025-01-24T13:17:56.615Z" */
+        /** @example "2025-01-28T13:05:01.996Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -2834,7 +3294,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/jobs/{id}/statuses
      * @secure
      */
-    jobControllerPatchStatus: (id: string, data: UpdateJobStatusDTO, params: RequestParams = {}) =>
+    jobControllerPatchStatus: (id: string, data: UpdateJobStatus, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/jobs/${id}/statuses`,
         method: "PATCH",
@@ -2860,20 +3320,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2024-12-21T13:17:56.912Z" */
+        /** @example "2024-12-18T13:05:02.205Z" */
         startDate?: string;
-        /** @example "2025-01-24T13:17:56.912Z" */
+        /** @example "2025-01-28T13:05:02.205Z" */
         endDate?: string;
-        /**
-         * New
-         *     | 1st Interview
-         *     | 2nd Interview
-         *     | Waiting for student
-         *     | Pending for approval
-         *     | Rejected
-         *     | Approved
-         */
-        status?: string;
+        status?:
+          | "New"
+          | "1st Interview"
+          | "2nd Interview"
+          | "Waiting for student"
+          | "Pending for approval"
+          | "Rejected"
+          | "Approved";
+        type?: "Job" | "Property";
       },
       params: RequestParams = {},
     ) =>
@@ -2918,20 +3377,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2024-12-21T13:17:56.912Z" */
+        /** @example "2024-12-18T13:05:02.205Z" */
         startDate?: string;
-        /** @example "2025-01-24T13:17:56.912Z" */
+        /** @example "2025-01-28T13:05:02.205Z" */
         endDate?: string;
-        /**
-         * New
-         *     | 1st Interview
-         *     | 2nd Interview
-         *     | Waiting for student
-         *     | Pending for approval
-         *     | Rejected
-         *     | Approved
-         */
-        status?: string;
+        status?:
+          | "New"
+          | "1st Interview"
+          | "2nd Interview"
+          | "Waiting for student"
+          | "Pending for approval"
+          | "Rejected"
+          | "Approved";
+        type?: "Job" | "Property";
       },
       params: RequestParams = {},
     ) =>
@@ -2984,13 +3442,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Application
-     * @name ApplicationControllerPatch
-     * @request PATCH:/applications/{id}
+     * @name ApplicationControllerDestroy
+     * @request DELETE:/applications/{id}
      * @secure
      */
-    applicationControllerPatch: (id: string, data: UpdateApplicationStatus, params: RequestParams = {}) =>
+    applicationControllerDestroy: (id: string, params: RequestParams = {}) =>
       this.request<Application, any>({
         path: `/applications/${id}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Application
+     * @name ApplicationControllerPatch
+     * @request PATCH:/applications/{id}/training-agreement
+     * @secure
+     */
+    applicationControllerPatch: (id: string, data: PatchTrainingAgreement, params: RequestParams = {}) =>
+      this.request<Application, any>({
+        path: `/applications/${id}/training-agreement`,
         method: "PATCH",
         body: data,
         secure: true,
@@ -3003,15 +3478,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Application
-     * @name ApplicationControllerDestroy
-     * @request DELETE:/applications/{id}
+     * @name ApplicationControllerPatchStatus
+     * @request PATCH:/applications/{id}/statuses
      * @secure
      */
-    applicationControllerDestroy: (id: string, params: RequestParams = {}) =>
+    applicationControllerPatchStatus: (id: string, data: UpdateApplicationStatus, params: RequestParams = {}) =>
       this.request<Application, any>({
-        path: `/applications/${id}`,
-        method: "DELETE",
+        path: `/applications/${id}/statuses`,
+        method: "PATCH",
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -3275,9 +3752,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page?: number;
         /** @example 10 */
         limit?: number;
-        /** House | Flat | Lower Portion | Upper Portion | Room | Farm House | Guest House| Hostel| Pent House */
-        types?: any[][];
-        cities?: any[];
+        types?: (
+          | "House"
+          | "Flat"
+          | "Lower Portion"
+          | "Upper Portion"
+          | "Room"
+          | "Farm House"
+          | "Guest House"
+          | "Hostel"
+          | "Pent House"
+        )[];
+        cities?: string[];
         minRent?: number;
         maxRent?: number;
         status?: string;
@@ -3327,9 +3813,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page?: number;
         /** @example 10 */
         limit?: number;
-        /** House | Flat | Lower Portion | Upper Portion | Room | Farm House | Guest House| Hostel| Pent House */
-        types?: any[][];
-        cities?: any[];
+        types?: (
+          | "House"
+          | "Flat"
+          | "Lower Portion"
+          | "Upper Portion"
+          | "Room"
+          | "Farm House"
+          | "Guest House"
+          | "Hostel"
+          | "Pent House"
+        )[];
+        cities?: string[];
         minRent?: number;
         maxRent?: number;
         status?: string;
@@ -3510,137 +4005,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: "json",
         ...params,
       }),
-  };
-  interviews = {
+
     /**
      * No description
      *
-     * @tags Interview
-     * @name InterviewControllerIndex
-     * @request GET:/interviews
+     * @tags Property
+     * @name PropertyControllerGetApplications
+     * @request GET:/properties/{id}/applications
      * @secure
      */
-    interviewControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        /** @example "2024-12-21T13:17:58.410Z" */
-        startDate?: string;
-        /** @example "2025-01-24T13:17:58.410Z" */
-        endDate?: string;
-        studentId?: string;
-        businessId?: string;
-        /**
-         *
-         *     | Scheduled
-         *     | Postponed
-         *     | Cancelled
-         *     | Passed
-         *     | Failed
-         */
-        status?: string;
-        /** Admin | Student | Business */
-        scheduledWith?: string;
-        /** true | false */
-        upcoming?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<InterviewPagination, any>({
-        path: `/interviews`,
+    propertyControllerGetApplications: (id: string, params: RequestParams = {}) =>
+      this.request<ApplicationPagination, any>({
+        path: `/properties/${id}/applications`,
         method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerCreateStudentInterview
-     * @request POST:/interviews
-     * @secure
-     */
-    interviewControllerCreateStudentInterview: (data: CreateInterviewDto, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerGetStudentInterview
-     * @request GET:/interviews/latest
-     * @secure
-     */
-    interviewControllerGetStudentInterview: (params: RequestParams = {}) =>
-      this.request<LatestInterviewDto, any>({
-        path: `/interviews/latest`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerGet
-     * @request GET:/interviews/{id}
-     * @secure
-     */
-    interviewControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerPatch
-     * @request PATCH:/interviews/{id}
-     * @secure
-     */
-    interviewControllerPatch: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerDestroy
-     * @request DELETE:/interviews/{id}
-     * @secure
-     */
-    interviewControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}`,
-        method: "DELETE",
         secure: true,
         format: "json",
         ...params,
@@ -3883,7 +4260,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example 10 */
         limit: number;
         startDate?: string;
-        /** @example "2025-01-24T13:17:58.613Z" */
+        /** @example "2025-01-28T13:05:03.709Z" */
         endDate?: string;
         /** true | false */
         receiver?: string;
@@ -3974,9 +4351,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2024-12-21T13:17:58.520Z" */
+        /** @example "2024-12-18T13:05:03.701Z" */
         startDate?: string;
-        /** @example "2025-01-24T13:17:58.520Z" */
+        /** @example "2025-01-28T13:05:03.701Z" */
         endDate?: string;
         /** @example "Feedback" */
         type?: string;
@@ -4061,6 +4438,312 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "DELETE",
         secure: true,
         format: "json",
+        ...params,
+      }),
+  };
+  stripe = {
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerConnect
+     * @request POST:/stripe/connect
+     * @secure
+     */
+    stripeControllerConnect: (params: RequestParams = {}) =>
+      this.request<ConnectResponseDto, any>({
+        path: `/stripe/connect`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetLoginLink
+     * @request GET:/stripe/connect/express-dashboard-login-link
+     * @secure
+     */
+    stripeControllerGetLoginLink: (params: RequestParams = {}) =>
+      this.request<ConnectResponseDto, any>({
+        path: `/stripe/connect/express-dashboard-login-link`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerTransferAmount
+     * @request POST:/stripe/connect/amount-transfer
+     * @secure
+     */
+    stripeControllerTransferAmount: (data: TransferAmountDto, params: RequestParams = {}) =>
+      this.request<MessageDto, any>({
+        path: `/stripe/connect/amount-transfer`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerCreatePrice
+     * @request POST:/stripe/prices
+     * @secure
+     */
+    stripeControllerCreatePrice: (data: CreatePriceDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/stripe/prices`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetPlans
+     * @request GET:/stripe/plans
+     */
+    stripeControllerGetPlans: (params: RequestParams = {}) =>
+      this.request<ResponsePlanDto[], any>({
+        path: `/stripe/plans`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetIdempotencyKey
+     * @request GET:/stripe/idempotency-key
+     * @secure
+     */
+    stripeControllerGetIdempotencyKey: (params: RequestParams = {}) =>
+      this.request<KeyResponseDto, any>({
+        path: `/stripe/idempotency-key`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetSubscriptions
+     * @request GET:/stripe/subscriptions
+     * @secure
+     */
+    stripeControllerGetSubscriptions: (params: RequestParams = {}) =>
+      this.request<ResponseSubscriptionDto[], any>({
+        path: `/stripe/subscriptions`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerCreateSubscription
+     * @request POST:/stripe/subscriptions
+     * @secure
+     */
+    stripeControllerCreateSubscription: (data: CreateSubscriptionDto, params: RequestParams = {}) =>
+      this.request<ResponseSubscriptionDto, any>({
+        path: `/stripe/subscriptions`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetCurrentSubscriptions
+     * @request GET:/stripe/subscriptions/current
+     * @secure
+     */
+    stripeControllerGetCurrentSubscriptions: (params: RequestParams = {}) =>
+      this.request<ResponseSubscriptionDto, any>({
+        path: `/stripe/subscriptions/current`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerDeleteCurrentSubscriptions
+     * @request DELETE:/stripe/subscriptions/current
+     * @secure
+     */
+    stripeControllerDeleteCurrentSubscriptions: (params: RequestParams = {}) =>
+      this.request<ResponseSubscriptionDto, any>({
+        path: `/stripe/subscriptions/current`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerDeleteCurrentSubscriptionImmediately
+     * @request DELETE:/stripe/subscriptions/current/immediately
+     * @secure
+     */
+    stripeControllerDeleteCurrentSubscriptionImmediately: (params: RequestParams = {}) =>
+      this.request<ResponseSubscriptionDto, any>({
+        path: `/stripe/subscriptions/current/immediately`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerCreatePaymentMethodIntent
+     * @request POST:/stripe/payment-methods/setup-intent
+     * @secure
+     */
+    stripeControllerCreatePaymentMethodIntent: (params: RequestParams = {}) =>
+      this.request<ResponsePaymentIntentDto, any>({
+        path: `/stripe/payment-methods/setup-intent`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetPaymentMethods
+     * @request GET:/stripe/payment-methods
+     * @secure
+     */
+    stripeControllerGetPaymentMethods: (params: RequestParams = {}) =>
+      this.request<ResponsePaymentMethodDto[], any>({
+        path: `/stripe/payment-methods`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerSetDefaultPaymentMethod
+     * @request GET:/stripe/payment-methods/{paymentMethodId}/set-as-default
+     * @secure
+     */
+    stripeControllerSetDefaultPaymentMethod: (paymentMethodId: string, params: RequestParams = {}) =>
+      this.request<MessageDto, any>({
+        path: `/stripe/payment-methods/${paymentMethodId}/set-as-default`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerGetInvoices
+     * @request GET:/stripe/invoices
+     * @secure
+     */
+    stripeControllerGetInvoices: (params: RequestParams = {}) =>
+      this.request<ResponseInvoiceDto[], any>({
+        path: `/stripe/invoices`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Stripe
+     * @name StripeControllerPayInvoice
+     * @request POST:/stripe/invoices/{id}
+     * @secure
+     */
+    stripeControllerPayInvoice: (id: string, params: RequestParams = {}) =>
+      this.request<ResponseInvoiceDto, any>({
+        path: `/stripe/invoices/${id}`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  states = {
+    /**
+     * No description
+     *
+     * @tags States
+     * @name StateControllerIndex
+     * @request GET:/states/{countryId}
+     */
+    stateControllerIndex: (countryId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/states/${countryId}`,
+        method: "GET",
+        ...params,
+      }),
+  };
+  cities = {
+    /**
+     * No description
+     *
+     * @tags Cities
+     * @name CityControllerIndex
+     * @request GET:/cities/{stateId}
+     */
+    cityControllerIndex: (stateId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/cities/${stateId}`,
+        method: "GET",
         ...params,
       }),
   };

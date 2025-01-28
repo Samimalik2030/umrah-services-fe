@@ -9,12 +9,12 @@ import {
   Spoiler,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import dayjs from "dayjs";
 
 import { useGetJob } from "../../hooks/useGetJobs";
-import { UpdateJobStatusDTO } from "../../http/Api";
+import { UpdateJobStatus } from "../../http/Api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
 import { notifications } from "@mantine/notifications";
@@ -28,26 +28,26 @@ type JobDetailsDrawerProps = {
 const CompanyJobDetailDrawer = ({
   opened,
   onClose,
-  id,
+  id
 }: JobDetailsDrawerProps) => {
   const gap = 8;
   const { job, isLoading: jobLoading } = useGetJob(id ?? "");
   const queryClient = useQueryClient();
   const { mutate: changeJobStatus, isPending } = useMutation({
     mutationKey: ["changeStatusJob"],
-    mutationFn: ({ id, data }: { id: string; data: UpdateJobStatusDTO }) =>
+    mutationFn: ({ id, data }: { id: string; data: UpdateJobStatus }) =>
       http.jobs.jobControllerPatchStatus(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       notifications.show({
         title: "Success",
         message: "Job status updated successfully",
-        color: "green",
+        color: "green"
       });
-    },
+    }
   });
 
-  const handleStatusChange = (id: string, data: UpdateJobStatusDTO) => {
+  const handleStatusChange = (id: string, data: UpdateJobStatus) => {
     changeJobStatus({ id, data });
   };
 
@@ -199,10 +199,12 @@ const CompanyJobDetailDrawer = ({
             label="Change Status"
             placeholder={job?.status}
             data={["Approved", "Rejected"]}
-            onChange={(value: any) => {
-              handleStatusChange(job?.id || "", {
-                status: value,
-              });
+            onChange={(value: string | null) => {
+              if (value === "Approved" || value === "Rejected") {
+                handleStatusChange(job?.id || "", {
+                  status: value
+                });
+              }
             }}
           />
           <Button size="sm" variant="outline" onClick={onClose}>
