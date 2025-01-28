@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   Group,
+  Image,
   Menu,
   Modal,
   Pagination,
@@ -14,11 +15,15 @@ import {
   Text,
   TextInput,
   Title,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
-import { DateTimePicker } from "@mantine/dates";
 import useGetInterviews from "../../hooks/useGetInterviews";
-import { Interview, UpdateInterviewDto } from "../../http/Api";
+import {
+  Interview,
+  PatchStudentStatus,
+  Student,
+  UpdateInterviewDto
+} from "../../http/Api";
 import IconDots from "../../assets/icons/IconDots";
 import http from "../../http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -33,9 +38,8 @@ const Students = () => {
 
   const { interviews, isLoading: gettingInterviews } = useGetInterviews(page);
   const queryClient = useQueryClient();
-  const [opened, { close }] = useDisclosure(false);
-  const [selectedInterview] = useState<Interview | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [selectedStudent, setselectedStudent] = useState<Student>();
 
   const { mutate: changeStatus, isPending: changingStatus } = useMutation({
     mutationKey: ["changeStatusInterview"],
@@ -43,43 +47,37 @@ const Students = () => {
       http.admins.adminControllerPatchInterview(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
-    },
+    }
   });
 
   const handleStatusChange = (id: string, data: UpdateInterviewDto) => {
     changeStatus({ id, data });
   };
 
-  const { mutate: scheduleInterview, isPending: schedulingInterview } =
+  const { mutate: updateStudentStatus, isPending: updatingStudentStatus } =
     useMutation({
-      mutationFn: ({ id, date }: { id: string; date: Date }) => {
-        const interviewDate = date.toISOString();
-        return http.admins.adminControllerPatchInterview(id, {
-          interviewDate: interviewDate,
-        });
+      mutationFn: ({ id, data }: { id: string; data: PatchStudentStatus }) => {
+        return http.students.studentControllerPatchStatus(id, data);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["interviews"] });
+        setselectedStudent(undefined);
         close();
       },
       onError: (error) => {
         console.error("Error scheduling interview:", error);
-      },
+      }
     });
+
+  const handleStudentStatusChange = (id: string, data: PatchStudentStatus) => {
+    updateStudentStatus({ id, data });
+  };
 
   // const handleEditClick = (interview: Interview) => {
   //   setSelectedInterview(interview);
   //   setSelectedDate(new Date(interview.date));
   //   open();
   // };
-
-  const handleUpdateClick = () => {
-    if (selectedInterview && selectedDate) {
-      scheduleInterview({ id: selectedInterview.id, date: selectedDate });
-    } else {
-      console.error("Invalid date or interview selection");
-    }
-  };
 
   return (
     <Stack>
@@ -120,6 +118,7 @@ const Students = () => {
                   <Table.Th>Host Assigned</Table.Th>
                   <Table.Th>Status</Table.Th>
                   <Table.Th>Plan Name</Table.Th>
+                  <Table.Th>Payment</Table.Th>
                   <Table.Th>Action</Table.Th>
                 </Table.Tr>
               </Table.Thead>
@@ -179,6 +178,22 @@ const Students = () => {
                     </Table.Td>
                     <Table.Td>{interview.student?.planName ?? "N/A"}</Table.Td>
                     <Table.Td>
+                      <Badge
+                        color={
+                          interview.student?.paymentStatus === "Paid"
+                            ? "green"
+                            : "red"
+                        }
+                        variant="light"
+                        onClick={() => {
+                          setselectedStudent(interview.student);
+                          open();
+                        }}
+                      >
+                        {interview.student?.paymentStatus ?? "N/A"}
+                      </Badge>
+                    </Table.Td>
+                    <Table.Td>
                       <Menu
                         withArrow
                         width={300}
@@ -195,7 +210,7 @@ const Students = () => {
                           <Menu.Item
                             onClick={() => {
                               handleStatusChange(interview.id, {
-                                status: "Passed",
+                                status: "Passed"
                               });
                             }}
                           >
@@ -204,7 +219,7 @@ const Students = () => {
                           <Menu.Item
                             onClick={() => {
                               handleStatusChange(interview.id, {
-                                status: "Failed",
+                                status: "Failed"
                               });
                             }}
                           >
@@ -213,7 +228,7 @@ const Students = () => {
                           <Menu.Item
                             onClick={() => {
                               handleStatusChange(interview.id, {
-                                status: "Cancelled",
+                                status: "Cancelled"
                               });
                             }}
                           >
@@ -236,26 +251,43 @@ const Students = () => {
           />
         </Group>
       </Card>
-      <Modal opened={opened} onClose={close} title="Edit Interview Time">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={
+          <Title order={5}>
+            {selectedStudent?.user?.fullName} Payment Invoice
+          </Title>
+        }
+      >
         <Stack>
-          <DateTimePicker
-            defaultValue={selectedDate}
-            label="Pick Date and Time"
-            placeholder="Schedule Interview"
-            onChange={(date) => {
-              console.log(date);
-
-              setSelectedDate(date);
-            }}
-            w={"100%"}
-          />
-          <Button
-            onClick={handleUpdateClick}
-            loading={schedulingInterview}
-            fullWidth
-          >
-            Update Interview
-          </Button>
+          <Image fit="contain" src={"https://picsum.photos/200"} />
+          <Group grow>
+            <Button
+              onClick={() =>
+                selectedStudent?.id &&
+                handleStudentStatusChange(selectedStudent.id, {
+                  paymentStatus: "Paid"
+                })
+              }
+              loading={updatingStudentStatus}
+              color="green"
+            >
+              Paid
+            </Button>
+            <Button
+              onClick={() =>
+                selectedStudent?.id &&
+                handleStudentStatusChange(selectedStudent.id, {
+                  paymentStatus: "Unpaid"
+                })
+              }
+              loading={updatingStudentStatus}
+              color="red"
+            >
+              Not Paid
+            </Button>
+          </Group>
         </Stack>
       </Modal>
     </Stack>
