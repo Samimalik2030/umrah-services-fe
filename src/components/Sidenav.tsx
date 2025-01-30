@@ -18,22 +18,27 @@ const links: Links[] = [
   {
     label: "Dashboard",
     icon: "IconLayoutDashboard",
-    path: "/",
+    path: "/"
   },
   {
     label: "Companies",
     icon: "IconWorld",
-    path: "/companies",
+    path: "/companies"
   },
   { label: "Students", icon: "IconUsersGroup", path: "/students" },
   { label: "Hosts", icon: "IconTopologyStar", path: "/host" },
   {
+    label: "Property Applications",
+    icon: "IconTopologyStar",
+    path: "/property-applications"
+  },
+  {
     label: "Subscriptions",
     icon: "IconReceiptDollar",
-    path: "/subscriptions",
+    path: "/subscriptions"
   },
   { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
-  { label: "Support", icon: "IconMessageChatbot", path: "/support" },
+  { label: "Support", icon: "IconMessageChatbot", path: "/support" }
 ];
 
 function Sidenav() {
@@ -44,7 +49,7 @@ function Sidenav() {
   function Icon({
     name,
     isActive,
-    size,
+    size
   }: {
     name: string;
     isActive: boolean;
@@ -97,7 +102,7 @@ function Sidenav() {
           color={newColor}
           size={size}
         />
-      ),
+      )
     };
 
     return <>{icons[name] || null}</>;

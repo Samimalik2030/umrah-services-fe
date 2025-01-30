@@ -20,6 +20,8 @@ import Subscriptions from "../pages/subscriptions/Subscriptions";
 import Support from "../pages/support/Support";
 import CompanyDetail from "../pages/companies/CompanyDetail";
 import Properties from "../pages/hosts/properties/Properties";
+import PropertyApplications from "../pages/propertyApplications/PropertyApplications";
+import ApplicationDetails from "../pages/propertyApplications/ApplicationDetails";
 
 const routes = createBrowserRouter([
   {
@@ -27,26 +29,26 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "sign-in",
-        element: <SignIn />,
+        element: <SignIn />
       },
 
       {
         path: "forgot-password",
-        element: <ForgotPassword />,
+        element: <ForgotPassword />
       },
       {
         path: "reset-password",
-        element: <ResetPassword />,
+        element: <ResetPassword />
       },
       {
         path: "verify-otp",
-        element: <VerifyOtp />,
+        element: <VerifyOtp />
       },
       {
         path: "two-factor-auth",
-        element: <TwoFactorAuth />,
-      },
-    ],
+        element: <TwoFactorAuth />
+      }
+    ]
   },
   {
     path: "/",
@@ -58,25 +60,30 @@ const routes = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <Dashboard />,
+            element: <Dashboard />
           },
 
           { path: "/companies", element: <Companies /> },
           { path: "/companies/:id/jobs", element: <CompanyDetail /> },
           { path: "/students", element: <Students /> },
           { path: "/host", element: <Hosts /> },
+          { path: "/property-applications", element: <PropertyApplications /> },
+          {
+            path: "/property-applications/:id",
+            element: <ApplicationDetails />
+          },
           { path: "/host/:id/properties", element: <Properties /> },
 
           { path: "/subscriptions", element: <Subscriptions /> },
           { path: "/analytics", element: <Analytics /> },
           { path: "/support", element: <Support /> },
           { path: "/projects", element: <Projects /> },
-          { path: "/settings", element: <Settings /> },
-        ],
-      },
-    ],
+          { path: "/settings", element: <Settings /> }
+        ]
+      }
+    ]
   },
-  { path: "*", element: <PageNotFound /> },
+  { path: "*", element: <PageNotFound /> }
 ]);
 
 export default routes;

@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Avatar,
   Badge,
+  Box,
   Button,
   Group,
   Menu,
@@ -11,7 +12,7 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
 import IconDots from "../../assets/icons/IconDots";
 import IconSearch from "../../assets/icons/IconSearch";
@@ -27,6 +28,7 @@ function Companies() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { companies, isLoading } = useGetCompanies(page);
+  console.log(companies);
 
   const queryClient = useQueryClient();
 
@@ -39,9 +41,9 @@ function Companies() {
       notifications.show({
         title: "Success",
         message: "Business status updated successfully",
-        color: "green",
+        color: "green"
       });
-    },
+    }
   });
 
   const handleStatusChange = (id: string, data: UpdateBusinessStatusDTO) => {
@@ -83,7 +85,7 @@ function Companies() {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {companies?.data?.map((company: any, index: number) => (
+              {companies?.data?.map((company, index) => (
                 <Table.Tr
                   key={index}
                   style={{ cursor: "pointer" }}
@@ -93,7 +95,29 @@ function Companies() {
                 >
                   <Table.Td>
                     <Group>
-                      <Avatar src={company?.logoUrl} />
+                      <Box
+                        style={{
+                          position: "relative",
+                          display: "inline-block"
+                        }}
+                      >
+                        <Avatar src={company.logoUrl} radius="xl" size="lg" />
+                        {company?.jobCounts?.pending > 0 && (
+                          <Badge
+                            color="red"
+                            variant="filled"
+                            size="sm"
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              transform: "translate(-25%, -25%)" // Adjust positioning
+                            }}
+                          >
+                            {String(company?.jobCounts.pending)}
+                          </Badge>
+                        )}
+                      </Box>
                       <Stack gap={0}>
                         <Text fw={500} fz={14}>
                           {company?.name}
@@ -146,7 +170,7 @@ function Companies() {
                           onClick={(e) => {
                             e.stopPropagation();
                             handleStatusChange(company?.id ?? "", {
-                              status: "Active",
+                              status: "Active"
                             });
                           }}
                         >
@@ -156,7 +180,7 @@ function Companies() {
                           onClick={(e) => {
                             e.stopPropagation();
                             handleStatusChange(company?.id ?? "", {
-                              status: "Blocked",
+                              status: "Blocked"
                             });
                           }}
                         >
