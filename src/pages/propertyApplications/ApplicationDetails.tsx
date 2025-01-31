@@ -13,7 +13,7 @@ import {
   ScrollArea,
   Badge,
   Spoiler,
-  Button,
+  Button
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,7 +32,7 @@ function ApplicationDetails() {
   const { data: application, isLoading } = useQuery({
     queryKey: ["application", id],
     queryFn: () => http.applications.applicationControllerGet(id ?? ""),
-    enabled: !!id,
+    enabled: !!id
   });
 
   const queryClient = useQueryClient();
@@ -41,7 +41,7 @@ function ApplicationDetails() {
     useMutation({
       mutationFn: ({
         id,
-        data,
+        data
       }: {
         id: string;
         data: PatchApplicationPaymentStatus;
@@ -51,7 +51,7 @@ function ApplicationDetails() {
           .then(() => {
             queryClient.invalidateQueries({ queryKey: ["applications"] });
             queryClient.invalidateQueries({ queryKey: ["application"] });
-          }),
+          })
     });
 
   console.log(application);
@@ -246,17 +246,15 @@ function ApplicationDetails() {
           <ScrollArea w={"80%"} scrollbars="x">
             <Card shadow="xs" withBorder w={"100%"} p={"xl"}>
               <Group grow align="center">
-                {application?.data?.property?.photos?.map(
-                  (photo: any, index: number) => (
-                    <Image
-                      fit="cover"
-                      w={"60%"}
-                      h={200}
-                      key={index}
-                      src={photo?.url}
-                    />
-                  )
-                )}
+                {application?.data?.property?.photos?.map((photo, index) => (
+                  <Image
+                    fit="cover"
+                    w={"60%"}
+                    h={200}
+                    key={index}
+                    src={photo?.url}
+                  />
+                ))}
               </Group>
             </Card>
           </ScrollArea>
@@ -267,9 +265,3 @@ function ApplicationDetails() {
 }
 
 export default ApplicationDetails;
-function updateApplication(arg0: {
-  id: string;
-  data: PatchApplicationPaymentStatus;
-}) {
-  throw new Error("Function not implemented.");
-}
