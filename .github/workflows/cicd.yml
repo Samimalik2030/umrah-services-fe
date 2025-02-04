@@ -21,3 +21,7 @@ jobs:
             else
               echo "Repository already exists."
             fi
+            cd mpa-coaching-admin-portal-react
+            git reset --hard
+            git pull
+            npm run build
