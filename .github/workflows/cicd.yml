@@ -31,3 +31,5 @@ jobs:
             echo "Copying build to web server directory..."
             mkdir -p /var/www/html/mpa-coaching-admin-portal-react
             cp -r dist/* /var/www/html/mpa-coaching-admin-portal-react/
+            echo "Restarting nginx..."
+            systemctl restart nginx
