@@ -1,51 +1,25 @@
 import {
-  ActionIcon,
-  Badge,
+  Box,
   Card,
   Group,
-  Menu,
   Pagination,
   Skeleton,
   Stack,
   Table,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
-import IconDots from "../../assets/icons/IconDots";
 import IconSearch from "../../assets/icons/IconSearch";
 import useGetHosts from "../../hooks/useGetHosts";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import http from "../../http";
-import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
-import { UpdateHostStatusDTO } from "../../http/Api";
 
 function Hosts() {
   const [page, setPage] = useState(1);
   const { hosts, isLoading } = useGetHosts(page);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-
-  const { mutate: changeBusinessStatus, isPending } = useMutation({
-    mutationKey: ["changeStatusBusiness"],
-    mutationFn: ({ id, data }: { id: string; data: UpdateHostStatusDTO }) =>
-      http.hosts.hostControllerPatchStatus(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["hosts"] });
-      notifications.show({
-        title: "Success",
-        message: "Host status updated successfully",
-        color: "green",
-      });
-    },
-  });
-
-  const handleStatusChange = (id: string, data: any) => {
-    changeBusinessStatus({ id, data });
-  };
 
   const filteredHosts = hosts?.data?.filter((host) => {
     const fullName = `${host?.personalInformation?.firstName ?? ""} ${
@@ -74,7 +48,7 @@ function Hosts() {
         />
       </Group>
       <Card>
-        {isLoading || isPending ? (
+        {isLoading ? (
           <Stack>
             <Skeleton height={50} circle animate />
             <Skeleton height={50} animate />
@@ -92,14 +66,12 @@ function Hosts() {
                   <Table.Th>Town</Table.Th>
                   <Table.Th>Country Code</Table.Th>
                   <Table.Th>Plan Name</Table.Th>
-                  <Table.Th>Status</Table.Th>
-                  <Table.Th>Action</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
                 {filteredHosts
                   ?.filter((host) => host?.status !== "Draft")
-                  .map((host: any, index: number) => (
+                  .map((host, index: number) => (
                     <Table.Tr
                       key={index}
                       style={{ cursor: "pointer" }}
@@ -125,7 +97,12 @@ function Hosts() {
                         {host?.personalInformation?.email ?? "N/A"}
                       </Table.Td>
                       <Table.Td>
-                        {host?.personalInformation?.address ?? "N/A"}
+                        <Box w={200}>
+                          {" "}
+                          <Text truncate="end">
+                            {host?.personalInformation?.address ?? "N/A"}
+                          </Text>
+                        </Box>
                       </Table.Td>
                       <Table.Td>
                         {host?.personalInformation?.town ?? "N/A"}
@@ -133,64 +110,7 @@ function Hosts() {
                       <Table.Td>
                         {host?.personalInformation?.countryCode ?? "N/A"}
                       </Table.Td>
-                      <Table.Td>
-                        {host?.personalInformation?.planName ?? "N/A"} (
-                        {host?.paymentStatus})
-                      </Table.Td>
-                      <Table.Td>
-                        <Badge
-                          variant="outline"
-                          color={
-                            host?.status === "Active"
-                              ? "green"
-                              : host?.status === "Rejected"
-                                ? "red"
-                                : "orange"
-                          }
-                        >
-                          {host?.status ?? "N/A"}
-                        </Badge>
-                      </Table.Td>
-                      <Table.Td>
-                        <Menu
-                          withArrow
-                          width={300}
-                          position="bottom"
-                          transitionProps={{ transition: "pop" }}
-                          withinPortal
-                        >
-                          <Menu.Target>
-                            <ActionIcon
-                              variant="subtle"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <IconDots size={18} />
-                            </ActionIcon>
-                          </Menu.Target>
-                          <Menu.Dropdown>
-                            <Menu.Item
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleStatusChange(host?.id, {
-                                  status: "Approved",
-                                });
-                              }}
-                            >
-                              Approve
-                            </Menu.Item>
-                            <Menu.Item
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleStatusChange(host?.id, {
-                                  status: "Rejected",
-                                });
-                              }}
-                            >
-                              Reject
-                            </Menu.Item>
-                          </Menu.Dropdown>
-                        </Menu>
-                      </Table.Td>
+                      <Table.Td>{host?.paymentStatus ?? "N/A"}</Table.Td>
                     </Table.Tr>
                   ))}
               </Table.Tbody>
