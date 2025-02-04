@@ -27,4 +27,4 @@ jobs:
             echo "Installing dependencies..."
             /root/.nvm/versions/node/v22.13.0/bin/npm install
             echo "Building the project..."
-            /root/.nvm/versions/node/v22.13.0/bin/node run build
+            /root/.nvm/versions/node/v22.13.0/bin/npm run build
