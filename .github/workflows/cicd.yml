@@ -15,4 +15,9 @@ jobs:
           host: ${{ secrets.MPA_SSH_HOST }}
           username: root
           password: ${{ secrets.MPA_SSH_PASSWORD }}
-          script: whoami
+          script: |
+            if [ ! -d "mpa-coaching-admin-portal-react" ]; then
+              git clone https://${{ secrets.GIT_TOKEN }}@github.com/TuringNova/mpa-coaching-admin-portal-react.git
+            else
+              echo "Repository already exists."
+            fi
