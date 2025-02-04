@@ -134,7 +134,12 @@ function Companies() {
                   <Table.Td tt={"capitalize"}>{company?.businessType}</Table.Td>
                   <Table.Td>{company?.employeesCount}</Table.Td>
                   <Table.Td>{company?.operationSite}</Table.Td>
-                  <Table.Td>{company?.addressLine1}</Table.Td>
+                  <Table.Td>
+                    <Box w={200}>
+                      {" "}
+                      <Text truncate="end">{company?.addressLine1}</Text>
+                    </Box>
+                  </Table.Td>
                   <Table.Td>
                     <Badge
                       variant="outline"
