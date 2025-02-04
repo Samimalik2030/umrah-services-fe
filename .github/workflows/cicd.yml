@@ -24,5 +24,7 @@ jobs:
             cd mpa-coaching-admin-portal-react
             git reset --hard
             git pull
+            echo "Installing dependencies..."
             /root/.nvm/versions/node/v22.13.0/bin/npm install
+            echo "Building the project..."
             /root/.nvm/versions/node/v22.13.0/bin/node run build
