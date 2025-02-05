@@ -76,7 +76,7 @@ function Hosts() {
                       key={index}
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        navigate(`/host/${host?.id}/properties`);
+                        navigate(`/hosts/${host?.id}/properties`);
                       }}
                     >
                       <Table.Td>{index + 1}</Table.Td>

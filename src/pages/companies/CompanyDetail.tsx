@@ -20,17 +20,21 @@ import IconArrowNarrowLeft from "../../assets/icons/IconArrowNarrowLeft";
 import IconDots from "../../assets/icons/IconDots";
 import { useDisclosure } from "@mantine/hooks";
 import CompanyJobDetailDrawer from "./CompanyJobDetailDrawer";
-import { UpdateJobStatus } from "../../http/Api";
+import { Job, UpdateJobStatus } from "../../http/Api";
 import { notifications } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
+import countryInfo from "../../assets/country-info.json";
+import { useGetCities, useGetStates } from "../../hooks/useGetCountryStats";
 
 function CompanyDetail() {
   const [opened, { open, close }] = useDisclosure(false);
   const { id } = useParams();
   const { company, isLoading } = useGetCompany(id ?? "");
   const { jobs, isLoading: jobsLoader } = useGetCompanyJobs(id ?? "");
-  const [job, setJob] = useState<string>("");
+  const [job, setJob] = useState<Job | null>(null);
+  const { cities } = useGetCities(company?.state ?? "");
+  const { states } = useGetStates(company?.country ?? "");
 
   const queryClient = useQueryClient();
   const { mutate: changeJobStatus, isPending } = useMutation({
@@ -89,7 +93,7 @@ function CompanyDetail() {
                   </Text>
                   <Badge
                     color={
-                      company?.status === "Active"
+                      company?.status === "Approved"
                         ? "green"
                         : company?.status === "Blocked"
                           ? "red"
@@ -122,7 +126,7 @@ function CompanyDetail() {
           <Divider w="100%" size="sm" my="sm" />
 
           <Stack gap="xs">
-            <Stack>
+            <Stack gap={5}>
               <Text fw={600} size="sm">
                 Description:
               </Text>
@@ -140,21 +144,32 @@ function CompanyDetail() {
                 <Text fw={600} size="sm">
                   City:
                 </Text>
-                <Text tt="capitalize">{company?.city ?? "N/A"}</Text>
+                <Text tt="capitalize">
+                  {cities.find((c) => c.id.toString() === company?.city)
+                    ?.name ??
+                    company?.city ??
+                    "N/A"}
+                </Text>
               </Group>
 
               <Group gap={4}>
                 <Text fw={600} size="sm">
                   State:
                 </Text>
-                <Text tt="capitalize">{company?.state ?? "N/A"}</Text>
+                <Text tt="capitalize">
+                  {states.find((c) => c.id.toString() === company?.state)
+                    ?.name ?? "N/A"}
+                </Text>
               </Group>
 
               <Group gap={4}>
                 <Text fw={600} size="sm">
                   Country:
                 </Text>
-                <Text tt="capitalize">{company?.country ?? "N/A"}</Text>
+                <Text tt="capitalize">
+                  {countryInfo.find((c) => c.id.toString() === company?.country)
+                    ?.name ?? "N/A"}
+                </Text>
               </Group>
 
               <Group gap={4}>
@@ -239,7 +254,7 @@ function CompanyDetail() {
                     key={index}
                     onClick={() => {
                       open();
-                      setJob(job?.id ?? "");
+                      setJob(job ?? []);
                     }}
                   >
                     <Table.Td>
@@ -314,7 +329,7 @@ function CompanyDetail() {
         )}
       </Stack>
 
-      <CompanyJobDetailDrawer opened={opened} onClose={close} id={job} />
+      <CompanyJobDetailDrawer opened={opened} onClose={close} job={job} />
     </Stack>
   );
 }

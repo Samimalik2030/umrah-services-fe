@@ -26,7 +26,7 @@ const links: Links[] = [
     path: "/companies"
   },
   { label: "Students", icon: "IconUsersGroup", path: "/students" },
-  { label: "Hosts", icon: "IconTopologyStar", path: "/host" },
+  { label: "Hosts", icon: "IconTopologyStar", path: "/hosts" },
   {
     label: "Property Applications",
     icon: "IconTopologyStar",

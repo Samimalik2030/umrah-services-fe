@@ -12,9 +12,7 @@ import {
   Title
 } from "@mantine/core";
 import dayjs from "dayjs";
-
-import { useGetJob } from "../../hooks/useGetJobs";
-import { UpdateJobStatus } from "../../http/Api";
+import { Job, UpdateJobStatus } from "../../http/Api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
 import { notifications } from "@mantine/notifications";
@@ -22,16 +20,15 @@ import { notifications } from "@mantine/notifications";
 type JobDetailsDrawerProps = {
   opened: boolean;
   onClose: () => void;
-  id: string | null;
+  job: Job | null;
 };
 
 const CompanyJobDetailDrawer = ({
   opened,
   onClose,
-  id
+  job
 }: JobDetailsDrawerProps) => {
   const gap = 8;
-  const { job, isLoading: jobLoading } = useGetJob(id ?? "");
   const queryClient = useQueryClient();
   const { mutate: changeJobStatus, isPending } = useMutation({
     mutationKey: ["changeStatusJob"],
@@ -59,7 +56,7 @@ const CompanyJobDetailDrawer = ({
       position="right"
       withCloseButton={false}
     >
-      {jobLoading || isPending ? (
+      {isPending ? (
         <Stack>
           <Skeleton height={50} circle animate />
           {Array.from({ length: 8 }).map((_, index) => (

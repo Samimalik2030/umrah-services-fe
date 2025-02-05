@@ -66,13 +66,13 @@ const routes = createBrowserRouter([
           { path: "/companies", element: <Companies /> },
           { path: "/companies/:id/jobs", element: <CompanyDetail /> },
           { path: "/students", element: <Students /> },
-          { path: "/host", element: <Hosts /> },
+          { path: "/hosts", element: <Hosts /> },
           { path: "/property-applications", element: <PropertyApplications /> },
           {
             path: "/property-applications/:id",
             element: <ApplicationDetails />
           },
-          { path: "/host/:id/properties", element: <Properties /> },
+          { path: "/hosts/:id/properties", element: <Properties /> },
 
           { path: "/subscriptions", element: <Subscriptions /> },
           { path: "/analytics", element: <Analytics /> },

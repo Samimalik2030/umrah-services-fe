@@ -28,7 +28,6 @@ function Companies() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { companies, isLoading } = useGetCompanies(page);
-  console.log(companies);
 
   const queryClient = useQueryClient();
 
@@ -144,7 +143,7 @@ function Companies() {
                     <Badge
                       variant="outline"
                       color={
-                        company?.status === "Active"
+                        company?.status === "Approved"
                           ? "green"
                           : company?.status === "Blocked"
                             ? "red"
@@ -175,7 +174,7 @@ function Companies() {
                           onClick={(e) => {
                             e.stopPropagation();
                             handleStatusChange(company?.id ?? "", {
-                              status: "Active"
+                              status: "Approved"
                             });
                           }}
                         >
