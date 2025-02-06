@@ -22,6 +22,8 @@ import CompanyDetail from "../pages/companies/CompanyDetail";
 import Properties from "../pages/hosts/properties/Properties";
 import PropertyApplications from "../pages/propertyApplications/PropertyApplications";
 import ApplicationDetails from "../pages/propertyApplications/ApplicationDetails";
+import Interviews from "../pages/interviews/Interviews";
+import StudentDetails from "../pages/interviews/StudentDetails";
 
 const routes = createBrowserRouter([
   {
@@ -66,6 +68,11 @@ const routes = createBrowserRouter([
           { path: "/companies", element: <Companies /> },
           { path: "/companies/:id/jobs", element: <CompanyDetail /> },
           { path: "/students", element: <Students /> },
+          { path: "/interviews", element: <Interviews /> },
+          {
+            path: "/interviews/:interviewId/students/:studentId",
+            element: <StudentDetails />
+          },
           { path: "/hosts", element: <Hosts /> },
           { path: "/property-applications", element: <PropertyApplications /> },
           {

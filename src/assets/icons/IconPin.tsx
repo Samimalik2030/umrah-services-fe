@@ -1,6 +1,6 @@
 import ICommonIconProps from "../../interfaces/ICommonIconProps";
 
-function IconUserFilled(props: ICommonIconProps) {
+function IconPin(props: ICommonIconProps) {
   return (
     <svg
       {...props}
@@ -9,13 +9,12 @@ function IconUserFilled(props: ICommonIconProps) {
       height={props.size || "24"}
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="icon icon-tabler icons-tabler-filled icon-tabler-user"
+      className="icon icon-tabler icons-tabler-filled icon-tabler-map-pin"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
-      <path d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" />
+      <path d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" />
     </svg>
   );
 }
 
-export default IconUserFilled;
+export default IconPin;

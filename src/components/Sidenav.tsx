@@ -25,20 +25,15 @@ const links: Links[] = [
     icon: "IconWorld",
     path: "/companies"
   },
-  { label: "Students", icon: "IconUsersGroup", path: "/students" },
+  { label: "Interviews", icon: "IconUsersGroup", path: "/interviews" },
   { label: "Hosts", icon: "IconTopologyStar", path: "/hosts" },
   {
     label: "Property Applications",
     icon: "IconTopologyStar",
     path: "/property-applications"
-  },
-  {
-    label: "Subscriptions",
-    icon: "IconReceiptDollar",
-    path: "/subscriptions"
-  },
-  { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
-  { label: "Support", icon: "IconMessageChatbot", path: "/support" }
+  }
+  // { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
+  // { label: "Support", icon: "IconMessageChatbot", path: "/support" }
 ];
 
 function Sidenav() {
