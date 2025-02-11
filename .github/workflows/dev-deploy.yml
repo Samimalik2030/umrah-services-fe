@@ -42,7 +42,7 @@ jobs:
             echo "Building the project..."
             /root/.nvm/versions/node/v22.13.0/bin/npm run build
             echo "Copying build to web server directory..."
-            mkdir -p /var/www/html/mpa-coaching-admin-portal-react
+            mkdir -p /var/www/html/dev-mpa-coaching-admin-portal-react
             cp -r dist/* /var/www/html/dev-mpa-coaching-admin-portal-react/
             echo "Restarting nginx..."
             systemctl restart nginx
