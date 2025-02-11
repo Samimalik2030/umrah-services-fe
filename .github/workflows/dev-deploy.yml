@@ -37,6 +37,9 @@ jobs:
             git checkout develop
             git reset --hard
             git pull
+            echo "Creating .env file..."
+            echo "VITE_API_URL=https://dev-api.mpacoaching.com" > .env
+            echo "Installing dependencies..."
             echo "Installing dependencies..."
             /root/.nvm/versions/node/v22.13.0/bin/npm install
             echo "Building the project..."
