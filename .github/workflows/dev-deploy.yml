@@ -29,7 +29,7 @@ jobs:
           script: |
             cd development-env/
             if [ ! -d "mpa-coaching-admin-portal-react" ]; then
-              git clone https://${{ secrets.GIT_TOKEN }}@github.com/TuringNova/mpa-coaching-admin-portal-react.git
+              git clone https://${{ secrets.GIT_TOKEN }}@github.com/Mpa-Coaching/mpa-coaching-admin-portal-react.git
             else
               echo "Repository already exists."
             fi
@@ -43,6 +43,6 @@ jobs:
             /root/.nvm/versions/node/v22.13.0/bin/npm run build
             echo "Copying build to web server directory..."
             mkdir -p /var/www/html/mpa-coaching-admin-portal-react
-            cp -r dist/* /var/www/html/mpa-coaching-admin-portal-react/
+            cp -r dist/* /var/www/html/dev-mpa-coaching-admin-portal-react/
             echo "Restarting nginx..."
             systemctl restart nginx
