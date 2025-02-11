@@ -1,8 +1,11 @@
 name: remote ssh command
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 jobs:
   build:
-    name: Deploy Admin Portal
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,12 +27,14 @@ jobs:
           username: root
           password: ${{ secrets.MPA_SSH_PASSWORD }}
           script: |
+            cd development-env/
             if [ ! -d "mpa-coaching-admin-portal-react" ]; then
               git clone https://${{ secrets.GIT_TOKEN }}@github.com/TuringNova/mpa-coaching-admin-portal-react.git
             else
               echo "Repository already exists."
             fi
             cd mpa-coaching-admin-portal-react
+            git checkout develop
             git reset --hard
             git pull
             echo "Installing dependencies..."
