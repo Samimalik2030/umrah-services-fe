@@ -11,7 +11,7 @@ import {
   ActionIcon,
   Table,
   Badge,
-  Menu
+  Menu,
 } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -33,8 +33,8 @@ function CompanyDetail() {
   const { company, isLoading } = useGetCompany(id ?? "");
   const { jobs, isLoading: jobsLoader } = useGetCompanyJobs(id ?? "");
   const [job, setJob] = useState<Job | null>(null);
-  const { cities } = useGetCities(company?.state ?? "");
-  const { states } = useGetStates(company?.country ?? "");
+  const { cities } = useGetCities(Number(company?.state) ?? "");
+  const { states } = useGetStates(Number(company?.country) ?? "");
 
   const queryClient = useQueryClient();
   const { mutate: changeJobStatus, isPending } = useMutation({
@@ -46,9 +46,9 @@ function CompanyDetail() {
       notifications.show({
         title: "Success",
         message: "Job status updated successfully",
-        color: "green"
+        color: "green",
       });
-    }
+    },
   });
 
   const handleStatusChange = (id: string, data: UpdateJobStatus) => {
@@ -302,7 +302,7 @@ function CompanyDetail() {
                             onClick={(e) => {
                               e.stopPropagation();
                               handleStatusChange(job?.id ?? "", {
-                                status: "Approved"
+                                status: "Approved",
                               });
                             }}
                           >
@@ -312,7 +312,7 @@ function CompanyDetail() {
                             onClick={(e) => {
                               e.stopPropagation();
                               handleStatusChange(job?.id ?? "", {
-                                status: "Rejected"
+                                status: "Rejected",
                               });
                             }}
                           >

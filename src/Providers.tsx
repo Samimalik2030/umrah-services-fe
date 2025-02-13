@@ -12,10 +12,12 @@ import "@mantine/dates/styles.css";
 
 import theme from "./theme";
 import { AuthProvider } from "./contexts/AuthContext";
+import Version from "./components/Version";
 
 const Providers = () => {
   return (
     <MantineProvider theme={theme}>
+      <Version />
       <Notifications position="top-right" withinPortal zIndex={9999} />
       <AuthProvider>
         <RouterProvider router={router} />

@@ -8,7 +8,7 @@ import {
   Table,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import IconSearch from "../../assets/icons/IconSearch";
 import useGetHosts from "../../hooks/useGetHosts";
@@ -63,7 +63,6 @@ function Hosts() {
                   <Table.Th>Name</Table.Th>
                   <Table.Th>Name</Table.Th>
                   <Table.Th>Address</Table.Th>
-                  <Table.Th>Town</Table.Th>
                   <Table.Th>Country Code</Table.Th>
                   <Table.Th>Plan Name</Table.Th>
                 </Table.Tr>
@@ -104,9 +103,7 @@ function Hosts() {
                           </Text>
                         </Box>
                       </Table.Td>
-                      <Table.Td>
-                        {host?.personalInformation?.town ?? "N/A"}
-                      </Table.Td>
+
                       <Table.Td>
                         {host?.personalInformation?.countryCode ?? "N/A"}
                       </Table.Td>

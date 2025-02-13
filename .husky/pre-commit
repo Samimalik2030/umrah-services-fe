@@ -1,0 +1,4 @@
+npm run sync:api
+npm run build
+git add .
+npm --no-git-tag-version version patch && git add .

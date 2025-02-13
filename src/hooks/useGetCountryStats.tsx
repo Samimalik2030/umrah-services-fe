@@ -1,25 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "../http";
-import { City, State } from "../constants/COMMON_INTERFACES";
 
-const useGetStates = (countryId: string) => {
+const useGetStates = (countryId: number) => {
   const { data, isLoading } = useQuery({
     queryKey: ["statesInfo", countryId],
-    queryFn: () => http.states.stateControllerIndex(countryId),
-    enabled: !!countryId
+    queryFn: () =>
+      http.states.stateControllerIndex({ countryId: Number(countryId) }),
+    enabled: !!countryId,
   });
 
-  const states: State[] = data?.data || [];
+  const states = data?.data || [];
   return { states, isLoading };
 };
-const useGetCities = (stateId: string) => {
+const useGetCities = (stateId: number) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["citiesInfo", stateId],
-    queryFn: () => http.cities.cityControllerIndex(stateId),
-    enabled: !!stateId
+    queryKey: ["citiesInfo", Number(stateId)],
+    queryFn: () =>
+      http.cities.cityControllerIndex({ stateId: Number(stateId) }),
+    enabled: !!stateId,
   });
 
-  const cities: City[] = data?.data || [];
+  const cities = data?.data || [];
   return { cities, isLoading };
 };
 

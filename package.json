@@ -1,7 +1,7 @@
 {
   "name": "mpa-coaching-admin-portal-react",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "sync:api": "npx swagger-typescript-api -p https://api.mpacoaching.com/api-json -o src/http --axios",
-    "deploy": "npm run build && firebase deploy --only hosting:admin-mpacoaching"
+    "deploy": "npm run build && firebase deploy --only hosting:admin-mpacoaching",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mantine/core": "^7.15.1",
@@ -35,6 +36,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
+    "husky": "^9.1.7",
     "postcss": "^8.4.49",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
