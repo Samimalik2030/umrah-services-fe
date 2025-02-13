@@ -722,9 +722,9 @@ export interface JobIndexDataPagination {
 export interface CreateJobDto {
   /** @example "Sr. Software Engineer" */
   title: string;
-  /** @example "2025-02-13T06:58:24.241Z" */
+  /** @example "2025-02-13T07:04:55.507Z" */
   start: string;
-  /** @example "2025-02-13T06:58:24.241Z" */
+  /** @example "2025-02-13T07:04:55.507Z" */
   end: string;
   /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description: string;
@@ -742,9 +742,9 @@ export interface CreateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
   daysOfWork: string[];
-  /** @example "2025-02-13T06:58:24.241Z" */
+  /** @example "2025-02-13T07:04:55.508Z" */
   dailyStartTime: string;
-  /** @example "2025-02-13T14:58:24.241Z" */
+  /** @example "2025-02-13T15:04:55.508Z" */
   dailyFinishTime: string;
   /** @example "Facebook" */
   onWhichPlatform?: string;
@@ -754,9 +754,9 @@ export interface CreateJobDto {
 export interface UpdateJobDto {
   /** @example "Sr. Software Engineer" */
   title?: string;
-  /** @example "2025-02-13T06:58:24.242Z" */
+  /** @example "2025-02-13T07:04:55.508Z" */
   start?: string;
-  /** @example "2025-02-13T06:58:24.242Z" */
+  /** @example "2025-02-13T07:04:55.508Z" */
   end?: string;
   /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description?: string;
@@ -772,9 +772,9 @@ export interface UpdateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
   daysOfWork?: string[];
-  /** @example "2025-02-13T06:58:24.242Z" */
+  /** @example "2025-02-13T07:04:55.508Z" */
   dailyStartTime?: string;
-  /** @example "2025-02-13T14:58:24.242Z" */
+  /** @example "2025-02-13T15:04:55.508Z" */
   dailyFinishTime?: string;
   /** @example "LinkedIn" */
   onWhichPlatform?: string;
@@ -1130,9 +1130,9 @@ export interface CreateApplicationDto {
   type: "Job" | "Property";
   jobId?: string | null;
   propertyId?: string | null;
-  /** @example "2025-02-13T06:58:24.276Z" */
+  /** @example "2025-02-13T07:04:55.539Z" */
   moveInDate?: string | null;
-  /** @example "2025-02-13T06:58:24.276Z" */
+  /** @example "2025-02-13T07:04:55.539Z" */
   moveOutDate?: string | null;
 }
 
@@ -1911,7 +1911,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Mpa Coaching
- * @version 0.0.29
+ * @version 0.0.30
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -3228,9 +3228,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2025-01-20T06:58:24.240Z" */
+        /** @example "2025-01-20T07:04:55.506Z" */
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.240Z" */
+        /** @example "2025-02-13T07:04:55.506Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -3288,9 +3288,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2025-01-20T06:58:24.240Z" */
+        /** @example "2025-01-20T07:04:55.506Z" */
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.240Z" */
+        /** @example "2025-02-13T07:04:55.506Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -3394,9 +3394,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T06:58:24.264Z" */
+        /** @example "2025-01-20T07:04:55.530Z" */
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.264Z" */
+        /** @example "2025-02-13T07:04:55.530Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3469,9 +3469,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T06:58:24.264Z" */
+        /** @example "2025-01-20T07:04:55.530Z" */
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.264Z" */
+        /** @example "2025-02-13T07:04:55.530Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3528,9 +3528,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T06:58:24.264Z" */
+        /** @example "2025-01-20T07:04:55.530Z" */
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.264Z" */
+        /** @example "2025-02-13T07:04:55.530Z" */
         endDate?: string;
         status?:
           | "New"
@@ -4430,7 +4430,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example 10 */
         limit: number;
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.366Z" */
+        /** @example "2025-02-13T07:04:55.628Z" */
         endDate?: string;
         /** Read | Unread | Archived */
         status?: string;
@@ -4514,9 +4514,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T06:58:24.360Z" */
+        /** @example "2025-01-20T07:04:55.618Z" */
         startDate?: string;
-        /** @example "2025-02-13T06:58:24.360Z" */
+        /** @example "2025-02-13T07:04:55.618Z" */
         endDate?: string;
         /** @example "Feedback" */
         type?: string;
