@@ -158,7 +158,7 @@ const Interviews = () => {
                     <Table.Td>
                       {countries.filter(
                         (country) =>
-                          country.id.toString() ===
+                          country.name ===
                           interview.student.personalInfo?.country
                       )[0]?.name || "N/A"}
                     </Table.Td>
