@@ -119,6 +119,7 @@ const Interviews = () => {
                   <Table.Th>Plan Name</Table.Th>
                   <Table.Th>Country</Table.Th>
                   <Table.Th>Interview Date</Table.Th>
+                  <Table.Th>Interview Time</Table.Th>
                   <Table.Th>Interview Status</Table.Th>
                   <Table.Th>Payment</Table.Th>
                   <Table.Th>Action</Table.Th>
@@ -164,7 +165,9 @@ const Interviews = () => {
                     <Table.Td>
                       {new Date(interview.date).toLocaleDateString("en-US")}
                     </Table.Td>
-
+                    <Table.Td>
+                      {new Date(interview.date).toLocaleTimeString("en-US")}
+                    </Table.Td>
                     <Table.Td>
                       <Badge
                         variant="light"
