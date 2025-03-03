@@ -117,7 +117,7 @@ function CompanyDetail() {
                   <Text fw={600} size="sm">
                     Business Type:
                   </Text>
-                  <Text tt="capitalize">{company?.businessType ?? "N/A"}</Text>
+                  <Text tt="capitalize">{company?.businessRole ?? "N/A"}</Text>
                 </Group>
               </Stack>
             </Group>

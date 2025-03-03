@@ -12,7 +12,7 @@ import {
   Table,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import IconDots from "../../assets/icons/IconDots";
 import IconSearch from "../../assets/icons/IconSearch";
@@ -40,9 +40,9 @@ function Companies() {
       notifications.show({
         title: "Success",
         message: "Business status updated successfully",
-        color: "green"
+        color: "green",
       });
-    }
+    },
   });
 
   const handleStatusChange = (id: string, data: UpdateBusinessStatusDTO) => {
@@ -97,7 +97,7 @@ function Companies() {
                       <Box
                         style={{
                           position: "relative",
-                          display: "inline-block"
+                          display: "inline-block",
                         }}
                       >
                         <Avatar src={company.logoUrl} radius="xl" size="lg" />
@@ -110,7 +110,7 @@ function Companies() {
                               position: "absolute",
                               top: 0,
                               left: 0,
-                              transform: "translate(-25%, -25%)" // Adjust positioning
+                              transform: "translate(-25%, -25%)", // Adjust positioning
                             }}
                           >
                             {String(company?.jobCounts.pending)}
@@ -130,7 +130,7 @@ function Companies() {
                       </Stack>
                     </Group>
                   </Table.Td>
-                  <Table.Td tt={"capitalize"}>{company?.businessType}</Table.Td>
+                  <Table.Td tt={"capitalize"}>{company?.businessRole}</Table.Td>
                   <Table.Td>{company?.employeesCount}</Table.Td>
                   <Table.Td>{company?.operationSite}</Table.Td>
                   <Table.Td>
@@ -174,7 +174,7 @@ function Companies() {
                           onClick={(e) => {
                             e.stopPropagation();
                             handleStatusChange(company?.id ?? "", {
-                              status: "Approved"
+                              status: "Approved",
                             });
                           }}
                         >
@@ -184,7 +184,7 @@ function Companies() {
                           onClick={(e) => {
                             e.stopPropagation();
                             handleStatusChange(company?.id ?? "", {
-                              status: "Blocked"
+                              status: "Blocked",
                             });
                           }}
                         >

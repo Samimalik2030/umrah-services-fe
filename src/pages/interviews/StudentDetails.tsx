@@ -7,7 +7,7 @@ import {
   Paper,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import IconMail from "../../assets/icons/IconMail";
 import IconPhone from "../../assets/icons/IconPhone";
@@ -94,7 +94,7 @@ function StudentDetails({ student }: StudentDetailsProps) {
                 <Title order={3} c={"blue"}>
                   Preferred Industries
                 </Title>
-                {student?.internshipPreferences?.industryPreferences?.map(
+                {student?.internshipPreferences?.desiredInternshipRoles?.map(
                   (industry) => (
                     <Group justify="start" align="center" gap="md">
                       <Text fz={"lg"} fw={600}>

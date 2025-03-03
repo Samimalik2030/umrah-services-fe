@@ -171,6 +171,7 @@ export interface User {
   roles: string[];
   /** @default null */
   fullName: string;
+  isEmailVerified: boolean;
 }
 
 export interface ActivityLogReference {
@@ -251,8 +252,6 @@ export interface Education {
 }
 
 export interface InternshipPreferencesDto {
-  /** @example ["Technology"] */
-  industryPreferences?: string[];
   /** @example ["Software Developer Intern"] */
   desiredInternshipRoles?: string[];
   /** @example "Remote" */
@@ -288,10 +287,6 @@ export interface HostPreferenceDto {
   /** @example "Shared" */
   preferredPrivateOrSharedAccommodation?: string;
   partnerDetails?: StudentPartnerDTO;
-  /** @example ["Arab"] */
-  preferredEthnicity?: string[];
-  /** @example ["Islam"] */
-  preferredReligion?: string[];
   /** @example "No" */
   mealIncluded?: string;
   preferredDietary?: string;
@@ -494,7 +489,6 @@ export interface Business {
   state: string;
   country: string;
   zip: string;
-  businessType: string;
   employeesCount: number;
   description: string;
   operationSite: string;
@@ -505,7 +499,8 @@ export interface Business {
   members: string[];
   shouldBringLaptop: boolean;
   howDidYouHearAboutMPACoaching: string;
-  onWhichPlatform: string;
+  businessRole: string;
+  onWhichPlatform?: string;
   officeHasStamp: boolean;
   code: number;
   /** @default "Pending For Approval" */
@@ -541,8 +536,6 @@ export interface CreateBusinessDto {
   country: string;
   /** @example "99502" */
   zip: string;
-  /** @example "Education" */
-  businessType: string;
   /** @example 10 */
   employeesCount: number;
   description: string;
@@ -558,6 +551,7 @@ export interface CreateBusinessDto {
   howDidYouHearAboutMPACoaching?: string;
   onWhichPlatform?: string;
   officeHasStamp?: boolean;
+  businessRole: string;
 }
 
 export interface SignedBusinessDto {
@@ -600,7 +594,6 @@ export interface UpdateBusinessDto {
   state?: string;
   country?: string;
   zip?: string;
-  businessType?: string;
   employeesCount?: number;
   description?: string;
   operationSite?: "Office" | "Shop" | "Home";
@@ -612,6 +605,7 @@ export interface UpdateBusinessDto {
   howDidYouHearAboutMPACoaching?: string;
   onWhichPlatform?: string;
   officeHasStamp?: boolean;
+  businessRole: string;
 }
 
 export interface UpdateBusinessStatusDTO {
@@ -722,9 +716,9 @@ export interface JobIndexDataPagination {
 export interface CreateJobDto {
   /** @example "Sr. Software Engineer" */
   title: string;
-  /** @example "2025-02-13T07:04:55.507Z" */
+  /** @example "2025-02-25T08:20:26.501Z" */
   start: string;
-  /** @example "2025-02-13T07:04:55.507Z" */
+  /** @example "2025-02-25T08:20:26.501Z" */
   end: string;
   /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description: string;
@@ -742,9 +736,9 @@ export interface CreateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
   daysOfWork: string[];
-  /** @example "2025-02-13T07:04:55.508Z" */
+  /** @example "2025-02-25T08:20:26.501Z" */
   dailyStartTime: string;
-  /** @example "2025-02-13T15:04:55.508Z" */
+  /** @example "2025-02-25T16:20:26.501Z" */
   dailyFinishTime: string;
   /** @example "Facebook" */
   onWhichPlatform?: string;
@@ -754,9 +748,9 @@ export interface CreateJobDto {
 export interface UpdateJobDto {
   /** @example "Sr. Software Engineer" */
   title?: string;
-  /** @example "2025-02-13T07:04:55.508Z" */
+  /** @example "2025-02-25T08:20:26.501Z" */
   start?: string;
-  /** @example "2025-02-13T07:04:55.508Z" */
+  /** @example "2025-02-25T08:20:26.501Z" */
   end?: string;
   /** @example "Sr. Software Engineer who knows also databases, creative mind" */
   description?: string;
@@ -772,9 +766,9 @@ export interface UpdateJobDto {
   whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
   /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
   daysOfWork?: string[];
-  /** @example "2025-02-13T07:04:55.508Z" */
+  /** @example "2025-02-25T08:20:26.502Z" */
   dailyStartTime?: string;
-  /** @example "2025-02-13T15:04:55.508Z" */
+  /** @example "2025-02-25T16:20:26.502Z" */
   dailyFinishTime?: string;
   /** @example "LinkedIn" */
   onWhichPlatform?: string;
@@ -785,6 +779,11 @@ export interface UpdateJobDto {
 export interface UpdateJobStatus {
   /** @example "Approved" */
   status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
+}
+
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
 }
 
 export interface PersonalInformationDto {
@@ -1048,6 +1047,7 @@ export interface Property {
   state: string;
   city: string;
   location: string;
+  coordinates: Coordinates;
   areaUnit: string;
   propertySize: number;
   currency: string;
@@ -1130,9 +1130,9 @@ export interface CreateApplicationDto {
   type: "Job" | "Property";
   jobId?: string | null;
   propertyId?: string | null;
-  /** @example "2025-02-13T07:04:55.539Z" */
+  /** @example "2025-02-25T08:20:26.534Z" */
   moveInDate?: string | null;
-  /** @example "2025-02-13T07:04:55.539Z" */
+  /** @example "2025-02-25T08:20:26.534Z" */
   moveOutDate?: string | null;
 }
 
@@ -1209,6 +1209,7 @@ export interface AuthHost {
   status: "Draft" | "Active" | "Blocked" | "Approved" | "Pending For Approval" | "Rejected";
   planName: string;
   paymentStatus: "Paid" | "Unpaid";
+  user: User;
   createdAt: string;
   updatedAt: string;
 }
@@ -1258,6 +1259,7 @@ export interface UpdatePropertyDto {
   city?: string;
   /** @example "Downtown" */
   location?: string;
+  coordinates?: Coordinates;
   /** @example "sqft" */
   areaUnit?: string;
   /** @example 20 */
@@ -1911,7 +1913,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Mpa Coaching
- * @version 0.0.30
+ * @version 0.0.74
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -1940,6 +1942,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     appControllerHealth: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/health`,
+        method: "GET",
+        ...params,
+      }),
+  };
+  logs = {
+    /**
+     * No description
+     *
+     * @tags App
+     * @name AppControllerAppLogs
+     * @request GET:/logs
+     */
+    appControllerAppLogs: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/logs`,
         method: "GET",
         ...params,
       }),
@@ -2409,7 +2426,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example [] */
         jobTypes?: string[];
         /** @example [] */
-        industries?: string[];
+        desiredInternshipRoles?: string[];
         /** @example [] */
         roles?: string[];
         /** Yes | No */
@@ -2467,7 +2484,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example [] */
         jobTypes?: string[];
         /** @example [] */
-        industries?: string[];
+        desiredInternshipRoles?: string[];
         /** @example [] */
         roles?: string[];
         /** Yes | No */
@@ -3228,9 +3245,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2025-01-20T07:04:55.506Z" */
+        /** @example "2025-01-18T08:20:26.500Z" */
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.506Z" */
+        /** @example "2025-02-25T08:20:26.500Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -3288,9 +3305,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2025-01-20T07:04:55.506Z" */
+        /** @example "2025-01-18T08:20:26.500Z" */
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.506Z" */
+        /** @example "2025-02-25T08:20:26.500Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -3394,9 +3411,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T07:04:55.530Z" */
+        /** @example "2025-01-18T08:20:26.523Z" */
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.530Z" */
+        /** @example "2025-02-25T08:20:26.524Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3469,9 +3486,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T07:04:55.530Z" */
+        /** @example "2025-01-18T08:20:26.523Z" */
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.530Z" */
+        /** @example "2025-02-25T08:20:26.524Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3528,9 +3545,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T07:04:55.530Z" */
+        /** @example "2025-01-18T08:20:26.523Z" */
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.530Z" */
+        /** @example "2025-02-25T08:20:26.524Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3768,6 +3785,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Invitation, any>({
         path: `/invitations/${id}`,
         method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  interns = {
+    /**
+     * No description
+     *
+     * @tags Intern
+     * @name InternControllerGet
+     * @request GET:/interns/{id}
+     * @secure
+     */
+    internControllerGet: (id: string, params: RequestParams = {}) =>
+      this.request<Intern, any>({
+        path: `/interns/${id}`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -4220,6 +4255,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: "json",
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name PropertyControllerGetTenants
+     * @request GET:/properties/{id}/tenants
+     * @secure
+     */
+    propertyControllerGetTenants: (id: string, params: RequestParams = {}) =>
+      this.request<TenancyPagination, any>({
+        path: `/properties/${id}/tenants`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
   };
   rooms = {
     /**
@@ -4430,7 +4482,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example 10 */
         limit: number;
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.628Z" */
+        /** @example "2025-02-25T08:20:26.629Z" */
         endDate?: string;
         /** Read | Unread | Archived */
         status?: string;
@@ -4514,9 +4566,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-20T07:04:55.618Z" */
+        /** @example "2025-01-18T08:20:26.621Z" */
         startDate?: string;
-        /** @example "2025-02-13T07:04:55.618Z" */
+        /** @example "2025-02-25T08:20:26.621Z" */
         endDate?: string;
         /** @example "Feedback" */
         type?: string;
