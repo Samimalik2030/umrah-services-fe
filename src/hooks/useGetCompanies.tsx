@@ -2,17 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import http from "../http";
 import { RequestParams } from "../http/Api";
 
-const useGetCompanies = (page: number) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["companies", page],
+const useGetCompanies = (page: number,name:string) => {
+  const { data, isLoading,isSuccess} = useQuery({
+    queryKey: ["companies", page,name],
     queryFn: () =>
       http.businesses.businessControllerIndex({
         page: page,
         limit: 10,
+        name:name
       }),
   });
   const companies = data?.data;
-  return { companies, isLoading };
+  return { companies, isLoading,isSuccess};
 };
 
 const useGetCompany = (id: string, params?: RequestParams) => {

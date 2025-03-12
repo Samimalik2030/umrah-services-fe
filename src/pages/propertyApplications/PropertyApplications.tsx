@@ -25,6 +25,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const PropertyApplications = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const [search,setSearch] = useState<string>('')
   const { applications, isLoading } = useGetPropertyApplications(page);
   const queryClient = useQueryClient();
   const { mutate: updateApplication, isPending: updatingApplication } =
@@ -43,6 +44,23 @@ const PropertyApplications = () => {
             queryClient.invalidateQueries({ queryKey: ["application"] });
           })
     });
+
+    const filteredApplications = applications?.data.filter((application)=>{
+
+  
+      const fullName = `${application?.property?.name ?? ""} `.toLowerCase();
+      const email = application?.property?.host?.personalInformation?.email?.toLowerCase() ?? "";
+      const status = application?.status.toLowerCase() ?? "";
+      const searchTerm = search.toLowerCase();
+  
+      return (
+        fullName.includes(searchTerm) ||
+        email.includes(searchTerm) ||
+        status.includes(searchTerm)
+      );
+    }
+    )
+    
 
   const handleUpdate = (
     id: string,
@@ -66,6 +84,7 @@ const PropertyApplications = () => {
             w={370}
             leftSection={<IconSearch withOutline fill="none" />}
             placeholder="Search by names, email, status"
+            onChange={(e)=>setSearch(e.target.value)}
           />
           <Button>Search</Button>
         </Group>
@@ -94,7 +113,9 @@ const PropertyApplications = () => {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {applications?.data.map((application, index) => (
+              {filteredApplications
+                  ?.filter((application) => application?.status !== "Draft")
+                  .map((application, index: number)  => (
                   <Table.Tr
                     key={index}
                     style={{ cursor: "pointer" }}

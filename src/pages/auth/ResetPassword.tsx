@@ -42,8 +42,16 @@ function ResetPassword() {
     const location = useLocation();
     const { email, type, otp } = location.state || "";
     const schema = yup.object({
-      password: yup.string().required("Password is required"),
-      confirm_password: yup.string().required("Confirm Password is required")
+      password: yup
+      .string()
+      .trim()
+      .min(6, "Password must be at least 6 characters long")
+      .required("Password is required"),
+    confirmPassword: yup
+      .string()
+      .trim()
+      .oneOf([yup.ref("password")], "Passwords must match")
+      .required("Confirm password is required"),
     });
     // Form Hooks
     const form = useForm({

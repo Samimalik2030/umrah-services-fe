@@ -406,381 +406,6 @@ export interface PatchPaymentStatus {
   paymentStatus: "Paid" | "Unpaid" | "Pending for approval";
 }
 
-export interface Tenancy {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  /** @format date-time */
-  moveInDate: string;
-  /** @format date-time */
-  moveOutDate: string;
-  residenceStatus: "Living" | "Vacated";
-  bookedNights: number;
-}
-
-export interface TenancyPagination {
-  data: Tenancy[];
-  pagination: PaginationMeta;
-}
-
-export interface EducationPagination {
-  data: Education[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateEducationDto {
-  degree?: string;
-  schoolName?: string;
-  /** @format binary */
-  documentFile?: File;
-}
-
-export interface UpdateEducationDto {
-  degree?: string;
-  schoolName?: string;
-  /** @format binary */
-  documentFile?: object;
-}
-
-export interface DocumentIdsDto {
-  fileIds: string[];
-}
-
-export interface DocumentPagination {
-  data: Document[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateDocumentDto {
-  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
-  /** @format binary */
-  file: File;
-}
-
-export interface UpdateDocumentDto {
-  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
-  /** @format binary */
-  file?: File;
-}
-
-export interface JobCounts {
-  total: number;
-  approved: number;
-  pending: number;
-}
-
-export interface Business {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  name: string;
-  phone: string;
-  countryCode: string;
-  logoUrl: string;
-  certificateUrl: string;
-  addressLine1: string;
-  /** @default null */
-  addressLine2: string;
-  city: string;
-  state: string;
-  country: string;
-  zip: string;
-  employeesCount: number;
-  description: string;
-  operationSite: string;
-  nearestBusStop: string;
-  nextStation: string;
-  busRoute: string;
-  isArchived: boolean;
-  members: string[];
-  shouldBringLaptop: boolean;
-  howDidYouHearAboutMPACoaching: string;
-  businessRole: string;
-  onWhichPlatform?: string;
-  officeHasStamp: boolean;
-  code: number;
-  /** @default "Pending For Approval" */
-  status: "Approved" | "Blocked" | "Pending For Approval";
-  jobCounts: JobCounts;
-}
-
-export interface BusinessPagination {
-  data: Business[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateBusinessDto {
-  /** @format binary */
-  logoFile: File;
-  /** @format binary */
-  certificateFile: File;
-  /** @example "My Business" */
-  name: string;
-  /** @example 420304050607 */
-  phone: string;
-  /** @example 42 */
-  countryCode: string;
-  /** @example "7211 Jewel Lake Rd" */
-  addressLine1: string;
-  /** @example "Jewel Lake Rd" */
-  addressLine2: string;
-  /** @example "Anchorage" */
-  city: string;
-  /** @example "Alaska" */
-  state: string;
-  /** @example "United States" */
-  country: string;
-  /** @example "99502" */
-  zip: string;
-  /** @example 10 */
-  employeesCount: number;
-  description: string;
-  /** @example "Office" */
-  operationSite: "Office" | "Shop" | "Home";
-  /** @example "456 Elm St" */
-  nearestBusStop: string;
-  /** @example "625 8th Avenue" */
-  nextStation: string;
-  /** @example "625 8th Avenue" */
-  busRoute: string;
-  shouldBringLaptop?: boolean;
-  howDidYouHearAboutMPACoaching?: string;
-  onWhichPlatform?: string;
-  officeHasStamp?: boolean;
-  businessRole: string;
-}
-
-export interface SignedBusinessDto {
-  token: string;
-  business: Business;
-}
-
-export interface BusinessTypeDto {
-  types: string[];
-}
-
-export interface RootBusinessSignInDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "password" */
-  password: string;
-}
-
-export interface CodeBasedSignInDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "BUS-1002" */
-  code: string;
-  /** @example "password" */
-  password: string;
-}
-
-export interface UpdateBusinessDto {
-  name?: string;
-  phone?: string;
-  /** @example 42 */
-  countryCode: string;
-  /** @format binary */
-  logoFile?: File;
-  /** @format binary */
-  certificateFile?: File;
-  addressLine1?: string;
-  addressLine2?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  zip?: string;
-  employeesCount?: number;
-  description?: string;
-  operationSite?: "Office" | "Shop" | "Home";
-  nearestBusStop?: string;
-  nextStation?: string;
-  busRoute?: string;
-  isArchived?: boolean;
-  shouldBringLaptop?: boolean;
-  howDidYouHearAboutMPACoaching?: string;
-  onWhichPlatform?: string;
-  officeHasStamp?: boolean;
-  businessRole: string;
-}
-
-export interface UpdateBusinessStatusDTO {
-  /** @example "Approved" */
-  status: "Approved" | "Blocked" | "Pending For Approval";
-}
-
-export interface BusinessArchiveDto {
-  /** @example true */
-  archive: boolean;
-}
-
-export interface OfficeReportingDto {
-  /** @example "John" */
-  firstName: string;
-  /** @example "Doe" */
-  lastName: string;
-  /** @example "Manager" */
-  position: string;
-}
-
-export type InternsStats = object;
-
-export interface Job {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  title: string;
-  description: string;
-  start: string;
-  end: string;
-  industryPreference: string;
-  desiredInternshipRole: string;
-  jobType: string;
-  isFareIncluded: boolean;
-  isLunchIncluded: boolean;
-  isArchived: boolean;
-  reportingInformation: OfficeReportingDto;
-  whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
-  daysOfWork: string[];
-  dailyStartTime: string;
-  dailyFinishTime: string;
-  /** @default null */
-  onWhichPlatform: string;
-  status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
-  business: Business;
-  internsStats: InternsStats;
-}
-
-export interface JobPagination {
-  data: Job[];
-  pagination: PaginationMeta;
-}
-
-export interface Interview {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  scheduledWith: string;
-  scheduledBy: string;
-  student: Student;
-  business: Business;
-  status: string;
-  /** @format date-time */
-  date: string;
-  duration: string;
-}
-
-export interface InterviewPagination {
-  data: Interview[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateInterviewDto {
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewDate: string;
-}
-
-export interface LatestInterviewDto {
-  interview: Interview | null;
-}
-
-export interface UpdateInterviewDto {
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewDate?: string;
-}
-
-export interface UpdateInterviewStatus {
-  status: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
-}
-
-export interface JobData {
-  matched: Job[];
-  matchedCount: number;
-  others: Job[];
-  othersCount: number;
-}
-
-export interface JobIndexDataPagination {
-  data: JobData;
-  pagination: PaginationMeta;
-}
-
-export interface CreateJobDto {
-  /** @example "Sr. Software Engineer" */
-  title: string;
-  /** @example "2025-02-25T08:20:26.501Z" */
-  start: string;
-  /** @example "2025-02-25T08:20:26.501Z" */
-  end: string;
-  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
-  description: string;
-  /** @example "Science and Technology" */
-  industryPreference: string;
-  /** @example "Sr. Fullstack Developer" */
-  desiredInternshipRole: string;
-  /** @example "Remote" */
-  jobType: string;
-  /** @example false */
-  isFareIncluded: boolean;
-  /** @example false */
-  isLunchIncluded: boolean;
-  /** @example ["Summer"] */
-  whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
-  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
-  daysOfWork: string[];
-  /** @example "2025-02-25T08:20:26.501Z" */
-  dailyStartTime: string;
-  /** @example "2025-02-25T16:20:26.501Z" */
-  dailyFinishTime: string;
-  /** @example "Facebook" */
-  onWhichPlatform?: string;
-  reportingInformation: OfficeReportingDto;
-}
-
-export interface UpdateJobDto {
-  /** @example "Sr. Software Engineer" */
-  title?: string;
-  /** @example "2025-02-25T08:20:26.501Z" */
-  start?: string;
-  /** @example "2025-02-25T08:20:26.501Z" */
-  end?: string;
-  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
-  description?: string;
-  /** @example "Health and Medicine" */
-  industryPreference?: string;
-  /** @example "Sr. Fullstack Developer" */
-  desiredInternshipRole?: string;
-  /** @example "On-site" */
-  jobType?: string;
-  isFareIncluded?: boolean;
-  isLunchIncluded?: boolean;
-  /** @example ["Winter"] */
-  whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
-  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
-  daysOfWork?: string[];
-  /** @example "2025-02-25T08:20:26.502Z" */
-  dailyStartTime?: string;
-  /** @example "2025-02-25T16:20:26.502Z" */
-  dailyFinishTime?: string;
-  /** @example "LinkedIn" */
-  onWhichPlatform?: string;
-  reportingInformation?: OfficeReportingDto;
-  isArchived?: boolean;
-}
-
-export interface UpdateJobStatus {
-  /** @example "Approved" */
-  status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
-}
-
 export interface Coordinates {
   latitude: number;
   longitude: number;
@@ -1064,6 +689,393 @@ export interface Property {
   host: UpdateHostDto;
 }
 
+export interface Tenancy {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  student: Student;
+  property: Property;
+  /** @format date-time */
+  moveInDate: string;
+  /** @format date-time */
+  moveOutDate: string;
+  residenceStatus: "Living" | "Vacated";
+  bookedNights: number;
+}
+
+export interface TenancyPagination {
+  data: Tenancy[];
+  pagination: PaginationMeta;
+}
+
+export interface EducationPagination {
+  data: Education[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateEducationDto {
+  degree?: string;
+  schoolName?: string;
+  /** @format binary */
+  documentFile?: File;
+}
+
+export interface UpdateEducationDto {
+  degree?: string;
+  schoolName?: string;
+  /** @format binary */
+  documentFile?: object;
+}
+
+export interface DocumentIdsDto {
+  fileIds: string[];
+}
+
+export interface DocumentPagination {
+  data: Document[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateDocumentDto {
+  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
+  /** @format binary */
+  file: File;
+}
+
+export interface UpdateDocumentDto {
+  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
+  /** @format binary */
+  file?: File;
+}
+
+export interface Member {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  user: User;
+  roles: string[];
+}
+
+export interface JobCounts {
+  total: number;
+  approved: number;
+  pending: number;
+}
+
+export interface Business {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  name: string;
+  phone: string;
+  countryCode: string;
+  logoUrl: string;
+  certificateUrl: string;
+  addressLine1: string;
+  /** @default null */
+  addressLine2: string;
+  city: string;
+  state: string;
+  country: string;
+  zip: string;
+  employeesCount: number;
+  description: string;
+  operationSite: string;
+  nearestBusStop: string;
+  nextStation: string;
+  busRoute: string;
+  isArchived: boolean;
+  members: Member[];
+  shouldBringLaptop: boolean;
+  howDidYouHearAboutMPACoaching: string;
+  businessRole: string;
+  onWhichPlatform?: string;
+  officeHasStamp: boolean;
+  code: number;
+  /** @default "Pending For Approval" */
+  status: "Approved" | "Blocked" | "Pending For Approval";
+  jobCounts: JobCounts;
+}
+
+export interface BusinessPagination {
+  data: Business[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateBusinessDto {
+  /** @format binary */
+  logoFile: File;
+  /** @format binary */
+  certificateFile: File;
+  /** @example "My Business" */
+  name: string;
+  /** @example 420304050607 */
+  phone: string;
+  /** @example 42 */
+  countryCode: string;
+  /** @example "7211 Jewel Lake Rd" */
+  addressLine1: string;
+  /** @example "Jewel Lake Rd" */
+  addressLine2: string;
+  /** @example "Anchorage" */
+  city: string;
+  /** @example "Alaska" */
+  state: string;
+  /** @example "United States" */
+  country: string;
+  /** @example "99502" */
+  zip: string;
+  /** @example 10 */
+  employeesCount: number;
+  description: string;
+  /** @example "Office" */
+  operationSite: "Office" | "Shop" | "Home";
+  /** @example "456 Elm St" */
+  nearestBusStop: string;
+  /** @example "625 8th Avenue" */
+  nextStation: string;
+  /** @example "625 8th Avenue" */
+  busRoute: string;
+  shouldBringLaptop?: boolean;
+  howDidYouHearAboutMPACoaching?: string;
+  onWhichPlatform?: string;
+  officeHasStamp?: boolean;
+  businessRole: string;
+}
+
+export interface SignedBusinessDto {
+  token: string;
+  business: Business;
+}
+
+export interface BusinessTypeDto {
+  types: string[];
+}
+
+export interface RootBusinessSignInDto {
+  /** @default "example@example.com" */
+  email?: string;
+  /** @example "password" */
+  password: string;
+}
+
+export interface CodeBasedSignInDto {
+  /** @default "example@example.com" */
+  email?: string;
+  /** @example "BUS-1002" */
+  code: string;
+  /** @example "password" */
+  password: string;
+}
+
+export interface UpdateBusinessDto {
+  name?: string;
+  phone?: string;
+  /** @example 42 */
+  countryCode: string;
+  /** @format binary */
+  logoFile?: File;
+  /** @format binary */
+  certificateFile?: File;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  zip?: string;
+  employeesCount?: number;
+  description?: string;
+  operationSite?: "Office" | "Shop" | "Home";
+  nearestBusStop?: string;
+  nextStation?: string;
+  busRoute?: string;
+  isArchived?: boolean;
+  shouldBringLaptop?: boolean;
+  howDidYouHearAboutMPACoaching?: string;
+  onWhichPlatform?: string;
+  officeHasStamp?: boolean;
+  businessRole: string;
+}
+
+export interface UpdateBusinessStatusDTO {
+  /** @example "Approved" */
+  status: "Approved" | "Blocked" | "Pending For Approval";
+}
+
+export interface BusinessArchiveDto {
+  /** @example true */
+  archive: boolean;
+}
+
+export interface OfficeReportingDto {
+  /** @example "John" */
+  firstName: string;
+  /** @example "Doe" */
+  lastName: string;
+  /** @example "Manager" */
+  position: string;
+}
+
+export type InternsStats = object;
+
+export interface Job {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  title: string;
+  description: string;
+  start: string;
+  end: string;
+  industryPreference: string;
+  desiredInternshipRole: string;
+  jobType: string;
+  isFareIncluded: boolean;
+  isLunchIncluded: boolean;
+  isArchived: boolean;
+  reportingInformation: OfficeReportingDto;
+  whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
+  daysOfWork: string[];
+  dailyStartTime: string;
+  dailyFinishTime: string;
+  /** @default null */
+  onWhichPlatform: string;
+  status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
+  business: Business;
+  internsStats: InternsStats;
+}
+
+export interface JobPagination {
+  data: Job[];
+  pagination: PaginationMeta;
+}
+
+export interface Interview {
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  id: string;
+  scheduledWith: string;
+  scheduledBy: string;
+  student: Student;
+  business: Business;
+  status: string;
+  /** @format date-time */
+  date: string;
+  duration: string;
+}
+
+export interface InterviewPagination {
+  data: Interview[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateInterviewDto {
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewDate: string;
+}
+
+export interface LatestInterviewDto {
+  interview: Interview | null;
+}
+
+export interface UpdateInterviewDto {
+  /** @example "2025-01-05T10:00:00Z" */
+  interviewDate?: string;
+}
+
+export interface UpdateInterviewStatus {
+  status: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
+}
+
+export interface JobData {
+  matched: Job[];
+  matchedCount: number;
+  others: Job[];
+  othersCount: number;
+}
+
+export interface JobIndexDataPagination {
+  data: JobData;
+  pagination: PaginationMeta;
+}
+
+export interface CreateJobDto {
+  /** @example "Sr. Software Engineer" */
+  title: string;
+  /** @example "2025-03-12T03:35:00.967Z" */
+  start: string;
+  /** @example "2025-03-12T03:35:00.967Z" */
+  end: string;
+  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
+  description: string;
+  /** @example "Science and Technology" */
+  industryPreference: string;
+  /** @example "Sr. Fullstack Developer" */
+  desiredInternshipRole: string;
+  /** @example "Remote" */
+  jobType: string;
+  /** @example false */
+  isFareIncluded: boolean;
+  /** @example false */
+  isLunchIncluded: boolean;
+  /** @example ["Summer"] */
+  whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
+  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
+  daysOfWork: string[];
+  /** @example "2025-03-12T03:35:00.968Z" */
+  dailyStartTime: string;
+  /** @example "2025-03-12T11:35:00.968Z" */
+  dailyFinishTime: string;
+  /** @example "Facebook" */
+  onWhichPlatform?: string;
+  reportingInformation: OfficeReportingDto;
+}
+
+export interface UpdateJobDto {
+  /** @example "Sr. Software Engineer" */
+  title?: string;
+  /** @example "2025-03-12T03:35:00.968Z" */
+  start?: string;
+  /** @example "2025-03-12T03:35:00.968Z" */
+  end?: string;
+  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
+  description?: string;
+  /** @example "Health and Medicine" */
+  industryPreference?: string;
+  /** @example "Sr. Fullstack Developer" */
+  desiredInternshipRole?: string;
+  /** @example "On-site" */
+  jobType?: string;
+  isFareIncluded?: boolean;
+  isLunchIncluded?: boolean;
+  /** @example ["Winter"] */
+  whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
+  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
+  daysOfWork?: string[];
+  /** @example "2025-03-12T03:35:00.969Z" */
+  dailyStartTime?: string;
+  /** @example "2025-03-12T11:35:00.969Z" */
+  dailyFinishTime?: string;
+  /** @example "LinkedIn" */
+  onWhichPlatform?: string;
+  reportingInformation?: OfficeReportingDto;
+  isArchived?: boolean;
+}
+
+export interface UpdateJobStatus {
+  /** @example "Approved" */
+  status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
+}
+
 export interface Application {
   /** @format date-time */
   createdAt: string;
@@ -1130,9 +1142,9 @@ export interface CreateApplicationDto {
   type: "Job" | "Property";
   jobId?: string | null;
   propertyId?: string | null;
-  /** @example "2025-02-25T08:20:26.534Z" */
+  /** @example "2025-03-12T03:35:01.008Z" */
   moveInDate?: string | null;
-  /** @example "2025-02-25T08:20:26.534Z" */
+  /** @example "2025-03-12T03:35:01.008Z" */
   moveOutDate?: string | null;
 }
 
@@ -1913,7 +1925,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Mpa Coaching
- * @version 0.0.74
+ * @version 0.0.92
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -2815,6 +2827,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page?: number;
         /** @example 10 */
         limit?: number;
+        /** @example "john doe" */
         name?: string;
         isArchived?: boolean;
       },
@@ -2843,6 +2856,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page?: number;
         /** @example 10 */
         limit?: number;
+        /** @example "john doe" */
         name?: string;
         isArchived?: boolean;
       },
@@ -3102,6 +3116,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         status?: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
         /** true | false */
         upcoming?: string;
+        /** @example "john doe" */
+        name?: string;
       },
       params: RequestParams = {},
     ) =>
@@ -3245,9 +3261,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2025-01-18T08:20:26.500Z" */
+        /** @example "2025-02-16T03:35:00.966Z" */
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.500Z" */
+        /** @example "2025-03-12T03:35:00.967Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -3305,9 +3321,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         roles?: string[];
         /** Remote | On-site | Hybrid */
         jobTypes?: string[];
-        /** @example "2025-01-18T08:20:26.500Z" */
+        /** @example "2025-02-16T03:35:00.966Z" */
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.500Z" */
+        /** @example "2025-03-12T03:35:00.967Z" */
         endDate?: string;
         isArchived?: boolean;
         businessId?: string;
@@ -3411,9 +3427,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-18T08:20:26.523Z" */
+        /** @example "2025-02-16T03:35:00.993Z" */
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.524Z" */
+        /** @example "2025-03-12T03:35:00.993Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3486,9 +3502,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-18T08:20:26.523Z" */
+        /** @example "2025-02-16T03:35:00.993Z" */
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.524Z" */
+        /** @example "2025-03-12T03:35:00.993Z" */
         endDate?: string;
         status?:
           | "New"
@@ -3545,9 +3561,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-18T08:20:26.523Z" */
+        /** @example "2025-02-16T03:35:00.993Z" */
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.524Z" */
+        /** @example "2025-03-12T03:35:00.993Z" */
         endDate?: string;
         status?:
           | "New"
@@ -4482,7 +4498,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** @example 10 */
         limit: number;
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.629Z" */
+        /** @example "2025-03-12T03:35:01.120Z" */
         endDate?: string;
         /** Read | Unread | Archived */
         status?: string;
@@ -4566,9 +4582,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         page: number;
         /** @example 10 */
         limit: number;
-        /** @example "2025-01-18T08:20:26.621Z" */
+        /** @example "2025-02-16T03:35:01.112Z" */
         startDate?: string;
-        /** @example "2025-02-25T08:20:26.621Z" */
+        /** @example "2025-03-12T03:35:01.112Z" */
         endDate?: string;
         /** @example "Feedback" */
         type?: string;

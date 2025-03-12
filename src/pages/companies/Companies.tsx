@@ -25,9 +25,11 @@ import http from "../../http";
 import { UpdateBusinessStatusDTO } from "../../http/Api";
 
 function Companies() {
+  const [searchInput, setSearchInput] = useState<string>(""); 
+  const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const { companies, isLoading } = useGetCompanies(page);
+  const { companies,isLoading} = useGetCompanies(page,search);
 
   const queryClient = useQueryClient();
 
@@ -45,9 +47,12 @@ function Companies() {
     },
   });
 
+
+
   const handleStatusChange = (id: string, data: UpdateBusinessStatusDTO) => {
     changeBusinessStatus({ id, data });
   };
+
 
   return (
     <Stack>
@@ -57,9 +62,11 @@ function Companies() {
           <TextInput
             w={370}
             leftSection={<IconSearch withOutline fill="none" />}
-            placeholder="Search by names or countries"
+            placeholder="Search by names"
+            onChange={(e)=>setSearchInput(e.target.value)}
           />
-          <Button>Search</Button>
+                <Button onClick={() => setSearch(searchInput)} loading={isLoading}>Search</Button>
+
         </Group>
       </Group>
 
@@ -122,7 +129,9 @@ function Companies() {
                           {company?.name}
                         </Text>
                         <Text fw={300} fz={12}>
-                          {"email"}
+                         {
+                          company.members[0].user.email
+                         }
                         </Text>
                         <Text fw={300} fz={12}>
                           {company?.phone}

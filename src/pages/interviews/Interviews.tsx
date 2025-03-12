@@ -37,6 +37,9 @@ import StudentDetails from "./StudentDetails";
 const Interviews = () => {
   const theme = useMantineTheme();
   const [page, setPage] = useState(1);
+  // const [search,setSearch] = useState<string>('')
+  // const [userSearch,setUserSearch] = useState<string>('')
+
 
   const { interviews, isLoading: gettingInterviews } = useGetInterviews(page);
   const queryClient = useQueryClient();
@@ -74,7 +77,7 @@ const Interviews = () => {
     });
 
   const handleStudentStatusChange = (id: string, data: PatchPaymentStatus) => {
-    updateStudentStatus({ id, data });
+    updateStudentStatus({ id, data }); 
   };
 
   // const handleEditClick = (interview: Interview) => {
@@ -97,9 +100,10 @@ const Interviews = () => {
                 color={theme.colors.gray[5]}
               />
             }
-            placeholder="Search by names or countries"
+            placeholder="Search by names"
+            // onChange={(e)=>setUserSearch(e.target.value)}
           />
-          <Button>Search</Button>
+          {/* <Button onClick={()=>setSearch(userSearch)}>Search</Button> */}
         </Group>
       </Group>
       <Card>
