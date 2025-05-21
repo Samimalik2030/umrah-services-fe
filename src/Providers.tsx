@@ -1,5 +1,6 @@
 import { Notifications } from "@mantine/notifications";
 import { MantineProvider } from "@mantine/core";
+import { DatesProvider } from "@mantine/dates"; // ✅ import this
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -17,12 +18,14 @@ import Version from "./components/Version";
 const Providers = () => {
   return (
     <MantineProvider theme={theme}>
-      <Version />
-      <Notifications position="top-right" withinPortal zIndex={9999} />
-      <AuthProvider>
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </AuthProvider>
+      <DatesProvider settings={{ locale: "en", firstDayOfWeek: 0 }}>
+        <AuthProvider>
+          <Version />
+          <Notifications position="top-right" withinPortal zIndex={9999} />
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </AuthProvider>
+      </DatesProvider>
     </MantineProvider>
   );
 };

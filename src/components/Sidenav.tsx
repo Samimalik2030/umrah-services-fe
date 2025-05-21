@@ -7,6 +7,9 @@ import IconMessageChatbot from "../assets/icons/IconMessageChatbot";
 import IconTopologyStar from "../assets/icons/IconTopologyStar";
 import IconUsersGroup from "../assets/icons/IconUsersGroup";
 import IconReceiptDollar from "../assets/icons/IconReceiptDollar";
+import IconSettings from "../assets/icons/IconSettings";
+import { useAuth } from "../contexts/AuthContext";
+import { Role } from "../interfaces/ICommonIconProps";
 
 interface Links {
   label: string;
@@ -14,113 +17,141 @@ interface Links {
   icon: string;
 }
 
-const links: Links[] = [
+const adminLinks: Links[] = [
   {
-    label: "Dashboard",
+    label: "Jobs",
     icon: "IconLayoutDashboard",
-    path: "/"
+    path: "/dashboard",
   },
   {
-    label: "Companies",
+    label: "District Officers",
+    icon: "IconLayoutDashboard",
+    path: "/dashboard/district-officers",
+  },
+  {
+    label: "Recruiters",
     icon: "IconWorld",
-    path: "/companies"
+    path: "/dashboard/recruiters",
   },
-  { label: "Interviews", icon: "IconUsersGroup", path: "/interviews" },
-  { label: "Hosts", icon: "IconTopologyStar", path: "/hosts" },
   {
-    label: "Property Applications",
-    icon: "IconTopologyStar",
-    path: "/property-applications"
-  }
-  // { label: "Analytics", icon: "IconChartHistogram", path: "/analytics" },
-  // { label: "Support", icon: "IconMessageChatbot", path: "/support" }
+    label: "Candidates",
+    icon: "IconUsersGroup",
+    path: "/dashboard/candidates",
+  },
+  {
+    label: "Settings",
+    icon: "IconSettings",
+    path: "/dashboard/settings",
+  },
+];
+
+const officerLinks: Links[] = [
+  {
+    label: "Recruiters",
+    icon: "IconWorld",
+    path: "/dashboard/my-recruiters",
+  },
+  {
+    label: "Candidates",
+    icon: "IconUsersGroup",
+    path: "/dashboard/candidates",
+  },
+  {
+    label: "Settings",
+    icon: "IconSettings",
+    path: "/dashboard/settings",
+  },
+];
+
+const recruiterLinks: Links[] = [
+  {
+    label: "Candidates",
+    icon: "IconWorld",
+    path: "/dashboard/district-candidates",
+  },
+  {
+    label: "Settings",
+    icon: "IconSettings",
+    path: "/dashboard/settings",
+  },
 ];
 
 function Sidenav() {
   const { pathname } = useLocation();
   const theme = useMantineTheme();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   function Icon({
     name,
     isActive,
-    size
+    size,
   }: {
     name: string;
     isActive: boolean;
     size: number;
   }) {
-    const newColor = isActive ? theme.colors.blue[4] : theme.colors.gray[5];
+    const color = isActive ? theme.colors.blue[4] : theme.colors.gray[5];
     const icons: Record<string, React.ReactNode> = {
       IconLayoutDashboard: (
-        <IconLayoutDashboard
-          fill="none"
-          withOutline
-          color={newColor}
-          size={size}
-        />
+        <IconLayoutDashboard fill="none" withOutline color={color} size={size} />
       ),
       IconWorld: (
-        <IconWorld fill="none" withOutline color={newColor} size={size} />
+        <IconWorld fill="none" withOutline color={color} size={size} />
       ),
       IconUsersGroup: (
-        <IconUsersGroup fill="none" withOutline color={newColor} size={size} />
+        <IconUsersGroup fill="none" withOutline color={color} size={size} />
       ),
       IconTopologyStar: (
-        <IconTopologyStar
-          fill="none"
-          withOutline
-          color={newColor}
-          size={size}
-        />
+        <IconTopologyStar fill="none" withOutline color={color} size={size} />
       ),
       IconReceiptDollar: (
-        <IconReceiptDollar
-          fill="none"
-          withOutline
-          color={newColor}
-          size={size}
-        />
+        <IconReceiptDollar fill="none" withOutline color={color} size={size} />
       ),
       IconChartHistogram: (
-        <IconChartHistogram
-          fill="none"
-          withOutline
-          color={newColor}
-          size={size}
-        />
+        <IconChartHistogram fill="none" withOutline color={color} size={size} />
       ),
       IconMessageChatbot: (
-        <IconMessageChatbot
-          fill="none"
-          withOutline
-          color={newColor}
-          size={size}
-        />
-      )
+        <IconMessageChatbot fill="none" withOutline color={color} size={size} />
+      ),
+      IconSettings: (
+        <IconSettings fill="none" withOutline color={color} size={size} />
+      ),
     };
 
     return <>{icons[name] || null}</>;
   }
 
+  let renderedLinks: Links[] = [];
+
+  if (user?.role === Role.DISTRICT_OFFICER) {
+    renderedLinks = officerLinks;
+  } else if (user?.role === Role.RECRUITER) {
+    renderedLinks = recruiterLinks;
+  } else {
+    renderedLinks = adminLinks;
+  }
+
   return (
     <div>
-      {links.map((l, i) => {
-        return (
-          <NavLink
-            key={i}
-            label={l.label}
-            leftSection={
-              l.icon ? (
-                <Icon name={l.icon} isActive={pathname === l.path} size={18} />
-              ) : null
-            }
-            active={pathname === l?.path}
-            onClick={() => navigate(l?.path)}
-            color="blue"
-          />
-        );
-      })}
+      {renderedLinks.map((link, index) => (
+        <NavLink
+          key={index}
+          label={link.label}
+          leftSection={
+            link.icon ? (
+              <Icon
+                name={link.icon}
+                isActive={pathname === link.path}
+                size={18}
+              />
+            ) : null
+          }
+          active={pathname === link.path}
+          onClick={() => navigate(link.path)}
+          color="blue"
+        />
+      ))}
     </div>
   );
 }

@@ -1,15 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { AuthUserDto, User } from "../http/Api";
-import { useQuery } from "@tanstack/react-query";
-import { IErrorResponse } from "../interfaces/IErrorResponse";
+import { User } from "../http/Api";
+
 import http from "../http";
 interface AuthContextType {
   logout: () => void;
   accessToken: string | null;
-  auth: AuthUserDto | undefined;
-  isLoadingAuth: boolean;
   setAccessToken: (accessToken: string) => void;
-
   user: User | null;
   setUser: (user: User) => void;
 }
@@ -17,16 +13,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const {
-    data: authData,
-    isPending: isLoadingAuth,
-    error: authError
-  } = useQuery({
-    queryKey: ["auth"],
-    queryFn: () => http.users.userControllerGetAuth(),
-    enabled: !window.location.pathname.startsWith("/auth/")
-  });
-
   const [accessToken, setAccessToken] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("token") || null;
@@ -49,18 +35,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       http.setSecurityData(null);
     }
   }, [accessToken]);
-
-  useEffect(() => {
-    const err = authError as IErrorResponse;
-    if (!err) return;
-
-    if (err.response?.data.statusCode === 401) {
-      logout();
-      if (!window.location.pathname.startsWith("/auth/")) {
-        window.location.href = "/auth/sign-in";
-      }
-    }
-  }, [authError]);
 
   const setAccessTokenWithStorage = (token: string) => {
     localStorage.setItem("token", token);
@@ -86,10 +60,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
         setAccessToken: setAccessTokenWithStorage,
         accessToken,
-        auth: authData?.data,
-        isLoadingAuth,
         user,
-        setUser: setUserWithStorage
+        setUser: setUserWithStorage,
       }}
     >
       {children}

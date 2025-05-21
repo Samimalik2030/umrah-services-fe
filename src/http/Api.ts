@@ -9,1784 +9,808 @@
  * ---------------------------------------------------------------
  */
 
-export interface Permission {
-  permission: string;
-  description: string;
-}
-
-export interface PermissionGroup {
-  entity: string;
-  permissions: Permission[];
-}
-
-export interface SignUpDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "John" */
-  firstName: string;
-  /** @example "Doe" */
-  lastName: string;
-  /** @example "password" */
+export interface SignInDto {
+  /** @default "admin@example.com" */
+  email: string;
+  /** @default "Admin@123" */
   password: string;
-  /** @example "password" */
-  confirmPassword: string;
 }
 
 export interface FileDto {
-  fileId: string;
-  url: string;
-}
-
-export interface AuthUserDto {
+  /** Id of the file */
   id: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  email: string;
-  avatar: FileDto;
-  roles: string[];
-  /** @format date-time */
-  emailVerifiedAt: string;
-  isEmailVerified: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface TokenDto {
-  /** @example "string" */
-  accessToken: string;
-  user: AuthUserDto;
-}
-
-export interface SignInDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "password" */
-  password: string;
-}
-
-export interface TokenWithMessageDto {
-  /** @example "Success Message!" */
-  message?: string;
-  accessToken: string;
-  user: AuthUserDto;
-}
-
-export interface TwoFAOtpDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example 123456 */
-  otp: string;
-  /** @example "Two Factor Authentication" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-}
-
-export interface VerifyEmailDto {
-  /** @default "example@example.com" */
-  email?: string;
-  otp: string;
-  /** @example "Email Verification" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-}
-
-export interface MessageDto {
-  /** @example "Success Message!" */
-  message: string;
-}
-
-export interface UnlockAccountDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example 123456 */
-  otp: string;
-  /** @example "Account Unlock" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-}
-
-export interface SendOtpDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "Reset Password" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-}
-
-export interface VerifyOtpDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example 123456 */
-  otp: string;
-  /** @example "Email Verification" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-}
-
-export interface ForgotPasswordDto {
-  /** @default "example@example.com" */
-  email?: string;
-}
-
-export interface ResetPasswordDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @default "123456" */
-  otp: string;
-  /** @example "Reset Password" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-  password: string;
-  confirm_password: string;
-}
-
-export interface ChangePasswordDto {
-  oldPassword: string;
-  newPassword: string;
-}
-
-export interface UpdateProfileDto {
-  /** @example "John" */
-  firstName: string;
-  /** @example "Doe" */
-  lastName: string;
-}
-
-export interface RefreshTokenDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "Reset Password" */
-  type: "Reset Password" | "Email Verification" | "Two Factor Authentication" | "Account Unlock";
-}
-
-export interface SocialLoginUrlDto {
+  /** url of the file */
   url: string;
+  /** path of the file */
+  filePath: string;
+  /** name of the file */
+  name: string;
+  /** type of the file */
+  fileType: string;
 }
 
 export interface User {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  avatar: FileDto;
-  roles: string[];
-  /** @default null */
+  /**
+   * Unique identifier of the user
+   * @example "60f7a1c5e5b3a72b3c8a830f"
+   */
+  _id: string;
+  profileImage: FileDto;
+  /**
+   * Username of the user
+   * @example "john_doe"
+   */
   fullName: string;
-  isEmailVerified: boolean;
+  /**
+   * Email address of the user
+   * @example "john.doe@example.com"
+   */
+  email: string;
+  /**
+   * Password of the user (hidden)
+   * @example "strong_password123"
+   */
+  password: string;
+  /**
+   * Role of the user
+   * @example "Admin"
+   */
+  role: "Admin" | "District Officer" | "Recruiter" | "Candidate";
+  /**
+   * Timestamp when the user was created
+   * @format date-time
+   * @example "2023-01-01T00:00:00.000Z"
+   */
+  createdAt: string;
+  /**
+   * Is Profile Completed
+   * @example true
+   */
+  isActive: boolean;
+  /**
+   * Timestamp when the user was last updated
+   * @format date-time
+   * @example "2023-01-02T00:00:00.000Z"
+   */
+  updatedAt: string;
+  /**
+   * Version key (hidden)
+   * @example 0
+   */
+  __v: number;
 }
 
-export interface ActivityLogReference {
-  reference: string;
-  name: string | null;
+export interface AuthUserDto {
+  user: User;
+  accessToken: string;
+}
+
+export interface SignUpDto {
+  /** @default "admin@example.com" */
+  email: string;
+  /** @default "Admin@123" */
+  password: string;
+  /** @default "Admin@123" */
+  confirmPassword: string;
+  fullName: string;
+}
+
+export interface ForgotPasswordDTO {
+  /** @default "admin@example.com" */
+  email: string;
+  /** @default "Forgot Password" */
   type: string;
 }
 
-export interface ActivityLogChange {
-  field: string;
-  oldValue: string | boolean | number | object | null;
-  newValue: string | boolean | number | object | null;
-}
-
-export interface ActivityLog {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  subject: string;
-  verb: string;
-  object: ActivityLogReference;
-  changes: ActivityLogChange[];
-  context: ActivityLogReference;
-}
-
-export interface PersonalInfoDto {
-  /** @example "+1" */
-  countryCode: string;
-  /** @example "+1234567890" */
-  contact: string;
-  gender: string;
-  country: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  religion: string;
-  /** @example "2000-01-01T00:00:00.000Z" */
-  dob: string;
-  /** @example "123 Main Street, Springfield, USA" */
-  addressLine1: string;
-  /** @example "123 Main Street, Springfield, USA" */
-  addressLine2: string;
-}
-
-export interface EmergencyContactDto {
-  /** @example "John" */
-  name: string;
-  /** @example "example@example.com" */
+export interface VerifyOtpDTO {
+  /** @default "admin@example.com" */
   email: string;
-  /** @example "+1234567890" */
-  contact: string;
-  /** @example "+123" */
-  countryCode: string;
-  /** @example "Father" */
-  relationShip: string;
+  /** @default "Forgot Password" */
+  type: string;
+  /** @default 535443 */
+  otp: string;
 }
 
-export interface MedicalInformationDTO {
-  /** @example "Diabetes" */
-  disease: string;
-  /** @example "Dogs, Jellyfish, Peanuts" */
-  allergies: string;
-  /** @example "Your medical status" */
-  medicalStatus: string;
+export type MessageDto = object;
+
+export interface ResetPasswordDTO {
+  /** @default "admin@example.com" */
+  email: string;
+  /** @default 535443 */
+  otp: string;
+  /** @default "Admin@123" */
+  password: string;
+  /** @default "Admin@123" */
+  confirmPassword: string;
+}
+
+export interface CreateInquiryDto {
+  username: string;
+  email: string;
+  query: string;
+  subject: string;
+  phone: string;
+  type: string;
+}
+
+export interface UpdateInquiryDto {
+  message: string;
+}
+
+export interface CreatePersonalInfoDto {
+  /**
+   * Father's name of the candidate
+   * @example "Rashid Khan"
+   */
+  father_name: string;
+  /**
+   * Father's name of the candidate
+   * @example "Rashid Khan"
+   */
+  cnic: string;
+  /**
+   * Father's name of the candidate
+   * @example "Rashid Khan"
+   */
+  gender: string;
+  /**
+   * Father's name of the candidate
+   * @example "Rashid Khan"
+   */
+  marital_status: string;
+  /**
+   * Father's name of the candidate
+   * @example "Rashid Khan"
+   */
+  religion: string;
+}
+
+export interface Address {
+  /**
+   * Permanent residential address
+   * @example "House 123, Street 4, Lahore"
+   */
+  permanent: string;
+  /**
+   * Current living address
+   * @example "Hostel Block B, Punjab University"
+   */
+  present: string;
+}
+
+export interface EmergencyContact {
+  /**
+   * Name of the emergency contact person
+   * @example "Ahmed Khan"
+   */
+  name: string;
+  /**
+   * Relation to the candidate
+   * @example "Brother"
+   */
+  relation: string;
+  /**
+   * Phone number of the emergency contact
+   * @example "03001234567"
+   */
+  contact: string;
+}
+
+export interface Contact {
+  /**
+   * District of the candidate
+   * @example "Multan"
+   */
+  district: string;
+  /**
+   * Phone number of the candidate
+   * @example "03123456789"
+   */
+  phone: string;
+  /** Emergency contact details */
+  emergency_contact: EmergencyContact;
+}
+
+export interface EducationLevel {
+  /**
+   * Name of the examination board
+   * @example "Lahore Board"
+   */
+  board: string;
+  /**
+   * Year of passing the exam
+   * @example 2019
+   */
+  passing_year: number;
+  /**
+   * Percentage marks obtained
+   * @example 85.5
+   */
+  marks_percentage: number;
 }
 
 export interface Education {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  schoolName: string;
-  degree: string;
-  document: FileDto;
+  matric: EducationLevel;
+  intermediate: EducationLevel;
 }
 
-export interface InternshipPreferencesDto {
-  /** @example ["Software Developer Intern"] */
-  desiredInternshipRoles?: string[];
-  /** @example "Remote" */
-  jobType?: string;
-  /** @example "No" */
-  handicapAccessability?: string;
-  /** @example "Workplace with a mentorship program" */
-  specificRequirements?: string;
-  /** @example "Berlin" */
-  preferredCity?: string;
-  /** @example false */
-  hasAlreadyInternship?: boolean;
-  /** @example "2025-02-04" */
-  startDate?: string;
-  /** @example "2025-06-30" */
-  endDate?: string;
-}
-
-export interface StudentPartnerDTO {
-  /** @example "John" */
-  name: string;
-  /** @example "john.doe@example.com" */
-  email: string;
-  /** @example "+1" */
-  countryCode: string;
-  /** @example "123-456-7890" */
-  contact: string;
-}
-
-export interface HostPreferenceDto {
-  /** @example ["Apartment"] */
-  accommodationTypes?: string[];
-  /** @example "Shared" */
-  preferredPrivateOrSharedAccommodation?: string;
-  partnerDetails?: StudentPartnerDTO;
-  /** @example "No" */
-  mealIncluded?: string;
-  preferredDietary?: string;
-  /** @example "No" */
-  preferredSmoking?: string;
-  /** @example "No" */
-  preferredPets?: string;
-  /** @example "lorem ipsum dolor sit , consectetur " */
-  additionalRequirements?: string;
-  /** @example false */
-  hasAlreadyHost?: boolean;
-  /** @example "2025-02-04" */
-  startDate?: string;
-  /** @example "2025-06-30" */
-  endDate?: string;
-  travelingMethod?: string;
-}
-
-export interface Document {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  /** @example "Passport" */
-  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
-  file: FileDto;
-}
-
-export interface TeacherDto {
-  name: string;
-  email: string;
-  contact: string;
-  countryCode: string;
-}
-
-export interface AuthStudent {
-  id: string;
-  personalInfo: PersonalInfoDto;
-  emergencyContacts: EmergencyContactDto[];
-  medicalInformation: MedicalInformationDTO;
-  educations: Education[];
-  internshipPreferences: InternshipPreferencesDto;
-  hostPreferences: HostPreferenceDto;
-  user: User;
-  status: "Pending for approval" | "Approved" | "Blocked" | "Active" | "Inactive" | "Not Eligible";
-  paymentStatus: string;
-  planName: string;
-  profileStatus: string;
-  additionalDocuments: Document[];
-  internshipStatus: string;
-  paymentInvoice: FileDto;
-  teachers: TeacherDto[];
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-}
-
-export interface Student {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  personalInfo: PersonalInfoDto;
-  emergencyContacts: EmergencyContactDto[];
-  medicalInformation: MedicalInformationDTO;
-  educations: Education[];
-  internshipPreferences: InternshipPreferencesDto;
-  hostPreferences: HostPreferenceDto;
-  status: string;
-  profileStatus: string;
-  planName: string;
-  paymentStatus: string;
-  paymentInvoice: FileDto;
-  user: User;
-  additionalDocuments: Document[];
-  teachers: TeacherDto[];
-}
-
-export interface PaginationMeta {
-  page: number;
-  limit: number;
-  pages: number;
-  records: number;
-}
-
-export interface StudentPagination {
-  data: Student[];
-  pagination: PaginationMeta;
-}
-
-export interface StudentData {
-  matched: Student[];
-  matchedCount: number;
-  others: Student[];
-  othersCount: number;
-}
-
-export interface StudentDataPagination {
-  data: StudentData;
-  pagination: PaginationMeta;
-}
-
-export interface UpdateStudentDto {
-  personalInfo?: PersonalInfoDto;
-  emergencyContacts?: EmergencyContactDto[];
-  medicalInformation?: MedicalInformationDTO;
-  internshipPreferences?: InternshipPreferencesDto | null;
-  hostPreferences?: HostPreferenceDto | null;
-  planName?: string;
-  teachersArray?: TeacherDto[];
-}
-
-export interface PatchPaymentStatus {
-  paymentStatus: "Paid" | "Unpaid" | "Pending for approval";
-}
-
-export interface Coordinates {
-  latitude: number;
-  longitude: number;
-}
-
-export interface PersonalInformationDto {
-  /** @example "Mr" */
-  title: string;
-  /** @example "John" */
-  firstName: string;
-  /** @example "Doe" */
-  lastName: string;
-  country: string;
-  state: string;
-  city: string;
-  /** @example "111-1111111-111" */
-  contact: string;
-  /** @example "+92" */
-  countryCode: string;
-  /** @example "john@gmail.com" */
-  email: string;
-  /** @example "123 Maple Street, Apt 4B, Springfield, IL 62701" */
-  address: string;
-  /** @example "62701" */
-  postalCode: string;
-}
-
-export interface LivingInformationDto {
+export interface Chest {
   /**
-   * @default null
-   * @example "flat"
+   * Unexpanded chest size in cm
+   * @example 85
    */
-  residenceType: string;
+  unexpanded: number;
   /**
-   * @default null
-   * @example "Bus Route 45, 5-minute walk from the house"
+   * Expanded chest size in cm
+   * @example 90
    */
-  nearestBusRoute: string;
-  /** @example "Springfield Station" */
-  nearestTubeStation?: string;
+  expanded: number;
 }
 
-export interface LifestyleAndBackgroundDto {
+export interface PhysicalInfo {
   /**
-   * @default null
-   * @example "Software Developer"
+   * Height in centimeters
+   * @example 175
    */
-  occupation: string;
+  height_cm: number;
   /**
-   * @default null
-   * @example ["Reading","Traveling","Photography"]
+   * Weight in kilograms
+   * @example 70
    */
-  hobbies: string[];
+  weight_kg: number;
+  /** Chest measurements in cm */
+  chest_cm: Chest;
   /**
-   * @default null
-   * @example "Asian"
+   * Vision of the candidate
+   * @example "6/6"
    */
-  ethnicity: string;
+  vision: string;
   /**
-   * @default null
-   * @example "Christian"
+   * Blood group of the candidate
+   * @example "B+"
    */
-  religion: string;
+  blood_group: string;
 }
 
-export interface PetsTypeAndQuantityDTO {
-  /**
-   * @default null
-   * @example "Dog"
-   */
-  typeOfPet: string;
-  /**
-   * @default null
-   * @example 2
-   */
-  numberOfPets: number;
+export interface Documents {
+  cnic: FileDto;
+  matric_certificate: FileDto;
+  inter_certificate: FileDto;
+  domicile: FileDto;
+  character_certificate: FileDto;
+  medical_certificate: FileDto;
+  photo: FileDto;
 }
 
-export interface PetsAndHouseholdInformationDto {
+export interface Candidate {
   /**
-   * @default null
-   * @example "Yes"
+   * Unique identifier of the user
+   * @example "60f7a1c5e5b3a72b3c8a830f"
    */
-  hasPets: string;
-  pets: PetsTypeAndQuantityDTO[];
-}
-
-export interface HostChildrenDto {
+  _id: string;
   /**
-   * @default null
-   * @example "John"
+   * Father's name of the candidate
+   * @example "Rashid Khan"
    */
-  name: string;
+  father_name: string;
   /**
-   * @default null
-   * @example 28
+   * CNIC of the candidate
+   * @example "35202-1234567-1"
    */
-  age?: number;
+  cnic: string;
   /**
-   * @default null
+   * Date of birth
+   * @format date-time
+   * @example "2001-06-15"
+   */
+  dob: string;
+  /**
+   * Gender of the candidate
    * @example "Male"
    */
   gender: string;
   /**
-   * @format date-time
-   * @default null
-   * @example 23
+   * Marital status
+   * @example "Single"
    */
-  dob: string;
-  /** @example "Student" */
-  occupation?: string;
+  marital_status: string;
   /**
-   * @default false
-   * @example false
+   * Religion of the candidate
+   * @example "Islam"
    */
-  livingAtHome: string;
-}
-
-export interface HostFamilyAndReferralsDto {
-  hostFamilyChildren: HostChildrenDto[];
-  /** @example "word of mouth" */
-  sourceOfReferral?: string;
-}
-
-export interface HostingPreferenceDto {
-  /** @example ["Single"] */
-  roomTypes: string[];
-  /** @example ["Half-Board"] */
-  mealPlanOffered: string[];
-  /** @example ["Single bed"] */
-  roomDescription: string[];
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  acceptMeatEaters: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  hasHostingExperience: string;
-  /** @example ["Male"] */
-  preferredGender: string[];
-  /** @example ["Junior 12+","Young Adult 16+"] */
-  guestCategoryAccepted: string[];
-  /**
-   * @default null
-   * @example "Checked"
-   */
-  dbsChecked: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  canPresentFamilyRules: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  houseKeyAccess: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  doesHouseholdSmoke: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  smokingAllowed: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  acceptStudentAsFamily: string;
-  /**
-   * @default null
-   * @example "Yes"
-   */
-  hasCriminalConvictionInHouseHold: string;
-  /**
-   * @default null
-   * @example ["2 Weeks"]
-   */
-  preferredHostingDuration: string[];
-  /**
-   * @default null
-   * @example ["Flexible working hours"]
-   */
-  preferredWorkingHoursOption: string[];
-}
-
-export interface ReferenceDto {
-  /**
-   * @default null
-   * @example "John Doe"
-   */
-  fullName?: string;
-  /**
-   * @default null
-   * @example "+1-234-567-890"
-   */
-  mobileNumber?: string;
-  /**
-   * @default null
-   * @example "john.doe@example.com"
-   */
-  email?: string;
-  /**
-   * @default null
-   * @example "US"
-   */
-  countryCode?: string;
-}
-
-export interface BankDetailsDto {
-  /**
-   * @default null
-   * @example "John Doe"
-   */
-  bankAccountHolderName: string;
-  /**
-   * @default null
-   * @example "12345678"
-   */
-  bankAccountNumber: string;
-  /**
-   * @default null
-   * @example "12-34-56"
-   */
-  bankSortCode: string;
-  /**
-   * @default null
-   * @example "GB29NWBK60161331926819"
-   */
-  IBan: string;
-  /**
-   * @default null
-   * @example "NWBKGB2L"
-   */
-  bicCode: string;
-}
-
-export interface UpdateHostDto {
-  personalInformation?: PersonalInformationDto;
-  livingArrangements?: LivingInformationDto;
-  lifeStyleAndBackground?: LifestyleAndBackgroundDto;
-  petsAndHouseholdInformation?: PetsAndHouseholdInformationDto;
-  hostFamilyAndReferrals?: HostFamilyAndReferralsDto;
-  hostingPreference?: HostingPreferenceDto;
-  references?: ReferenceDto[];
-  bankDetail?: BankDetailsDto;
-}
-
-export interface Property {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  name: string;
-  type: string;
-  country: string;
-  state: string;
-  city: string;
-  location: string;
-  coordinates: Coordinates;
-  areaUnit: string;
-  propertySize: number;
-  currency: string;
-  rent: number;
-  bedrooms: number;
-  bathrooms: number;
-  kitchen: number;
-  garage: string;
-  description: string;
-  condition: string;
-  photos: FileDto[];
-  status: string;
-  availability: string;
-  host: UpdateHostDto;
-}
-
-export interface Tenancy {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  student: Student;
-  property: Property;
-  /** @format date-time */
-  moveInDate: string;
-  /** @format date-time */
-  moveOutDate: string;
-  residenceStatus: "Living" | "Vacated";
-  bookedNights: number;
-}
-
-export interface TenancyPagination {
-  data: Tenancy[];
-  pagination: PaginationMeta;
-}
-
-export interface EducationPagination {
-  data: Education[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateEducationDto {
-  degree?: string;
-  schoolName?: string;
-  /** @format binary */
-  documentFile?: File;
-}
-
-export interface UpdateEducationDto {
-  degree?: string;
-  schoolName?: string;
-  /** @format binary */
-  documentFile?: object;
-}
-
-export interface DocumentIdsDto {
-  fileIds: string[];
-}
-
-export interface DocumentPagination {
-  data: Document[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateDocumentDto {
-  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
-  /** @format binary */
-  file: File;
-}
-
-export interface UpdateDocumentDto {
-  name: "Passport" | "Travel Insurance" | "CV" | "Cover Letter";
-  /** @format binary */
-  file?: File;
-}
-
-export interface Member {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
+  religion: string;
+  address: Address;
+  contact: Contact;
+  education: Education;
+  physical_info: PhysicalInfo;
+  /** @default null */
+  documents: Documents;
+  /** Reference to the associated user account */
   user: User;
-  roles: string[];
-}
-
-export interface JobCounts {
-  total: number;
-  approved: number;
-  pending: number;
-}
-
-export interface Business {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  name: string;
-  phone: string;
-  countryCode: string;
-  logoUrl: string;
-  certificateUrl: string;
-  addressLine1: string;
-  /** @default null */
-  addressLine2: string;
-  city: string;
-  state: string;
-  country: string;
-  zip: string;
-  employeesCount: number;
-  description: string;
-  operationSite: string;
-  nearestBusStop: string;
-  nextStation: string;
-  busRoute: string;
-  isArchived: boolean;
-  members: Member[];
-  shouldBringLaptop: boolean;
-  howDidYouHearAboutMPACoaching: string;
-  businessRole: string;
-  onWhichPlatform?: string;
-  officeHasStamp: boolean;
-  code: number;
-  /** @default "Pending For Approval" */
-  status: "Approved" | "Blocked" | "Pending For Approval";
-  jobCounts: JobCounts;
-}
-
-export interface BusinessPagination {
-  data: Business[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateBusinessDto {
-  /** @format binary */
-  logoFile: File;
-  /** @format binary */
-  certificateFile: File;
-  /** @example "My Business" */
-  name: string;
-  /** @example 420304050607 */
-  phone: string;
-  /** @example 42 */
-  countryCode: string;
-  /** @example "7211 Jewel Lake Rd" */
-  addressLine1: string;
-  /** @example "Jewel Lake Rd" */
-  addressLine2: string;
-  /** @example "Anchorage" */
-  city: string;
-  /** @example "Alaska" */
-  state: string;
-  /** @example "United States" */
-  country: string;
-  /** @example "99502" */
-  zip: string;
-  /** @example 10 */
-  employeesCount: number;
-  description: string;
-  /** @example "Office" */
-  operationSite: "Office" | "Shop" | "Home";
-  /** @example "456 Elm St" */
-  nearestBusStop: string;
-  /** @example "625 8th Avenue" */
-  nextStation: string;
-  /** @example "625 8th Avenue" */
-  busRoute: string;
-  shouldBringLaptop?: boolean;
-  howDidYouHearAboutMPACoaching?: string;
-  onWhichPlatform?: string;
-  officeHasStamp?: boolean;
-  businessRole: string;
-}
-
-export interface SignedBusinessDto {
-  token: string;
-  business: Business;
-}
-
-export interface BusinessTypeDto {
-  types: string[];
-}
-
-export interface RootBusinessSignInDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "password" */
-  password: string;
-}
-
-export interface CodeBasedSignInDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example "BUS-1002" */
-  code: string;
-  /** @example "password" */
-  password: string;
-}
-
-export interface UpdateBusinessDto {
-  name?: string;
-  phone?: string;
-  /** @example 42 */
-  countryCode: string;
-  /** @format binary */
-  logoFile?: File;
-  /** @format binary */
-  certificateFile?: File;
-  addressLine1?: string;
-  addressLine2?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  zip?: string;
-  employeesCount?: number;
-  description?: string;
-  operationSite?: "Office" | "Shop" | "Home";
-  nearestBusStop?: string;
-  nextStation?: string;
-  busRoute?: string;
-  isArchived?: boolean;
-  shouldBringLaptop?: boolean;
-  howDidYouHearAboutMPACoaching?: string;
-  onWhichPlatform?: string;
-  officeHasStamp?: boolean;
-  businessRole: string;
-}
-
-export interface UpdateBusinessStatusDTO {
-  /** @example "Approved" */
-  status: "Approved" | "Blocked" | "Pending For Approval";
-}
-
-export interface BusinessArchiveDto {
-  /** @example true */
-  archive: boolean;
-}
-
-export interface OfficeReportingDto {
-  /** @example "John" */
-  firstName: string;
-  /** @example "Doe" */
-  lastName: string;
-  /** @example "Manager" */
-  position: string;
-}
-
-export type InternsStats = object;
-
-export interface Job {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  title: string;
-  description: string;
-  start: string;
-  end: string;
-  industryPreference: string;
-  desiredInternshipRole: string;
-  jobType: string;
-  isFareIncluded: boolean;
-  isLunchIncluded: boolean;
-  isArchived: boolean;
-  reportingInformation: OfficeReportingDto;
-  whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
-  daysOfWork: string[];
-  dailyStartTime: string;
-  dailyFinishTime: string;
-  /** @default null */
-  onWhichPlatform: string;
-  status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
-  business: Business;
-  internsStats: InternsStats;
-}
-
-export interface JobPagination {
-  data: Job[];
-  pagination: PaginationMeta;
-}
-
-export interface Interview {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  scheduledWith: string;
-  scheduledBy: string;
-  student: Student;
-  business: Business;
-  status: string;
-  /** @format date-time */
-  date: string;
-  duration: string;
-}
-
-export interface InterviewPagination {
-  data: Interview[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateInterviewDto {
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewDate: string;
-}
-
-export interface LatestInterviewDto {
-  interview: Interview | null;
-}
-
-export interface UpdateInterviewDto {
-  /** @example "2025-01-05T10:00:00Z" */
-  interviewDate?: string;
-}
-
-export interface UpdateInterviewStatus {
-  status: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
-}
-
-export interface JobData {
-  matched: Job[];
-  matchedCount: number;
-  others: Job[];
-  othersCount: number;
-}
-
-export interface JobIndexDataPagination {
-  data: JobData;
-  pagination: PaginationMeta;
 }
 
 export interface CreateJobDto {
-  /** @example "Sr. Software Engineer" */
+  /**
+   * Job title
+   * @example "Junior Constable"
+   */
   title: string;
-  /** @example "2025-03-12T03:35:00.967Z" */
-  start: string;
-  /** @example "2025-03-12T03:35:00.967Z" */
-  end: string;
-  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
-  description: string;
-  /** @example "Science and Technology" */
-  industryPreference: string;
-  /** @example "Sr. Fullstack Developer" */
-  desiredInternshipRole: string;
-  /** @example "Remote" */
-  jobType: string;
-  /** @example false */
-  isFareIncluded: boolean;
-  /** @example false */
-  isLunchIncluded: boolean;
-  /** @example ["Summer"] */
-  whatTimeOfYearAreYouMostLikelyToRequireInterns: string[];
-  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] */
-  daysOfWork: string[];
-  /** @example "2025-03-12T03:35:00.968Z" */
-  dailyStartTime: string;
-  /** @example "2025-03-12T11:35:00.968Z" */
-  dailyFinishTime: string;
-  /** @example "Facebook" */
-  onWhichPlatform?: string;
-  reportingInformation: OfficeReportingDto;
+  /**
+   * Job description
+   * @example "Job description here..."
+   */
+  description?: string;
+  /**
+   * Number of vacancies
+   * @example 1
+   */
+  vacancies: number;
+  /**
+   * BPS (Basic Pay Scale)
+   * @example 7
+   */
+  bps: number;
+  /** @example "male" */
+  gender: "male" | "female";
+  /**
+   * Minimum age requirement
+   * @example 18
+   */
+  age_min: number;
+  /**
+   * Maximum age requirement
+   * @example 25
+   */
+  age_max: number;
+  /**
+   * Minimum height for male in cm
+   * @example 170
+   */
+  height_male?: number;
+  /**
+   * Minimum height for female in cm
+   * @example 158
+   */
+  height_female?: number;
+  /**
+   * Chest measurement for male
+   * @example "33x34.5"
+   */
+  chest_male?: string;
+  /**
+   * Chest measurement for female
+   * @example ""
+   */
+  chest_female?: string;
+  /**
+   * Minimum education requirement
+   * @example "Matric"
+   */
+  education?: string;
+  /**
+   * Application deadline
+   * @format date-time
+   * @example "2025-12-31"
+   */
+  application_deadline?: string;
+  /**
+   * Posting date
+   * @format date-time
+   * @example "2025-05-18"
+   */
+  posting_date: string;
+  /**
+   * Application fee amount
+   * @example 0
+   */
+  application_fee: number;
+  /**
+   * Terms and conditions
+   * @example "Terms and conditions text"
+   */
+  terms_and_conditions?: string;
+}
+
+export interface Job {
+  /**
+   * Unique identifier of the user
+   * @example "60f7a1c5e5b3a72b3c8a830f"
+   */
+  _id: string;
+  /**
+   * Job title
+   * @example "Junior Constable"
+   */
+  title: string;
+  /**
+   * Job description
+   * @example "Job description here..."
+   */
+  description?: string;
+  /**
+   * Number of vacancies
+   * @example 1
+   */
+  vacancies: number;
+  /**
+   * BPS (Basic Pay Scale)
+   * @example 7
+   */
+  bps: number;
+  /** @example "Male" */
+  gender: string;
+  /**
+   * Minimum age requirement
+   * @example 18
+   */
+  age_min: number;
+  /**
+   * Maximum age requirement
+   * @example 25
+   */
+  age_max: number;
+  /**
+   * Minimum height for male in cm
+   * @example 170
+   */
+  height_male?: number;
+  /**
+   * Minimum height for female in cm
+   * @example 158
+   */
+  height_female?: number;
+  /**
+   * Chest measurement for male
+   * @example "33x34.5"
+   */
+  chest_male?: string;
+  /**
+   * Chest measurement for female
+   * @example ""
+   */
+  chest_female?: string;
+  /**
+   * Minimum education requirement
+   * @example "Matric"
+   */
+  education?: string;
+  /**
+   * Application deadline
+   * @format date-time
+   * @example "2025-12-31"
+   */
+  application_deadline?: string;
+  /**
+   * Posting date
+   * @format date-time
+   * @example "2025-05-18"
+   */
+  posting_date: string;
+  /**
+   * Application fee amount
+   * @example 0
+   */
+  application_fee: number;
+  /**
+   * Terms and conditions
+   * @example "Terms and conditions text"
+   */
+  terms_and_conditions?: string;
 }
 
 export interface UpdateJobDto {
-  /** @example "Sr. Software Engineer" */
+  /**
+   * Job title
+   * @example "Junior Constable"
+   */
   title?: string;
-  /** @example "2025-03-12T03:35:00.968Z" */
-  start?: string;
-  /** @example "2025-03-12T03:35:00.968Z" */
-  end?: string;
-  /** @example "Sr. Software Engineer who knows also databases, creative mind" */
+  /**
+   * Job description
+   * @example "Job description here..."
+   */
   description?: string;
-  /** @example "Health and Medicine" */
-  industryPreference?: string;
-  /** @example "Sr. Fullstack Developer" */
-  desiredInternshipRole?: string;
-  /** @example "On-site" */
-  jobType?: string;
-  isFareIncluded?: boolean;
-  isLunchIncluded?: boolean;
-  /** @example ["Winter"] */
-  whatTimeOfYearAreYouMostLikelyToRequireInterns?: string[];
-  /** @example ["Monday","Tuesday","Wednesday","Thursday","Friday"] */
-  daysOfWork?: string[];
-  /** @example "2025-03-12T03:35:00.969Z" */
-  dailyStartTime?: string;
-  /** @example "2025-03-12T11:35:00.969Z" */
-  dailyFinishTime?: string;
-  /** @example "LinkedIn" */
-  onWhichPlatform?: string;
-  reportingInformation?: OfficeReportingDto;
-  isArchived?: boolean;
+  /**
+   * Number of vacancies
+   * @example 1
+   */
+  vacancies?: number;
+  /**
+   * BPS (Basic Pay Scale)
+   * @example 7
+   */
+  bps?: number;
+  /** @example "male" */
+  gender?: "male" | "female";
+  /**
+   * Minimum age requirement
+   * @example 18
+   */
+  age_min?: number;
+  /**
+   * Maximum age requirement
+   * @example 25
+   */
+  age_max?: number;
+  /**
+   * Minimum height for male in cm
+   * @example 170
+   */
+  height_male?: number;
+  /**
+   * Minimum height for female in cm
+   * @example 158
+   */
+  height_female?: number;
+  /**
+   * Chest measurement for male
+   * @example "33x34.5"
+   */
+  chest_male?: string;
+  /**
+   * Chest measurement for female
+   * @example ""
+   */
+  chest_female?: string;
+  /**
+   * Minimum education requirement
+   * @example "Matric"
+   */
+  education?: string;
+  /**
+   * Application deadline
+   * @format date-time
+   * @example "2025-12-31"
+   */
+  application_deadline?: string;
+  /**
+   * Posting date
+   * @format date-time
+   * @example "2025-05-18"
+   */
+  posting_date?: string;
+  /**
+   * Application fee amount
+   * @example 0
+   */
+  application_fee?: number;
+  /**
+   * Terms and conditions
+   * @example "Terms and conditions text"
+   */
+  terms_and_conditions?: string;
 }
 
-export interface UpdateJobStatus {
-  /** @example "Approved" */
-  status: "Pending For Approval" | "Approved" | "Published" | "Archived" | "Paused" | "Rejected";
+export interface CreateDistrictOfficerDto {
+  /**
+   * Phone number
+   * @example "Sami"
+   */
+  name: string;
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  email: string;
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  phone: string;
+  /**
+   * CNIC number
+   * @example "35202-1234567-8"
+   */
+  cnic: string;
+  /**
+   * Gender
+   * @example "male"
+   */
+  gender: "male" | "female" | "other";
+  /**
+   * Address
+   * @example "123 Street, City"
+   */
+  address?: string;
+  /**
+   * District
+   * @example "Lahore"
+   */
+  district?: string;
+  /**
+   * Qualification
+   * @example "Masters in Public Administration"
+   */
+  qualification?: string;
+  /**
+   * Experience
+   * @example "5 years experience in law enforcement"
+   */
+  experience?: string;
 }
 
-export interface Application {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  status: string;
-  achievedStatuses: string[];
-  type: string;
-  student: Student;
-  job: Job;
-  isCreatedByCompanyInvitation: boolean;
-  trainingAgreementDocument: FileDto;
-  isCompanyAgreementSigned: boolean;
-  isStudentAgreementSigned: boolean;
-  isReuploadRequired: boolean;
-  property: Property;
-  /** @format date-time */
-  moveIn: string;
-  /** @format date-time */
-  moveOut: string;
-  paymentStatus: "Paid" | "Unpaid";
+export interface DistrictOfficer {
+  /**
+   * Unique identifier of the user
+   * @example "60f7a1c5e5b3a72b3c8a830f"
+   */
+  _id: string;
+  /**
+   * Contact phone number
+   * @example "03001234567"
+   */
+  phone: string;
+  /**
+   * Unique CNIC number
+   * @example "35202-1234567-8"
+   */
+  cnic: string;
+  /**
+   * Gender
+   * @example "male"
+   */
+  gender: "male" | "female" | "other";
+  /**
+   * Residential address
+   * @example "123 Street, Lahore"
+   */
+  address?: string;
+  /**
+   * District name
+   * @example "Lahore"
+   */
+  district?: string;
+  /**
+   * Highest qualification
+   * @example "Masters in Public Administration"
+   */
+  qualification?: string;
+  /**
+   * Experience details
+   * @example "5 years in law enforcement"
+   */
+  experience?: string;
+  /** Reference to the User who owns this */
+  user: User;
 }
 
-export interface ApplicationPagination {
-  data: Application[];
-  pagination: PaginationMeta;
+export interface UpdateDistrictOfficerDto {
+  /**
+   * Phone number
+   * @example "Sami"
+   */
+  name?: string;
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  email?: string;
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  phone?: string;
+  /**
+   * CNIC number
+   * @example "35202-1234567-8"
+   */
+  cnic?: string;
+  /**
+   * Gender
+   * @example "male"
+   */
+  gender?: "male" | "female" | "other";
+  /**
+   * Address
+   * @example "123 Street, City"
+   */
+  address?: string;
+  /**
+   * District
+   * @example "Lahore"
+   */
+  district?: string;
+  /**
+   * Qualification
+   * @example "Masters in Public Administration"
+   */
+  qualification?: string;
+  /**
+   * Experience
+   * @example "5 years experience in law enforcement"
+   */
+  experience?: string;
 }
 
-export interface Invitation {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  student: Student;
-  job: Job;
-  status: "Pending" | "Accepted" | "Rejected" | "Archived";
+export interface CreateRecruiterDto {
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  email: string;
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  name: string;
+  /**
+   * Phone number
+   * @example "03001234567"
+   */
+  phone: string;
+  /**
+   * CNIC number
+   * @example "35202-1234567-8"
+   */
+  cnic: string;
+  /**
+   * Gender
+   * @example "male"
+   */
+  gender: "male" | "female" | "other";
+  /**
+   * Address
+   * @example "123 Street, Lahore"
+   */
+  address: string;
+  /**
+   * Qualification
+   * @example "Bachelor’s in Criminology"
+   */
+  qualification: string;
+  /**
+   * District
+   * @example "Lahore"
+   */
+  district: string;
 }
 
-export interface InvitationPagination {
-  data: Invitation[];
-  pagination: PaginationMeta;
-}
-
-export interface Intern {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  job: Job;
-  student: Student;
-  internshipStatus: "Started" | "Completed" | "Not Started";
-}
-
-export interface InternPagination {
-  data: Intern[];
-  pagination: PaginationMeta;
+export interface Recruiter {
+  /**
+   * Unique identifier of the user
+   * @example "60f7a1c5e5b3a72b3c8a830f"
+   */
+  _id: string;
+  /**
+   * Phone number of the recruiter
+   * @example "03001234567"
+   */
+  phone: string;
+  /**
+   * CNIC number
+   * @example "35202-1234567-8"
+   */
+  cnic: string;
+  /**
+   * Gender
+   * @example "male"
+   */
+  gender: "male" | "female" | "other";
+  /**
+   * Address of the recruiter
+   * @example "123 Street, Lahore"
+   */
+  address?: string;
+  /**
+   * Educational qualification
+   * @example "Bachelor’s in Criminology"
+   */
+  qualification?: string;
+  /**
+   * District assigned to the recruiter
+   * @example "Lahore"
+   */
+  district?: string;
+  /** Reference to the associated user account */
+  user: User;
 }
 
 export interface CreateApplicationDto {
-  /** @example "Job" */
-  type: "Job" | "Property";
-  jobId?: string | null;
-  propertyId?: string | null;
-  /** @example "2025-03-12T03:35:01.008Z" */
-  moveInDate?: string | null;
-  /** @example "2025-03-12T03:35:01.008Z" */
-  moveOutDate?: string | null;
+  candidate: string;
+  job: string;
 }
 
-export interface UpdateApplicationStatus {
-  /** @example "Approved" */
-  status?:
-    | "New"
-    | "1st Interview"
-    | "2nd Interview"
-    | "Waiting for student"
-    | "Pending for approval"
-    | "Rejected"
-    | "Approved"
-    | "Archived";
-}
-
-export interface PatchApplicationPaymentStatus {
-  /** @example "Paid" */
-  paymentStatus?: "Paid" | "Unpaid";
-}
-
-export interface CreateInvitationDTO {
-  /** @example "678253817674a9a4f93cdf31" */
-  studentId: string;
-  /** @example "678255de091a3496948fee8e" */
-  jobId: string;
-}
-
-export interface UpdateInvitationDTO {
-  /** @example "Accepted" */
-  status?: string;
-}
-
-export interface Host {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  personalInformation: PersonalInformationDto;
-  livingArrangements: LivingInformationDto;
-  lifeStyleAndBackground: LifestyleAndBackgroundDto;
-  petsAndHouseholdInformation: PetsAndHouseholdInformationDto;
-  hostFamilyAndReferrals: HostFamilyAndReferralsDto;
-  hostingPreference: HostingPreferenceDto;
-  references: ReferenceDto[];
-  bankDetail: BankDetailsDto;
-  paymentStatus: "Paid" | "Unpaid";
-  planName: string;
-  default: boolean;
-  status: "Draft" | "Active" | "Blocked" | "Approved" | "Pending For Approval" | "Rejected";
-}
-
-export interface HostAuthenticatedDto {
-  /** @example "Success Message!" */
-  message?: string;
-  accessToken?: string;
-  user?: AuthUserDto;
-  host: Host | null;
-}
-
-export interface AuthHost {
-  id: string;
-  personalInformation: PersonalInformationDto;
-  livingArrangements: LivingInformationDto;
-  lifeStyleAndBackground: LifestyleAndBackgroundDto;
-  petsAndHouseholdInformation: PetsAndHouseholdInformationDto;
-  hostFamilyAndReferrals: HostFamilyAndReferralsDto;
-  hostingPreference: HostingPreferenceDto;
-  references: ReferenceDto[];
-  bankDetail: BankDetailsDto;
-  default: boolean;
-  property: Property;
-  status: "Draft" | "Active" | "Blocked" | "Approved" | "Pending For Approval" | "Rejected";
-  planName: string;
-  paymentStatus: "Paid" | "Unpaid";
-  user: User;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface HostPagination {
-  data: Host[];
-  pagination: PaginationMeta;
-}
-
-export interface UpdateHostStatusDTO {
-  /** @example "Approved" */
-  status: "Draft" | "Active" | "Blocked" | "Approved" | "Pending For Approval" | "Rejected";
-}
-
-export interface PropertyPagination {
-  data: Property[];
-  pagination: PaginationMeta;
-}
-
-export interface PropertyData {
-  matched: Property[];
-  matchedCount: number;
-  others: Property[];
-  othersCount: number;
-}
-
-export interface PropertyPaginationWithData {
-  data: PropertyData;
-  pagination: PaginationMeta;
-}
-
-export interface CreatePropertyDto {
-  /** @example "Room" */
-  type: string;
-}
-
-export interface UpdatePropertyDto {
-  /** @example "Modern Family House" */
-  name?: string;
-  /** @example "House" */
-  type?: string;
-  /** @example "France" */
-  country?: string;
-  /** @example "Normandy" */
-  state?: string;
-  /** @example "Rouen" */
-  city?: string;
-  /** @example "Downtown" */
-  location?: string;
-  coordinates?: Coordinates;
-  /** @example "sqft" */
-  areaUnit?: string;
-  /** @example 20 */
-  propertySize?: number;
-  /** @example "USD" */
-  currency: string;
-  /** @example 500000 */
-  rent?: number;
-  /** @example 3 */
-  bedrooms: number;
-  /** @example 3 */
-  kitchen: number;
-  /** @example "Yes" */
-  garage: string;
-  /** @example 2 */
-  bathrooms?: number;
-  /** @example "A spacious and modern house with a beautiful garden." */
-  description?: string;
-  /** @example "New" */
-  condition?: string;
-}
-
-export interface PatchPropertyStatus {
-  /** @example "Approved" */
-  status: "Draft" | "Approved" | "Rejected" | "Pending For Approval" | "Paused" | "Published";
-}
-
-export interface PropertyAvailabilityStatus {
-  /** @example "Rented" */
-  status: "Vacant" | "Rented";
-}
-
-export interface UpdatePhotosDto {
-  photos?: File[];
-}
-
-export interface PhotoIdsDto {
-  ids: string[];
-}
-
-export interface AreaDto {
-  /** @example 5 */
-  width: number;
-  /** @example 5 */
-  length: number;
-  /** @example "square_feet" */
-  unit: string;
-}
-
-export interface RentPriceDto {
-  /** @example 5 */
-  price: number;
-  /** @example "usd" */
-  currency: string;
-  /** @example "day" */
-  duration: string;
-}
-
-export interface RoomAttributesDto {
-  /** @example "Drawing Room" */
-  name: string;
-  area: AreaDto;
-  prices: RentPriceDto[];
-  availabilityStatus: "Draft" | "Available" | "Occupied" | "Under Maintenance";
-}
-
-export interface FeaturesAndAmenitiesDTO {
-  /** @example 4 */
-  beds: number;
-  /** @example "Yes" */
-  has_AC: string;
-  /** @example "Yes" */
-  has_heater: string;
-}
-
-export interface AccessibilityAndComplianceDTO {
-  /** @example "Yes" */
-  wheelchairAccessibleWidths: string;
-  /** @example "Yes" */
-  elevatorAccess: string;
-}
-
-export interface Room {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  attributes: RoomAttributesDto;
-  description: string;
-  featuresAndAmenities: FeaturesAndAmenitiesDTO;
-  accessibilityAndCompliance: AccessibilityAndComplianceDTO;
-  photos: FileDto[];
-  status: "Draft" | "Available" | "Occupied" | "Under Maintenance";
-}
-
-export interface RoomPagination {
-  data: Room[];
-  pagination: PaginationMeta;
-}
-
-export interface CreateRoomDto {
-  attributes: RoomAttributesDto;
-  propertyId: string;
-}
-
-export interface UpdateRoomDto {
-  attributes?: RoomAttributesDto;
-  /** @example "A well-furnished room with modern amenities, ensuring comfort and convenience for occupants." */
-  description?: string;
-  featuresAndAmenities?: FeaturesAndAmenitiesDTO;
-  accessibilityAndCompliance?: AccessibilityAndComplianceDTO;
-}
-
-export interface MailContext {
-  content: string;
-  url: string;
-}
-
-export interface Notification {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  sender: User;
-  receiver: User;
-  context: MailContext;
-  type: string;
+export interface UpdateApplicationDto {
   status: string;
-}
-
-export interface NotificationPagination {
-  data: Notification[];
-  pagination: PaginationMeta;
-}
-
-export interface UpdateNotificationDto {
-  /** @example "Read" */
-  status?: string;
-}
-
-export interface Feedback {
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  id: string;
-  type: string;
-  comment: string;
-  user: User;
-}
-
-export interface FeedbackData {
-  matched: Feedback[];
-  matchedCount: number;
-  others: Feedback[];
-  othersCount: number;
-}
-
-export interface FeedbackPagination {
-  data: FeedbackData;
-  pagination: PaginationMeta;
-}
-
-export interface CreateFeedbackDto {
-  /** @example "Feedback" */
-  type: string;
-  /** @example "lorem ipsum dolor sit " */
-  comment: string;
-}
-
-export interface UpdateFeedbackDto {
-  /** @example "Feedback" */
-  type: string;
-  /** @example "lorem ipsum dolor sit" */
-  comment: string;
-}
-
-export interface ConnectResponseDto {
-  /** @example "https://connect.stripe.com/link/..." */
-  url: string;
-}
-
-export interface TransferAmountDto {
-  /** @default "example@example.com" */
-  email?: string;
-  /** @example 100 */
-  amount: number;
-  /** @example "ANjKdkKlm411124k3kd45adf5adf" */
-  payoutId: string;
-  /** @example "usd" */
-  currency?: string;
-}
-
-export interface CreatePriceDto {
-  currency: string;
-  amount: number;
-  name: string;
-  interval: string;
-}
-
-export interface ResponsePlanDto {
-  /** @example "price_1PaE5ZRuvHeoLbzFbWOx523F" */
-  id: string;
-  /** @example "Monthly Plan" */
-  name: string;
-  /** @example 50 */
-  amount: number;
-  /** @example "CAD" */
-  currency:
-    | "USD"
-    | "EUR"
-    | "GBP"
-    | "JPY"
-    | "AUD"
-    | "CAD"
-    | "CHF"
-    | "CNY"
-    | "DKK"
-    | "HKD"
-    | "HUF"
-    | "INR"
-    | "ILS"
-    | "MXN"
-    | "MYR"
-    | "NZD"
-    | "PHP"
-    | "PLN"
-    | "RON"
-    | "RUB"
-    | "SEK"
-    | "SGD"
-    | "TRY"
-    | "ZAR"
-    | "BRL"
-    | "CLP";
-  /** @example "month" */
-  interval: string;
-  /** @example 0 */
-  subSeats: number;
-  /** @example {} */
-  metadata: object;
-  /** @example 2 */
-  trialPeriodDays: number;
-}
-
-export interface KeyResponseDto {
-  key: string;
-}
-
-export interface ResponseSubscriptionDto {
-  /** @example "sub_1MowQVLkdIwHu7ixeRlqHVzs" */
-  id: string;
-  /** @example "Customer 123" */
-  currentPeriodStart: number;
-  /** @example 1640939200 */
-  currentPeriodEnd: number;
-  /** @example "Customer 123" */
-  cancelAt: number;
-  /** @example true */
-  cancelAtPeriodEnd: boolean;
-  /** @example true */
-  canceledAt: number;
-  /** @example "charge_automatically" */
-  collectionMethod: string;
-  /** @example "active" */
-  status: "trialing" | "active" | "incomplete" | "incomplete_expired" | "past_due" | "canceled" | "unpaid" | "paused";
-  /** @example 1 */
-  items: number;
-  plan: ResponsePlanDto;
-}
-
-export interface CreateSubscriptionDto {
-  /** @example "price_1MoBy5LkdIwHu7ixZhnattbh" */
-  planId: string;
-  /** @example "idempotency-key-123" */
-  idempotencyKey: string;
-}
-
-export interface ResponsePaymentIntentDto {
-  /** @example "seti_1Mm8s8LkdIwHu7ix0OXBfTRG" */
-  clientSecret: string;
-}
-
-export interface CartDto {
-  /** @example "visa" */
-  brand: string;
-  /** @example "US" */
-  country: string;
-  /** @example "credit" */
-  funding: string;
-  /** @example "4242" */
-  last4: string;
-  /** @example 12 */
-  exp_month: number;
-  /** @example 2034 */
-  exp_year: number;
-}
-
-export interface ResponsePaymentMethodDto {
-  /** @example "pm_1Q0PsIJvEtkwdCNYMSaVuRz6" */
-  id: string;
-  /** @example "payment_method" */
-  object: string;
-  card: CartDto;
-  /** @example false */
-  default: boolean;
-}
-
-export interface ResponseInvoiceDto {
-  /** @example "in_1F6abcD2dfgHjk1L2m3pR" */
-  id: string;
-  /** @example "invoice" */
-  object: string;
-  /** @example "US" */
-  account_country: string;
-  /** @example "My Account" */
-  account_name: string;
-  /** @example ["txi_1F6abcD2dfgHjk1L2m3pR"] */
-  account_tax_ids: string[];
-  /** @example 5000 */
-  amount_due: number;
-  /** @example 2000 */
-  amount_paid: number;
-  /** @example 3000 */
-  amount_remaining: number;
-  /** @example 100 */
-  amount_shipping: number;
-  /** @example "app_12345" */
-  application: string;
-  /** @example 500 */
-  application_fee_amount: number;
-  /** @example 1 */
-  attempt_count: number;
-  /** @example true */
-  attempted: boolean;
-  /** @example true */
-  auto_advance?: boolean;
-  /** @example {"enabled":true,"status":"complete"} */
-  automatic_tax: object;
-  /** @example 1629278400 */
-  automatically_finalizes_at: number;
-  /** @example "subscription_create" */
-  billing_reason: string;
-  /** @example "ch_1F6abcD2dfgHjk1L2m3pR" */
-  charge: string;
-  /** @example "charge_automated" */
-  collection_method: string;
-  /** @example 1629278400 */
-  created: number;
-  /** @example "usd" */
-  currency: string;
-  /** @example [{"name":"VAT","value":"12345"}] */
-  custom_fields: object[];
-  /** @example "cus_123456789" */
-  customer: string;
-  /** @example {"city":"New York","country":"US"} */
-  customer_address: object;
-  /** @example "customer@example.com" */
-  customer_email: string;
-  /** @example "John Doe" */
-  customer_name: string;
-  /** @example "+1234567890" */
-  customer_phone: string;
-  /** @example {"name":"Jane Doe","phone":"+9876543210"} */
-  customer_shipping: object;
-  /** @example "none" */
-  customer_tax_exempt: string;
-  /** @example [{"type":"vat","value":"12345"}] */
-  customer_tax_ids?: object[];
-  /** @example "pm_1GqrD5Csdhjl8bV1z9Pgh" */
-  default_payment_method: string;
-  /** @example "src_1GqrD5Csdhjl8bV1z9Pgh" */
-  default_source: string;
-  /** @example [{"id":"txr_1234","rate":0.2}] */
-  default_tax_rates: object[];
-  /** @example "" */
-  deleted?: string;
-  /** @example "Invoice for services rendered" */
-  description: string;
-  /** @example {"id":"di_1234","amount":500} */
-  discount: object;
-  /** @example [{"id":"di_1234","amount":500}] */
-  discounts: object[];
-  /** @example 1629278400 */
-  due_date: number;
-  /** @example 1629278400 */
-  effective_at: number;
-  /** @example 1000 */
-  ending_balance: number;
-  /** @example "Thank you for your business" */
-  footer: string;
-  /** @example {"id":"in_1abc"} */
-  from_invoice: object;
-  /** @example "https://invoice.stripe.com/i/acb123" */
-  hosted_invoice_url?: string;
-  /** @example "https://invoice.stripe.com/pdf/acb123" */
-  invoice_pdf?: string;
-  /** @example {"id":"iss_1abc"} */
-  issuer: object;
-  /** @example {"message":"Error in finalizing invoice"} */
-  last_finalization_error: object;
-  /** @example "in_1def" */
-  latest_revision: string;
-  /** @example {"data":[],"has_more":false} */
-  lines: object;
-  /** @example true */
-  livemode: boolean;
-  /** @example {"custom_key":"custom_value"} */
-  metadata: object;
-  /** @example 1629278400 */
-  next_payment_attempt: number;
-  /** @example "INV-2021-0001" */
-  number: string;
-  /** @example "acct_1GqrD5Csdhjl8bV1z9Pgh" */
-  on_behalf_of: string;
-  /** @example true */
-  paid: boolean;
-  /** @example false */
-  paid_out_of_band: boolean;
-  /** @example "pi_1F6abcD2dfgHjk1L2m3pR" */
-  payment_intent: string;
-  /** @example {"payment_method_options":{}} */
-  payment_settings: object;
-  /** @example 1629278400 */
-  period_end: number;
-  /** @example 1629274800 */
-  period_start: number;
-  /** @example 100 */
-  post_payment_credit_notes_amount: number;
-  /** @example 0 */
-  pre_payment_credit_notes_amount: number;
-  /** @example "qt_1F6abcD2dfgHjk1L2m3pR" */
-  quote: string;
-  /** @example "12345" */
-  receipt_number: string;
-  /** @example {"template":"template_1"} */
-  rendering: object;
-  /** @example {"amount":100,"tax":10} */
-  shipping_cost: object;
-  /** @example {"name":"Shipping Details","address":{}} */
-  shipping_details: object;
-  /** @example 0 */
-  starting_balance: number;
-  /** @example "Statement descriptor text" */
-  statement_descriptor: string;
-  /** @example "paid" */
-  status: string;
-  /** @example {"finalized_at":1629278400} */
-  status_transitions: object;
-  /** @example "sub_1F6abcD2dfgHjk1L2m3pR" */
-  subscription: string;
-  /** @example 500 */
-  subtotal: number;
-  /** @example 0 */
-  subtotal_excluding_tax: number;
-  /** @example true */
-  test_clock: boolean;
-  /** @example 100 */
-  total: number;
-  /** @example 0 */
-  total_excluding_tax: number;
-  /** @example 0 */
-  tax: number;
-  /** @example {"id":"sub_1H2kR2Eli6xYZy3"} */
-  subscription_details: object;
-  /** @example 1629278400 */
-  subscription_proration_date?: number;
-  /** @example {"amount_gte":500,"item_reasons":[]} */
-  threshold_reason?: object;
-  /** @example [{"amount":200,"discount":"di_1H2kR2Eli6xYZy3"}] */
-  total_discount_amounts: object[];
-  /** @example [{"amount":100}] */
-  total_pretax_credit_amounts?: object[];
-  /** @example [{"amount":50,"tax_rate":"txr_1H2kR2Eli6xYZy3"}] */
-  total_tax_amounts: object[];
-  /** @example {"destination":"acct_1F6abcD2dfgHjk1L2m3pR"} */
-  transfer_data: object;
-  /** @example 1629278400 */
-  webhooks_delivered_at: number;
-}
-
-export interface State {
-  id: number;
-  name: string;
-  countryId: number;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-}
-
-export interface CreateStateDto {
-  /** @example 123456789 */
-  countryId: number;
-  /** @example "New York" */
-  name: string;
-}
-
-export interface City {
-  id: number;
-  name: string;
-  stateId: number;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-}
-
-export interface CreateCityDto {
-  /** @example 123456789 */
-  stateId: number;
-  /** @example "New York" */
-  name: string;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -1924,99 +948,38 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Mpa Coaching
- * @version 0.0.92
+ * @title Punjab Police Job Portal API
+ * @version 1.0
  * @contact
+ *
+ * API documentation for Punjab Police Job Portal
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
    * @tags App
-   * @name AppControllerIndex
+   * @name AppControllerGetHello
    * @request GET:/
    */
-  appControllerIndex = (params: RequestParams = {}) =>
+  appControllerGetHello = (params: RequestParams = {}) =>
     this.request<void, any>({
       path: `/`,
       method: "GET",
       ...params,
     });
 
-  health = {
-    /**
-     * No description
-     *
-     * @tags App
-     * @name AppControllerHealth
-     * @request GET:/health
-     */
-    appControllerHealth: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/health`,
-        method: "GET",
-        ...params,
-      }),
-  };
-  logs = {
-    /**
-     * No description
-     *
-     * @tags App
-     * @name AppControllerAppLogs
-     * @request GET:/logs
-     */
-    appControllerAppLogs: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/logs`,
-        method: "GET",
-        ...params,
-      }),
-  };
-  permissions = {
-    /**
-     * No description
-     *
-     * @tags Permission
-     * @name PermissionControllerIndex
-     * @request GET:/permissions
-     */
-    permissionControllerIndex: (params: RequestParams = {}) =>
-      this.request<PermissionGroup[], any>({
-        path: `/permissions`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-  };
-  users = {
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerSignUp
-     * @request POST:/users/sign-up
-     */
-    userControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/users/sign-up`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
+  auth = {
     /**
      * No description
      *
      * @tags User
      * @name UserControllerSignIn
-     * @request POST:/users/sign-in
+     * @request POST:/auth/sign-in
      */
     userControllerSignIn: (data: SignInDto, params: RequestParams = {}) =>
-      this.request<TokenWithMessageDto, any>({
-        path: `/users/sign-in`,
+      this.request<AuthUserDto, any>({
+        path: `/auth/sign-in`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -2028,81 +991,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags User
-     * @name UserControllerSignInWith2FaOtp
-     * @request POST:/users/users/2fa-sign-in
+     * @name UserControllerSignUp
+     * @request POST:/auth/sign-up
      */
-    userControllerSignInWith2FaOtp: (data: TwoFAOtpDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/users/users/2fa-sign-in`,
+    userControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+      this.request<AuthUserDto, any>({
+        path: `/auth/sign-up`,
         method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerVerifyEmail
-     * @request POST:/users/verify-email
-     */
-    userControllerVerifyEmail: (data: VerifyEmailDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/verify-email`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerUnlockAccount
-     * @request POST:/users/users/unlock-account
-     */
-    userControllerUnlockAccount: (data: UnlockAccountDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/users/users/unlock-account`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerSendOtp
-     * @request POST:/users/send-otp
-     */
-    userControllerSendOtp: (data: SendOtpDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/send-otp`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerVerifyOtp
-     * @request PATCH:/users/verify-otp
-     */
-    userControllerVerifyOtp: (data: VerifyOtpDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/verify-otp`,
-        method: "PATCH",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -2114,11 +1009,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags User
      * @name UserControllerForgotPassword
-     * @request POST:/users/forgot-password
+     * @request POST:/auth/forgot-password
      */
-    userControllerForgotPassword: (data: ForgotPasswordDto, params: RequestParams = {}) =>
+    userControllerForgotPassword: (data: ForgotPasswordDTO, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/auth/forgot-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserControllerVerifyOtp
+     * @request POST:/auth/verify-otp
+     */
+    userControllerVerifyOtp: (data: VerifyOtpDTO, params: RequestParams = {}) =>
       this.request<MessageDto, any>({
-        path: `/users/forgot-password`,
+        path: `/auth/verify-otp`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -2131,12 +1042,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags User
      * @name UserControllerResetPassword
-     * @request PATCH:/users/reset-password
+     * @request POST:/auth/reset-password
      */
-    userControllerResetPassword: (data: ResetPasswordDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/reset-password`,
-        method: "PATCH",
+    userControllerResetPassword: (data: ResetPasswordDTO, params: RequestParams = {}) =>
+      this.request<AuthUserDto, any>({
+        path: `/auth/reset-password`,
+        method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -2147,18 +1058,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags User
-     * @name UserControllerChangePassword
-     * @request PATCH:/users/change-password
+     * @name UserControllerAuthUser
+     * @request GET:/auth/auth-user
      * @secure
      */
-    userControllerChangePassword: (data: ChangePasswordDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/change-password`,
-        method: "PATCH",
+    userControllerAuthUser: (data: SignInDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/auth/auth-user`,
+        method: "GET",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
@@ -2167,17 +1077,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags User
      * @name UserControllerUpdateProfile
-     * @request PATCH:/users/update-profile
-     * @secure
+     * @request PATCH:/auth/update-profile/{id}
      */
-    userControllerUpdateProfile: (data: UpdateProfileDto, params: RequestParams = {}) =>
-      this.request<AuthUserDto, any>({
-        path: `/users/update-profile`,
+    userControllerUpdateProfile: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/auth/update-profile/${id}`,
         method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
@@ -2185,457 +1090,123 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags User
-     * @name UserControllerChangeAvatar
-     * @request PATCH:/users/change-avatar
-     * @secure
+     * @name UserControllerUploadImage
+     * @request POST:/auth/upload
      */
-    userControllerChangeAvatar: (
-      data: {
-        /** @format binary */
-        file?: File;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<AuthUserDto, any>({
-        path: `/users/change-avatar`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerGetAuth
-     * @request GET:/users/auth
-     * @secure
-     */
-    userControllerGetAuth: (params: RequestParams = {}) =>
-      this.request<AuthUserDto, any>({
-        path: `/users/auth`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerRefreshToken
-     * @request POST:/users/refresh-token
-     */
-    userControllerRefreshToken: (data: RefreshTokenDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/refresh-token`,
+    userControllerUploadImage: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/auth/upload`,
         method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerToggleTwoFa
-     * @request PATCH:/users/toggle-two-fa
-     * @secure
-     */
-    userControllerToggleTwoFa: (params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/toggle-two-fa`,
-        method: "PATCH",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerVerifyTwoFa
-     * @request PATCH:/users/two-fa-verification
-     * @secure
-     */
-    userControllerVerifyTwoFa: (data: TwoFAOtpDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/users/two-fa-verification`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerSignWithGoogle
-     * @request GET:/users/sign-in/google
-     */
-    userControllerSignWithGoogle: (params: RequestParams = {}) =>
-      this.request<SocialLoginUrlDto, any>({
-        path: `/users/sign-in/google`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerGoogleCallBack
-     * @request GET:/users/google/callback
-     */
-    userControllerGoogleCallBack: (
-      query: {
-        code: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<User, any>({
-        path: `/users/google/callback`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerSignInWithFacebook
-     * @request GET:/users/sign-in/facebook
-     */
-    userControllerSignInWithFacebook: (params: RequestParams = {}) =>
-      this.request<SocialLoginUrlDto, any>({
-        path: `/users/sign-in/facebook`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserControllerFacebookCallBack
-     * @request GET:/users/facebook/callback
-     */
-    userControllerFacebookCallBack: (
-      query: {
-        code: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<User, any>({
-        path: `/users/facebook/callback`,
-        method: "GET",
-        query: query,
-        format: "json",
         ...params,
       }),
   };
-  activityLogs = {
+  inquiry = {
     /**
      * No description
      *
-     * @tags Activity Log
-     * @name ActivityLogControllerIndex
-     * @request GET:/activity-logs
-     * @secure
+     * @tags Inquiry
+     * @name InquiryControllerCreateInquiry
+     * @request POST:/inquiry
      */
-    activityLogControllerIndex: (params: RequestParams = {}) =>
-      this.request<ActivityLog[], any>({
-        path: `/activity-logs`,
+    inquiryControllerCreateInquiry: (data: CreateInquiryDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/inquiry`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inquiry
+     * @name InquiryControllerGetInquiries
+     * @request GET:/inquiry
+     */
+    inquiryControllerGetInquiries: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/inquiry`,
         method: "GET",
-        secure: true,
-        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inquiry
+     * @name InquiryControllerGetInquiryById
+     * @request GET:/inquiry/{id}
+     */
+    inquiryControllerGetInquiryById: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/inquiry/${id}`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inquiry
+     * @name InquiryControllerUpdateInquiry
+     * @request PATCH:/inquiry/{id}
+     */
+    inquiryControllerUpdateInquiry: (id: string, data: UpdateInquiryDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/inquiry/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inquiry
+     * @name InquiryControllerDeleteInquiry
+     * @request DELETE:/inquiry/{id}
+     */
+    inquiryControllerDeleteInquiry: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/inquiry/${id}`,
+        method: "DELETE",
         ...params,
       }),
   };
-  students = {
+  images = {
     /**
      * No description
      *
-     * @tags Student
-     * @name AuthStudentControllerSignUp
-     * @request POST:/students/sign-up
+     * @tags Image
+     * @name ImageControllerStore
+     * @request POST:/images
      */
-    authStudentControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/students/sign-up`,
+    imageControllerStore: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/images`,
         method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name AuthStudentControllerLogin
-     * @request POST:/students/sign-in
-     */
-    authStudentControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/students/sign-in`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name AuthStudentControllerGetAuth
-     * @request GET:/students/auth
-     * @secure
-     */
-    authStudentControllerGetAuth: (params: RequestParams = {}) =>
-      this.request<AuthStudent, any>({
-        path: `/students/auth`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerIndex
-     * @request GET:/students
-     * @secure
-     */
-    studentControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        search?: string;
-        /** @example [] */
-        degrees?: string[];
-        /** @example [] */
-        jobTypes?: string[];
-        /** @example [] */
-        desiredInternshipRoles?: string[];
-        /** @example [] */
-        roles?: string[];
-        /** Yes | No */
-        handicapAccessibility?: string;
-        status?: "Pending for approval" | "Approved" | "Blocked" | "Active" | "Inactive" | "Not Eligible";
-        paymentStatus?: "Paid" | "Unpaid" | "Pending for approval";
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<StudentPagination, any>({
-        path: `/students`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerPatchStudent
-     * @request PATCH:/students
-     * @secure
-     */
-    studentControllerPatchStudent: (data: UpdateStudentDto, params: RequestParams = {}) =>
-      this.request<Student, any>({
-        path: `/students`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerIndexing
-     * @request GET:/students/indexing
-     * @secure
-     */
-    studentControllerIndexing: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        search?: string;
-        /** @example [] */
-        degrees?: string[];
-        /** @example [] */
-        jobTypes?: string[];
-        /** @example [] */
-        desiredInternshipRoles?: string[];
-        /** @example [] */
-        roles?: string[];
-        /** Yes | No */
-        handicapAccessibility?: string;
-        status?: "Pending for approval" | "Approved" | "Blocked" | "Active" | "Inactive" | "Not Eligible";
-        paymentStatus?: "Paid" | "Unpaid" | "Pending for approval";
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<StudentDataPagination, any>({
-        path: `/students/indexing`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerPatchPaymentInvoice
-     * @request PATCH:/students/payment-invoice
-     * @secure
-     */
-    studentControllerPatchPaymentInvoice: (
-      data: {
-        /** @format binary */
-        paymentInvoice?: File;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<Student, any>({
-        path: `/students/payment-invoice`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerGetStudent
-     * @request GET:/students/{id}
-     * @secure
-     */
-    studentControllerGetStudent: (id: string, params: RequestParams = {}) =>
-      this.request<Student, any>({
-        path: `/students/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerPatchStatus
-     * @request PATCH:/students/{id}/statuses
-     * @secure
-     */
-    studentControllerPatchStatus: (id: string, data: PatchPaymentStatus, params: RequestParams = {}) =>
-      this.request<Student, any>({
-        path: `/students/${id}/statuses`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Student
-     * @name StudentControllerGetTenancies
-     * @request GET:/students/{id}/tenancies
-     * @secure
-     */
-    studentControllerGetTenancies: (id: string, params: RequestParams = {}) =>
-      this.request<TenancyPagination, any>({
-        path: `/students/${id}/tenancies`,
-        method: "GET",
-        secure: true,
-        format: "json",
         ...params,
       }),
   };
-  educations = {
+  candidates = {
     /**
      * No description
      *
-     * @tags Education
-     * @name EducationControllerIndex
-     * @request GET:/educations
+     * @tags Candidates
+     * @name CandidateControllerCreate
+     * @summary Create a new candidate application
+     * @request POST:/candidates
      * @secure
      */
-    educationControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        degree?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<EducationPagination, any>({
-        path: `/educations`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Education
-     * @name EducationControllerCreate
-     * @request POST:/educations
-     * @secure
-     */
-    educationControllerCreate: (data: CreateEducationDto, params: RequestParams = {}) =>
-      this.request<Education, any>({
-        path: `/educations`,
+    candidateControllerCreate: (data: CreatePersonalInfoDto, params: RequestParams = {}) =>
+      this.request<Candidate, any>({
+        path: `/candidates`,
         method: "POST",
         body: data,
         secure: true,
-        type: ContentType.FormData,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -2643,14 +1214,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Education
-     * @name EducationControllerShow
-     * @request GET:/educations/{id}
+     * @tags Candidates
+     * @name CandidateControllerFindAll
+     * @summary Get all candidates
+     * @request GET:/candidates
      * @secure
      */
-    educationControllerShow: (id: string, params: RequestParams = {}) =>
-      this.request<Education, any>({
-        path: `/educations/${id}`,
+    candidateControllerFindAll: (params: RequestParams = {}) =>
+      this.request<Candidate[], any>({
+        path: `/candidates`,
         method: "GET",
         secure: true,
         format: "json",
@@ -2660,18 +1232,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Education
-     * @name EducationControllerPatch
-     * @request PATCH:/educations/{id}
+     * @tags Candidates
+     * @name CandidateControllerFindOne
+     * @summary Get a candidate by ID
+     * @request GET:/candidates/{id}
      * @secure
      */
-    educationControllerPatch: (id: string, data: UpdateEducationDto, params: RequestParams = {}) =>
-      this.request<Education, any>({
-        path: `/educations/${id}`,
-        method: "PATCH",
-        body: data,
+    candidateControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<Candidate, void>({
+        path: `/candidates/${id}`,
+        method: "GET",
         secure: true,
-        type: ContentType.FormData,
         format: "json",
         ...params,
       }),
@@ -2679,561 +1250,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Education
-     * @name EducationControllerDestroy
-     * @request DELETE:/educations/{id}
+     * @tags Candidates
+     * @name CandidateControllerUpdate
+     * @summary Update a candidate
+     * @request PATCH:/candidates/{id}
      * @secure
      */
-    educationControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Education, any>({
-        path: `/educations/${id}`,
+    candidateControllerUpdate: (id: string, data: Candidate, params: RequestParams = {}) =>
+      this.request<Candidate, void>({
+        path: `/candidates/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Candidates
+     * @name CandidateControllerRemove
+     * @summary Delete a candidate
+     * @request DELETE:/candidates/{id}
+     * @secure
+     */
+    candidateControllerRemove: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/candidates/${id}`,
         method: "DELETE",
         secure: true,
-        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Education
-     * @name EducationControllerDestroyDocuments
-     * @request DELETE:/educations/{id}/documents
+     * @tags Candidates
+     * @name CandidateControllerByUser
+     * @summary Get a Candidate  by user ID
+     * @request GET:/candidates/user/{userId}
      * @secure
      */
-    educationControllerDestroyDocuments: (id: string, data: DocumentIdsDto, params: RequestParams = {}) =>
-      this.request<Education, any>({
-        path: `/educations/${id}/documents`,
-        method: "DELETE",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  documents = {
-    /**
-     * No description
-     *
-     * @tags Documents
-     * @name DocumentsControllerIndex
-     * @request GET:/documents
-     * @secure
-     */
-    documentsControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        name?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<DocumentPagination, any>({
-        path: `/documents`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Documents
-     * @name DocumentsControllerCreate
-     * @request POST:/documents
-     * @secure
-     */
-    documentsControllerCreate: (data: CreateDocumentDto, params: RequestParams = {}) =>
-      this.request<Document, any>({
-        path: `/documents`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Documents
-     * @name DocumentsControllerShow
-     * @request GET:/documents/{id}
-     * @secure
-     */
-    documentsControllerShow: (id: string, params: RequestParams = {}) =>
-      this.request<Document, any>({
-        path: `/documents/${id}`,
+    candidateControllerByUser: (userId: string, params: RequestParams = {}) =>
+      this.request<Candidate, any>({
+        path: `/candidates/user/${userId}`,
         method: "GET",
         secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Documents
-     * @name DocumentsControllerPatch
-     * @request PATCH:/documents/{id}
-     * @secure
-     */
-    documentsControllerPatch: (id: string, data: UpdateDocumentDto, params: RequestParams = {}) =>
-      this.request<Document, any>({
-        path: `/documents/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Documents
-     * @name DocumentsControllerDestroy
-     * @request DELETE:/documents/{id}
-     * @secure
-     */
-    documentsControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Document, any>({
-        path: `/documents/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  businesses = {
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerMyBusinesses
-     * @request GET:/businesses/my
-     * @secure
-     */
-    businessControllerMyBusinesses: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        /** @example "john doe" */
-        name?: string;
-        isArchived?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BusinessPagination, any>({
-        path: `/businesses/my`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerIndex
-     * @request GET:/businesses
-     * @secure
-     */
-    businessControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        /** @example "john doe" */
-        name?: string;
-        isArchived?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BusinessPagination, any>({
-        path: `/businesses`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerCreate
-     * @request POST:/businesses
-     * @secure
-     */
-    businessControllerCreate: (data: CreateBusinessDto, params: RequestParams = {}) =>
-      this.request<SignedBusinessDto, any>({
-        path: `/businesses`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerBusinessTypes
-     * @request GET:/businesses/types
-     */
-    businessControllerBusinessTypes: (params: RequestParams = {}) =>
-      this.request<BusinessTypeDto, any>({
-        path: `/businesses/types`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerRootSignIn
-     * @request POST:/businesses/root/sign-in
-     */
-    businessControllerRootSignIn: (data: RootBusinessSignInDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/businesses/root/sign-in`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerCodeBasedSignIn
-     * @request POST:/businesses/code-based-sign-in
-     */
-    businessControllerCodeBasedSignIn: (data: CodeBasedSignInDto, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/businesses/code-based-sign-in`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerSigned
-     * @request GET:/businesses/signed
-     * @secure
-     */
-    businessControllerSigned: (params: RequestParams = {}) =>
-      this.request<Business, any>({
-        path: `/businesses/signed`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerSign
-     * @request GET:/businesses/{id}/sign
-     * @secure
-     */
-    businessControllerSign: (id: string, params: RequestParams = {}) =>
-      this.request<TokenDto, any>({
-        path: `/businesses/${id}/sign`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerUpdate
-     * @request PATCH:/businesses/{id}
-     * @secure
-     */
-    businessControllerUpdate: (id: string, data: UpdateBusinessDto, params: RequestParams = {}) =>
-      this.request<Business, any>({
-        path: `/businesses/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerShow
-     * @request GET:/businesses/{id}
-     * @secure
-     */
-    businessControllerShow: (id: string, params: RequestParams = {}) =>
-      this.request<Business, any>({
-        path: `/businesses/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerDelete
-     * @request DELETE:/businesses/{id}
-     * @secure
-     */
-    businessControllerDelete: (id: string, params: RequestParams = {}) =>
-      this.request<Business, any>({
-        path: `/businesses/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerPatchStatus
-     * @request PATCH:/businesses/{id}/statuses
-     * @secure
-     */
-    businessControllerPatchStatus: (id: string, data: UpdateBusinessStatusDTO, params: RequestParams = {}) =>
-      this.request<Business, any>({
-        path: `/businesses/${id}/statuses`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerArchive
-     * @request PATCH:/businesses/{id}/archive
-     * @secure
-     */
-    businessControllerArchive: (id: string, data: BusinessArchiveDto, params: RequestParams = {}) =>
-      this.request<Business, any>({
-        path: `/businesses/${id}/archive`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerGetJobs
-     * @request GET:/businesses/{id}/jobs
-     * @secure
-     */
-    businessControllerGetJobs: (id: string, params: RequestParams = {}) =>
-      this.request<JobPagination, any>({
-        path: `/businesses/${id}/jobs`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Business
-     * @name BusinessControllerInterviews
-     * @request GET:/businesses/{id}/interviews
-     * @secure
-     */
-    businessControllerInterviews: (id: string, params: RequestParams = {}) =>
-      this.request<InterviewPagination, any>({
-        path: `/businesses/${id}/interviews`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  interviews = {
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerIndex
-     * @request GET:/interviews
-     * @secure
-     */
-    interviewControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        status?: "Scheduled" | "Postponed" | "Cancelled" | "Passed" | "Failed";
-        /** true | false */
-        upcoming?: string;
-        /** @example "john doe" */
-        name?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<InterviewPagination, any>({
-        path: `/interviews`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerCreateStudentInterview
-     * @request POST:/interviews
-     * @secure
-     */
-    interviewControllerCreateStudentInterview: (data: CreateInterviewDto, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerGetStudentInterview
-     * @request GET:/interviews/latest
-     * @secure
-     */
-    interviewControllerGetStudentInterview: (params: RequestParams = {}) =>
-      this.request<LatestInterviewDto, any>({
-        path: `/interviews/latest`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerGet
-     * @request GET:/interviews/{id}
-     * @secure
-     */
-    interviewControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerPatch
-     * @request PATCH:/interviews/{id}
-     * @secure
-     */
-    interviewControllerPatch: (id: string, data: UpdateInterviewDto, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerDestroy
-     * @request DELETE:/interviews/{id}
-     * @secure
-     */
-    interviewControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Interview
-     * @name InterviewControllerPatchInterview
-     * @request PATCH:/interviews/{id}/statuses
-     * @secure
-     */
-    interviewControllerPatchInterview: (id: string, data: UpdateInterviewStatus, params: RequestParams = {}) =>
-      this.request<Interview, any>({
-        path: `/interviews/${id}/statuses`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -3242,58 +1306,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerIndex
-     * @request GET:/jobs
-     * @secure
-     */
-    jobControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        /** Search by Title or Description */
-        search?: string;
-        /** Science and Technology | Health and Medicine */
-        industries?: string[];
-        /** Sr. Fullstack Developer | UI/UX Designer */
-        roles?: string[];
-        /** Remote | On-site | Hybrid */
-        jobTypes?: string[];
-        /** @example "2025-02-16T03:35:00.966Z" */
-        startDate?: string;
-        /** @example "2025-03-12T03:35:00.967Z" */
-        endDate?: string;
-        isArchived?: boolean;
-        businessId?: string;
-        studentId?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<JobPagination, any>({
-        path: `/jobs`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Job
-     * @name JobControllerCreate
+     * @tags jobs
+     * @name JobsControllerCreate
+     * @summary Create a new job posting
      * @request POST:/jobs
-     * @secure
      */
-    jobControllerCreate: (data: CreateJobDto, params: RequestParams = {}) =>
+    jobsControllerCreate: (data: CreateJobDto, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/jobs`,
         method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -3302,40 +1324,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerJobIndexing
-     * @request GET:/jobs/indexing
-     * @secure
+     * @tags jobs
+     * @name JobsControllerFindAll
+     * @summary Get all jobs or filter by title
+     * @request GET:/jobs
      */
-    jobControllerJobIndexing: (
+    jobsControllerFindAll: (
       query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        /** Search by Title or Description */
-        search?: string;
-        /** Science and Technology | Health and Medicine */
-        industries?: string[];
-        /** Sr. Fullstack Developer | UI/UX Designer */
-        roles?: string[];
-        /** Remote | On-site | Hybrid */
-        jobTypes?: string[];
-        /** @example "2025-02-16T03:35:00.966Z" */
-        startDate?: string;
-        /** @example "2025-03-12T03:35:00.967Z" */
-        endDate?: string;
-        isArchived?: boolean;
-        businessId?: string;
-        studentId?: string;
+        /**
+         * Filter jobs by title
+         * @example "Junior Constable"
+         */
+        title?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<JobIndexDataPagination, any>({
-        path: `/jobs/indexing`,
+      this.request<Job[], any>({
+        path: `/jobs`,
         method: "GET",
         query: query,
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -3343,16 +1350,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerShow
+     * @tags jobs
+     * @name JobsControllerFindOne
+     * @summary Get job by ID
      * @request GET:/jobs/{id}
-     * @secure
      */
-    jobControllerShow: (id: string, params: RequestParams = {}) =>
-      this.request<Job, any>({
+    jobsControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<Job, void>({
         path: `/jobs/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -3360,17 +1366,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerUpdate
+     * @tags jobs
+     * @name JobsControllerUpdate
+     * @summary Update job by ID
      * @request PATCH:/jobs/{id}
-     * @secure
      */
-    jobControllerUpdate: (id: string, data: UpdateJobDto, params: RequestParams = {}) =>
-      this.request<Job, any>({
+    jobsControllerUpdate: (id: string, data: UpdateJobDto, params: RequestParams = {}) =>
+      this.request<Job, void>({
         path: `/jobs/${id}`,
         method: "PATCH",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -3379,34 +1384,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerRemove
+     * @tags jobs
+     * @name JobsControllerRemove
+     * @summary Delete job by ID
      * @request DELETE:/jobs/{id}
-     * @secure
      */
-    jobControllerRemove: (id: string, params: RequestParams = {}) =>
-      this.request<Job, any>({
+    jobsControllerRemove: (id: string, params: RequestParams = {}) =>
+      this.request<void, void>({
         path: `/jobs/${id}`,
         method: "DELETE",
-        secure: true,
-        format: "json",
         ...params,
       }),
-
+  };
+  districtOfficers = {
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerPatchStatus
-     * @request PATCH:/jobs/{id}/statuses
-     * @secure
+     * @tags District Officers
+     * @name DistrictOfficerControllerCreate
+     * @summary Create a new district officer
+     * @request POST:/district-officers
      */
-    jobControllerPatchStatus: (id: string, data: UpdateJobStatus, params: RequestParams = {}) =>
-      this.request<Job, any>({
-        path: `/jobs/${id}/statuses`,
-        method: "PATCH",
+    districtOfficerControllerCreate: (data: CreateDistrictOfficerDto, params: RequestParams = {}) =>
+      this.request<DistrictOfficer, any>({
+        path: `/district-officers`,
+        method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -3415,40 +1418,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerGetApplications
-     * @request GET:/jobs/{id}/applications
-     * @secure
+     * @tags District Officers
+     * @name DistrictOfficerControllerFindAll
+     * @summary Get all district officers with optional filters
+     * @request GET:/district-officers
      */
-    jobControllerGetApplications: (
-      id: string,
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        /** @example "2025-02-16T03:35:00.993Z" */
-        startDate?: string;
-        /** @example "2025-03-12T03:35:00.993Z" */
-        endDate?: string;
-        status?:
-          | "New"
-          | "1st Interview"
-          | "2nd Interview"
-          | "Waiting for student"
-          | "Pending for approval"
-          | "Rejected"
-          | "Approved"
-          | "Archived";
-        type?: "Job" | "Property";
+    districtOfficerControllerFindAll: (
+      query?: {
+        /**
+         * CNIC number
+         * @example "35202-1234567-8"
+         */
+        cnic?: string;
+        /**
+         * District name
+         * @example "Multan"
+         */
+        district?: string;
+        /**
+         * Full name of the district officer
+         * @example "Sami Ullah"
+         */
+        name?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<ApplicationPagination, any>({
-        path: `/jobs/${id}/applications`,
+      this.request<DistrictOfficer[], any>({
+        path: `/district-officers`,
         method: "GET",
         query: query,
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -3456,16 +1454,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerGetInvitations
-     * @request GET:/jobs/{id}/invitations
-     * @secure
+     * @tags District Officers
+     * @name DistrictOfficerControllerFindOne
+     * @summary Get a district officer by ID
+     * @request GET:/district-officers/{id}
      */
-    jobControllerGetInvitations: (id: string, params: RequestParams = {}) =>
-      this.request<InvitationPagination, any>({
-        path: `/jobs/${id}/invitations`,
+    districtOfficerControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<DistrictOfficer, any>({
+        path: `/district-officers/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -3473,16 +1470,158 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Job
-     * @name JobControllerInterns
-     * @request GET:/jobs/{id}/interns
-     * @secure
+     * @tags District Officers
+     * @name DistrictOfficerControllerUpdate
+     * @summary Update a district officer by ID
+     * @request PATCH:/district-officers/{id}
      */
-    jobControllerInterns: (id: string, params: RequestParams = {}) =>
-      this.request<InternPagination, any>({
-        path: `/jobs/${id}/interns`,
+    districtOfficerControllerUpdate: (id: string, data: UpdateDistrictOfficerDto, params: RequestParams = {}) =>
+      this.request<DistrictOfficer, any>({
+        path: `/district-officers/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags District Officers
+     * @name DistrictOfficerControllerRemove
+     * @summary Delete a district officer by ID
+     * @request DELETE:/district-officers/{id}
+     */
+    districtOfficerControllerRemove: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/district-officers/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags District Officers
+     * @name DistrictOfficerControllerByUser
+     * @summary Get a district officer  by user ID
+     * @request GET:/district-officers/user/{userId}
+     */
+    districtOfficerControllerByUser: (userId: string, params: RequestParams = {}) =>
+      this.request<DistrictOfficer, any>({
+        path: `/district-officers/user/${userId}`,
         method: "GET",
-        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
+  recruiters = {
+    /**
+     * No description
+     *
+     * @tags Recruiters
+     * @name RecruiterControllerCreate
+     * @summary Create a new recruiter
+     * @request POST:/recruiters
+     */
+    recruiterControllerCreate: (data: CreateRecruiterDto, params: RequestParams = {}) =>
+      this.request<Recruiter, any>({
+        path: `/recruiters`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recruiters
+     * @name RecruiterControllerGetAll
+     * @summary Get all recruiters with optional filters
+     * @request GET:/recruiters
+     */
+    recruiterControllerGetAll: (
+      query?: {
+        /**
+         * District
+         * @example "Lahore"
+         */
+        district?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Recruiter[], any>({
+        path: `/recruiters`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recruiters
+     * @name RecruiterControllerGetById
+     * @summary Get a recruiter by ID
+     * @request GET:/recruiters/{id}
+     */
+    recruiterControllerGetById: (id: string, params: RequestParams = {}) =>
+      this.request<Recruiter, any>({
+        path: `/recruiters/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recruiters
+     * @name RecruiterControllerUpdate
+     * @summary Update a recruiter by ID
+     * @request PATCH:/recruiters/{id}
+     */
+    recruiterControllerUpdate: (id: string, data: CreateRecruiterDto, params: RequestParams = {}) =>
+      this.request<Recruiter, any>({
+        path: `/recruiters/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recruiters
+     * @name RecruiterControllerDelete
+     * @summary Delete a recruiter by ID
+     * @request DELETE:/recruiters/{id}
+     */
+    recruiterControllerDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/recruiters/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recruiters
+     * @name RecruiterControllerGetRecruiterByUser
+     * @summary Get a recruiter by user ID
+     * @request GET:/recruiters/{userId}
+     */
+    recruiterControllerGetRecruiterByUser: (userId: string, params: RequestParams = {}) =>
+      this.request<Recruiter, any>({
+        path: `/recruiters/${userId}`,
+        method: "GET",
         format: "json",
         ...params,
       }),
@@ -3491,1554 +1630,86 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Application
-     * @name ApplicationControllerIndex
-     * @request GET:/applications
-     * @secure
-     */
-    applicationControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        /** @example "2025-02-16T03:35:00.993Z" */
-        startDate?: string;
-        /** @example "2025-03-12T03:35:00.993Z" */
-        endDate?: string;
-        status?:
-          | "New"
-          | "1st Interview"
-          | "2nd Interview"
-          | "Waiting for student"
-          | "Pending for approval"
-          | "Rejected"
-          | "Approved"
-          | "Archived";
-        type?: "Job" | "Property";
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ApplicationPagination, any>({
-        path: `/applications`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Application
+     * @tags Applications
      * @name ApplicationControllerCreate
+     * @summary Create a new application
      * @request POST:/applications
-     * @secure
      */
     applicationControllerCreate: (data: CreateApplicationDto, params: RequestParams = {}) =>
-      this.request<Application, any>({
+      this.request<void, any>({
         path: `/applications`,
         method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Application
-     * @name ApplicationControllerGetPropertyApplications
-     * @request GET:/applications/properties
-     * @secure
+     * @tags Applications
+     * @name ApplicationControllerFindAll
+     * @summary Get all applications
+     * @request GET:/applications
      */
-    applicationControllerGetPropertyApplications: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        /** @example "2025-02-16T03:35:00.993Z" */
-        startDate?: string;
-        /** @example "2025-03-12T03:35:00.993Z" */
-        endDate?: string;
-        status?:
-          | "New"
-          | "1st Interview"
-          | "2nd Interview"
-          | "Waiting for student"
-          | "Pending for approval"
-          | "Rejected"
-          | "Approved"
-          | "Archived";
-        type?: "Job" | "Property";
+    applicationControllerFindAll: (
+      query?: {
+        /** Filter applications by district */
+        district?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<ApplicationPagination, any>({
-        path: `/applications/properties`,
+      this.request<void, any>({
+        path: `/applications`,
         method: "GET",
         query: query,
-        secure: true,
-        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Application
-     * @name ApplicationControllerGet
+     * @tags Applications
+     * @name ApplicationControllerFindOne
+     * @summary Get application by ID
      * @request GET:/applications/{id}
-     * @secure
      */
-    applicationControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Application, any>({
+    applicationControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<void, void>({
         path: `/applications/${id}`,
         method: "GET",
-        secure: true,
-        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Application
-     * @name ApplicationControllerDestroy
+     * @tags Applications
+     * @name ApplicationControllerUpdate
+     * @summary Update application by ID
+     * @request PUT:/applications/{id}
+     */
+    applicationControllerUpdate: (id: string, data: UpdateApplicationDto, params: RequestParams = {}) =>
+      this.request<void, void>({
+        path: `/applications/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Applications
+     * @name ApplicationControllerRemove
+     * @summary Delete application by ID
      * @request DELETE:/applications/{id}
-     * @secure
      */
-    applicationControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Application, any>({
+    applicationControllerRemove: (id: string, params: RequestParams = {}) =>
+      this.request<void, void>({
         path: `/applications/${id}`,
         method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Application
-     * @name ApplicationControllerToggleReuploadAgreement
-     * @request PATCH:/applications/{id}/toggle-reupload-agreement
-     * @secure
-     */
-    applicationControllerToggleReuploadAgreement: (id: string, params: RequestParams = {}) =>
-      this.request<Application, any>({
-        path: `/applications/${id}/toggle-reupload-agreement`,
-        method: "PATCH",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Application
-     * @name ApplicationControllerPatch
-     * @request PATCH:/applications/{id}/training-agreement
-     * @secure
-     */
-    applicationControllerPatch: (
-      id: string,
-      data: {
-        /** @format binary */
-        trainingAgreementFile?: File;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<Application, any>({
-        path: `/applications/${id}/training-agreement`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Application
-     * @name ApplicationControllerPatchStatus
-     * @request PATCH:/applications/{id}/statuses
-     * @secure
-     */
-    applicationControllerPatchStatus: (id: string, data: UpdateApplicationStatus, params: RequestParams = {}) =>
-      this.request<Application, any>({
-        path: `/applications/${id}/statuses`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Application
-     * @name ApplicationControllerPatchAppPaymentStatus
-     * @request PATCH:/applications/{id}/payment-status
-     * @secure
-     */
-    applicationControllerPatchAppPaymentStatus: (
-      id: string,
-      data: PatchApplicationPaymentStatus,
-      params: RequestParams = {},
-    ) =>
-      this.request<Application, any>({
-        path: `/applications/${id}/payment-status`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  invitations = {
-    /**
-     * No description
-     *
-     * @tags Invitation
-     * @name InvitationControllerIndex
-     * @request GET:/invitations
-     * @secure
-     */
-    invitationControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        status?: "Pending" | "Accepted" | "Rejected" | "Archived";
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<InvitationPagination, any>({
-        path: `/invitations`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Invitation
-     * @name InvitationControllerCreate
-     * @request POST:/invitations
-     * @secure
-     */
-    invitationControllerCreate: (data: CreateInvitationDTO, params: RequestParams = {}) =>
-      this.request<Invitation, any>({
-        path: `/invitations`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Invitation
-     * @name InvitationControllerFind
-     * @request GET:/invitations/{id}
-     * @secure
-     */
-    invitationControllerFind: (id: string, params: RequestParams = {}) =>
-      this.request<Invitation, any>({
-        path: `/invitations/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Invitation
-     * @name InvitationControllerPatch
-     * @request PATCH:/invitations/{id}
-     * @secure
-     */
-    invitationControllerPatch: (id: string, data: UpdateInvitationDTO, params: RequestParams = {}) =>
-      this.request<Invitation, any>({
-        path: `/invitations/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Invitation
-     * @name InvitationControllerDestroy
-     * @request DELETE:/invitations/{id}
-     * @secure
-     */
-    invitationControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Invitation, any>({
-        path: `/invitations/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  interns = {
-    /**
-     * No description
-     *
-     * @tags Intern
-     * @name InternControllerGet
-     * @request GET:/interns/{id}
-     * @secure
-     */
-    internControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Intern, any>({
-        path: `/interns/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  tenancies = {
-    /**
-     * No description
-     *
-     * @tags Tenancy
-     * @name TenancyControllerIndex
-     * @request GET:/tenancies
-     * @secure
-     */
-    tenancyControllerIndex: (params: RequestParams = {}) =>
-      this.request<TenancyPagination, any>({
-        path: `/tenancies`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  hosts = {
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostAuthControllerSignUp
-     * @request POST:/hosts/sign-up
-     */
-    hostAuthControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/hosts/sign-up`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostAuthControllerLogin
-     * @request POST:/hosts/sign-in
-     */
-    hostAuthControllerLogin: (data: SignInDto, params: RequestParams = {}) =>
-      this.request<HostAuthenticatedDto, any>({
-        path: `/hosts/sign-in`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostAuthControllerGetAuthHost
-     * @request GET:/hosts/auth
-     * @secure
-     */
-    hostAuthControllerGetAuthHost: (params: RequestParams = {}) =>
-      this.request<AuthHost, any>({
-        path: `/hosts/auth`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostAuthControllerPatchDefaultHost
-     * @request PATCH:/hosts/default
-     * @secure
-     */
-    hostAuthControllerPatchDefaultHost: (data: UpdateHostDto, params: RequestParams = {}) =>
-      this.request<Host, any>({
-        path: `/hosts/default`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostControllerIndex
-     * @request GET:/hosts
-     * @secure
-     */
-    hostControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        search?: string;
-        city?: string;
-        ethnicities?: any[][];
-        religions?: any[][];
-        /** Self Catering | Half-Board | Full-Board */
-        mealPlan?: string;
-        acceptMeatEaters?: string;
-        smokingAllowed?: string;
-        hasPets?: string;
-        status?: string;
-        paymentStatus?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<HostPagination, any>({
-        path: `/hosts`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostControllerPatchStatus
-     * @request PATCH:/hosts/{id}/statuses
-     * @secure
-     */
-    hostControllerPatchStatus: (id: string, data: UpdateHostStatusDTO, params: RequestParams = {}) =>
-      this.request<Host, any>({
-        path: `/hosts/${id}/statuses`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Host
-     * @name HostControllerGetProperties
-     * @request GET:/hosts/{id}/properties
-     * @secure
-     */
-    hostControllerGetProperties: (id: string, params: RequestParams = {}) =>
-      this.request<PropertyPagination, any>({
-        path: `/hosts/${id}/properties`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  properties = {
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerIndex
-     * @request GET:/properties
-     * @secure
-     */
-    propertyControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        types?: (
-          | "House"
-          | "Flat"
-          | "Lower Portion"
-          | "Upper Portion"
-          | "Room"
-          | "Farm House"
-          | "Guest House"
-          | "Hostel"
-          | "Pent House"
-        )[];
-        cities?: string[];
-        minRent?: number;
-        maxRent?: number;
-        status?: string;
-        availability?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PropertyPagination, any>({
-        path: `/properties`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerCreate
-     * @request POST:/properties
-     * @secure
-     */
-    propertyControllerCreate: (data: CreatePropertyDto, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerIndexing
-     * @request GET:/properties/indexing
-     * @secure
-     */
-    propertyControllerIndexing: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        types?: (
-          | "House"
-          | "Flat"
-          | "Lower Portion"
-          | "Upper Portion"
-          | "Room"
-          | "Farm House"
-          | "Guest House"
-          | "Hostel"
-          | "Pent House"
-        )[];
-        cities?: string[];
-        minRent?: number;
-        maxRent?: number;
-        status?: string;
-        availability?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PropertyPaginationWithData, any>({
-        path: `/properties/indexing`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerFind
-     * @request GET:/properties/{id}
-     * @secure
-     */
-    propertyControllerFind: (id: string, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerPatch
-     * @request PATCH:/properties/{id}
-     * @secure
-     */
-    propertyControllerPatch: (id: string, data: UpdatePropertyDto, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerDelete
-     * @request DELETE:/properties/{id}
-     * @secure
-     */
-    propertyControllerDelete: (id: string, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerGetPropertyHost
-     * @request GET:/properties/{id}/hosts
-     * @secure
-     */
-    propertyControllerGetPropertyHost: (id: string, params: RequestParams = {}) =>
-      this.request<UpdateHostDto, any>({
-        path: `/properties/${id}/hosts`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerUpdateHost
-     * @request PATCH:/properties/{id}/hosts
-     * @secure
-     */
-    propertyControllerUpdateHost: (id: string, data: UpdateHostDto, params: RequestParams = {}) =>
-      this.request<UpdateHostDto, any>({
-        path: `/properties/${id}/hosts`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerPatchStatus
-     * @request PATCH:/properties/{id}/statuses
-     * @secure
-     */
-    propertyControllerPatchStatus: (id: string, data: PatchPropertyStatus, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties/${id}/statuses`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerPatchPaymentStatus
-     * @request PATCH:/properties/{id}/payment-status
-     * @secure
-     */
-    propertyControllerPatchPaymentStatus: (id: string, data: PropertyAvailabilityStatus, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties/${id}/payment-status`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerPatchImages
-     * @request PATCH:/properties/{id}/photos
-     * @secure
-     */
-    propertyControllerPatchImages: (id: string, data: UpdatePhotosDto, params: RequestParams = {}) =>
-      this.request<Property, any>({
-        path: `/properties/${id}/photos`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerDeletePhotos
-     * @request DELETE:/properties/{id}/photos
-     * @secure
-     */
-    propertyControllerDeletePhotos: (id: string, data: PhotoIdsDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/properties/${id}/photos`,
-        method: "DELETE",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerGetApplications
-     * @request GET:/properties/{id}/applications
-     * @secure
-     */
-    propertyControllerGetApplications: (id: string, params: RequestParams = {}) =>
-      this.request<ApplicationPagination, any>({
-        path: `/properties/${id}/applications`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Property
-     * @name PropertyControllerGetTenants
-     * @request GET:/properties/{id}/tenants
-     * @secure
-     */
-    propertyControllerGetTenants: (id: string, params: RequestParams = {}) =>
-      this.request<TenancyPagination, any>({
-        path: `/properties/${id}/tenants`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  rooms = {
-    /**
-     * No description
-     *
-     * @tags Room
-     * @name RoomControllerIndex
-     * @request GET:/rooms
-     * @secure
-     */
-    roomControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        name?: string;
-        type?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<RoomPagination, any>({
-        path: `/rooms`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Room
-     * @name RoomControllerCreate
-     * @request POST:/rooms
-     * @secure
-     */
-    roomControllerCreate: (data: CreateRoomDto, params: RequestParams = {}) =>
-      this.request<Room, any>({
-        path: `/rooms`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Room
-     * @name RoomControllerGet
-     * @request GET:/rooms/{id}
-     * @secure
-     */
-    roomControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Room, any>({
-        path: `/rooms/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Room
-     * @name RoomControllerUpdate
-     * @request PATCH:/rooms/{id}
-     * @secure
-     */
-    roomControllerUpdate: (id: string, data: UpdateRoomDto, params: RequestParams = {}) =>
-      this.request<Room, any>({
-        path: `/rooms/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Room
-     * @name RoomControllerPatchPhotos
-     * @request PATCH:/rooms/{id}/photos
-     * @secure
-     */
-    roomControllerPatchPhotos: (id: string, data: UpdatePhotosDto, params: RequestParams = {}) =>
-      this.request<Room, any>({
-        path: `/rooms/${id}/photos`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Room
-     * @name RoomControllerDeletePhotos
-     * @request DELETE:/rooms/{id}/photos
-     * @secure
-     */
-    roomControllerDeletePhotos: (id: string, data: PhotoIdsDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/rooms/${id}/photos`,
-        method: "DELETE",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  sandboxes = {
-    /**
-     * No description
-     *
-     * @tags Sandbox
-     * @name SandboxControllerCreate
-     * @request POST:/sandboxes/users
-     */
-    sandboxControllerCreate: (
-      query: {
-        /** @example "51QEkjgFT171SaOwuTOIIthE" */
-        key: string;
-      },
-      data: SignUpDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<MessageDto, any>({
-        path: `/sandboxes/users`,
-        method: "POST",
-        query: query,
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Sandbox
-     * @name SandboxControllerDestroy
-     * @request DELETE:/sandboxes/users/{id}
-     */
-    sandboxControllerDestroy: (
-      id: string,
-      query: {
-        /** @example "51QEkjgFT171SaOwuTOIIthE" */
-        key: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<MessageDto, any>({
-        path: `/sandboxes/users/${id}`,
-        method: "DELETE",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Sandbox
-     * @name SandboxControllerClearDatabase
-     * @request DELETE:/sandboxes/clear-database
-     */
-    sandboxControllerClearDatabase: (
-      query: {
-        /** @example "51QEkjgFT171SaOwuTOIIthE" */
-        key: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<MessageDto, any>({
-        path: `/sandboxes/clear-database`,
-        method: "DELETE",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-  };
-  notifications = {
-    /**
-     * No description
-     *
-     * @tags Notification
-     * @name NotificationControllerIndex
-     * @request GET:/notifications
-     * @secure
-     */
-    notificationControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        startDate?: string;
-        /** @example "2025-03-12T03:35:01.120Z" */
-        endDate?: string;
-        /** Read | Unread | Archived */
-        status?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<NotificationPagination, any>({
-        path: `/notifications`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Notification
-     * @name NotificationControllerGet
-     * @request GET:/notifications/{id}
-     * @secure
-     */
-    notificationControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Notification, any>({
-        path: `/notifications/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Notification
-     * @name NotificationControllerPatch
-     * @request PATCH:/notifications/{id}
-     * @secure
-     */
-    notificationControllerPatch: (id: string, data: UpdateNotificationDto, params: RequestParams = {}) =>
-      this.request<Notification, any>({
-        path: `/notifications/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Notification
-     * @name NotificationControllerDestroy
-     * @request DELETE:/notifications/{id}
-     * @secure
-     */
-    notificationControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Notification, any>({
-        path: `/notifications/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  feedback = {
-    /**
-     * No description
-     *
-     * @tags Feedback
-     * @name FeedbackControllerIndex
-     * @request GET:/feedback
-     * @secure
-     */
-    feedbackControllerIndex: (
-      query: {
-        /** @example 1 */
-        page: number;
-        /** @example 10 */
-        limit: number;
-        /** @example "2025-02-16T03:35:01.112Z" */
-        startDate?: string;
-        /** @example "2025-03-12T03:35:01.112Z" */
-        endDate?: string;
-        /** @example "Feedback" */
-        type?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FeedbackPagination, any>({
-        path: `/feedback`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Feedback
-     * @name FeedbackControllerCreateStudentFeedback
-     * @request POST:/feedback
-     * @secure
-     */
-    feedbackControllerCreateStudentFeedback: (data: CreateFeedbackDto, params: RequestParams = {}) =>
-      this.request<Feedback, any>({
-        path: `/feedback`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Feedback
-     * @name FeedbackControllerGet
-     * @request GET:/feedback/{id}
-     * @secure
-     */
-    feedbackControllerGet: (id: string, params: RequestParams = {}) =>
-      this.request<Feedback, any>({
-        path: `/feedback/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Feedback
-     * @name FeedbackControllerPatch
-     * @request PATCH:/feedback/{id}
-     * @secure
-     */
-    feedbackControllerPatch: (id: string, data: UpdateFeedbackDto, params: RequestParams = {}) =>
-      this.request<Feedback, any>({
-        path: `/feedback/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Feedback
-     * @name FeedbackControllerDestroy
-     * @request DELETE:/feedback/{id}
-     * @secure
-     */
-    feedbackControllerDestroy: (id: string, params: RequestParams = {}) =>
-      this.request<Feedback, any>({
-        path: `/feedback/${id}`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  stripe = {
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerConnect
-     * @request POST:/stripe/connect
-     * @secure
-     */
-    stripeControllerConnect: (params: RequestParams = {}) =>
-      this.request<ConnectResponseDto, any>({
-        path: `/stripe/connect`,
-        method: "POST",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetLoginLink
-     * @request GET:/stripe/connect/express-dashboard-login-link
-     * @secure
-     */
-    stripeControllerGetLoginLink: (params: RequestParams = {}) =>
-      this.request<ConnectResponseDto, any>({
-        path: `/stripe/connect/express-dashboard-login-link`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerTransferAmount
-     * @request POST:/stripe/connect/amount-transfer
-     * @secure
-     */
-    stripeControllerTransferAmount: (data: TransferAmountDto, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/stripe/connect/amount-transfer`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerCreatePrice
-     * @request POST:/stripe/prices
-     * @secure
-     */
-    stripeControllerCreatePrice: (data: CreatePriceDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/stripe/prices`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetPlans
-     * @request GET:/stripe/plans
-     */
-    stripeControllerGetPlans: (params: RequestParams = {}) =>
-      this.request<ResponsePlanDto[], any>({
-        path: `/stripe/plans`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetIdempotencyKey
-     * @request GET:/stripe/idempotency-key
-     * @secure
-     */
-    stripeControllerGetIdempotencyKey: (params: RequestParams = {}) =>
-      this.request<KeyResponseDto, any>({
-        path: `/stripe/idempotency-key`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetSubscriptions
-     * @request GET:/stripe/subscriptions
-     * @secure
-     */
-    stripeControllerGetSubscriptions: (params: RequestParams = {}) =>
-      this.request<ResponseSubscriptionDto[], any>({
-        path: `/stripe/subscriptions`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerCreateSubscription
-     * @request POST:/stripe/subscriptions
-     * @secure
-     */
-    stripeControllerCreateSubscription: (data: CreateSubscriptionDto, params: RequestParams = {}) =>
-      this.request<ResponseSubscriptionDto, any>({
-        path: `/stripe/subscriptions`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetCurrentSubscriptions
-     * @request GET:/stripe/subscriptions/current
-     * @secure
-     */
-    stripeControllerGetCurrentSubscriptions: (params: RequestParams = {}) =>
-      this.request<ResponseSubscriptionDto, any>({
-        path: `/stripe/subscriptions/current`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerDeleteCurrentSubscriptions
-     * @request DELETE:/stripe/subscriptions/current
-     * @secure
-     */
-    stripeControllerDeleteCurrentSubscriptions: (params: RequestParams = {}) =>
-      this.request<ResponseSubscriptionDto, any>({
-        path: `/stripe/subscriptions/current`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerDeleteCurrentSubscriptionImmediately
-     * @request DELETE:/stripe/subscriptions/current/immediately
-     * @secure
-     */
-    stripeControllerDeleteCurrentSubscriptionImmediately: (params: RequestParams = {}) =>
-      this.request<ResponseSubscriptionDto, any>({
-        path: `/stripe/subscriptions/current/immediately`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerCreatePaymentMethodIntent
-     * @request POST:/stripe/payment-methods/setup-intent
-     * @secure
-     */
-    stripeControllerCreatePaymentMethodIntent: (params: RequestParams = {}) =>
-      this.request<ResponsePaymentIntentDto, any>({
-        path: `/stripe/payment-methods/setup-intent`,
-        method: "POST",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetPaymentMethods
-     * @request GET:/stripe/payment-methods
-     * @secure
-     */
-    stripeControllerGetPaymentMethods: (params: RequestParams = {}) =>
-      this.request<ResponsePaymentMethodDto[], any>({
-        path: `/stripe/payment-methods`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerSetDefaultPaymentMethod
-     * @request GET:/stripe/payment-methods/{paymentMethodId}/set-as-default
-     * @secure
-     */
-    stripeControllerSetDefaultPaymentMethod: (paymentMethodId: string, params: RequestParams = {}) =>
-      this.request<MessageDto, any>({
-        path: `/stripe/payment-methods/${paymentMethodId}/set-as-default`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerGetInvoices
-     * @request GET:/stripe/invoices
-     * @secure
-     */
-    stripeControllerGetInvoices: (params: RequestParams = {}) =>
-      this.request<ResponseInvoiceDto[], any>({
-        path: `/stripe/invoices`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Stripe
-     * @name StripeControllerPayInvoice
-     * @request POST:/stripe/invoices/{id}
-     * @secure
-     */
-    stripeControllerPayInvoice: (id: string, params: RequestParams = {}) =>
-      this.request<ResponseInvoiceDto, any>({
-        path: `/stripe/invoices/${id}`,
-        method: "POST",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  states = {
-    /**
-     * No description
-     *
-     * @tags States
-     * @name StateControllerIndex
-     * @request GET:/states
-     * @secure
-     */
-    stateControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        countryId?: number;
-        name?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<State[], any>({
-        path: `/states`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags States
-     * @name StateControllerCreate
-     * @request POST:/states
-     * @secure
-     */
-    stateControllerCreate: (data: CreateStateDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/states`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-  };
-  cities = {
-    /**
-     * No description
-     *
-     * @tags Cities
-     * @name CityControllerIndex
-     * @request GET:/cities
-     * @secure
-     */
-    cityControllerIndex: (
-      query?: {
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        stateId?: number;
-        name?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<City[], any>({
-        path: `/cities`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cities
-     * @name CityControllerCreate
-     * @request POST:/cities
-     * @secure
-     */
-    cityControllerCreate: (data: CreateCityDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/cities`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         ...params,
       }),
   };

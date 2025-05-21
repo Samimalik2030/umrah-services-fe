@@ -18,15 +18,20 @@ import * as yup from "yup";
 import { useMediaQuery } from "@mantine/hooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
-import { SignInDto } from "../../http/Api";
+import { SignInDto, SignUpDto } from "../../http/Api";
 import http from "../../http";
-import { Role } from "../../interfaces/ICommonIconProps";
-function SignIn() {
+function SignUp() {
   const queryClient = useQueryClient();
-  const { setAccessToken, setUser, accessToken,user } = useAuth();
+  const { setAccessToken, setUser, accessToken } = useAuth();
   const navigate = useNavigate();
   const isSmall = useMediaQuery("(max-width: 768px)");
   const schema = yup.object({
+    fullName: yup
+      .string()
+      .trim()
+      .min(3, "Full Name must be at least 3 characters long")
+      .required("Full Name is required"),
+
     email: yup
       .string()
       .trim()
@@ -37,67 +42,81 @@ function SignIn() {
       .trim()
       .min(6, "Password must be at least 6 characters long")
       .required("Password is required"),
+
+    confirmPassword: yup
+      .string()
+      .trim()
+      .oneOf([yup.ref("password")], "Passwords must match")
+      .required("Confirm password is required"),
   });
-  const form = useForm<SignInDto>({
+  const form = useForm<SignUpDto>({
     initialValues: {
+      fullName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
     validate: yupResolver(schema),
   });
-  const { mutate: signIn, isPending: loading } = useMutation({
-    mutationFn: http.auth.userControllerSignIn,
+  const { mutate: signUp, isPending: loading } = useMutation({
+    mutationFn: http.auth.userControllerSignUp,
   });
 
-  async function handleSignInSubmit(values: SignInDto) {
-    signIn(values, {
+  async function handleSignUpSubmit(values: SignUpDto) {
+    signUp(values, {
       onSuccess: async (data) => {
         setAccessToken(data.data.accessToken || "");
-
         if (data.data.user) {
           setUser(data.data.user);
         }
-
         queryClient.invalidateQueries({ queryKey: ["auth"] });
       },
     });
   }
 
-if (accessToken) {
-  if (user?.role === Role.ADMIN) {
-    return <Navigate to="/dashboard" />;
-  } else if (user?.role === Role.DISTRICT_OFFICER) {
-    return <Navigate to="/dashboard/my-recruiters" />;
-  } else if (user?.role === Role.RECRUITER) {
-    return <Navigate to="/dashboard/district-candidates" />;
+  if (accessToken) {
+    return <Navigate to="/stepper" />;
   }
-}
-
   return (
-    <Card p={"xl"} radius={"xl"} w={isSmall ? 350 : 500}>
-      <form onSubmit={form.onSubmit(handleSignInSubmit)}>
-        <Stack align="center" mx={"xl"}>
+    <Card px={"xl"} py={"md"} radius={"xl"} w={isSmall ? 350 : 500}>
+      <form onSubmit={form.onSubmit(handleSignUpSubmit)}>
+        <Stack align="center" mx={"xl"} gap={0}>
           <Stack gap={1} align="center">
             <Title ta={isSmall ? "center" : "start"} order={1}>
-              Welcome Back!
+              Welcome!
             </Title>
-            <Text ta={"center"}>Enter your credentials to sign in</Text>
+            <Text ta={"center"}>Enter your Information to sign up</Text>
           </Stack>
-          <br />
 
-          <Stack w={"100%"}>
+          <Stack gap={"sm"} w={"100%"}>
+            <TextInput
+              label="Your Name"
+              placeholder="Full Name"
+              withAsterisk
+              {...form.getInputProps("fullName")}
+              size="sm"
+            />
             <TextInput
               label="Your Email"
               type="email"
               placeholder="Email"
               withAsterisk
+              size="sm"
               {...form.getInputProps("email")}
             />
             <PasswordInput
               label="Password"
               placeholder="Enter Your Password"
               withAsterisk
+              size="sm"
               {...form.getInputProps("password")}
+            />
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="Enter Your Confirm Password"
+              withAsterisk
+              size="sm"
+              {...form.getInputProps("confirmPassword")}
             />
             <Group justify={"space-between"} align="center">
               <Checkbox label="Remember Me?" />
@@ -110,7 +129,7 @@ if (accessToken) {
             </Group>
             <br />
             <Button type="submit" fullWidth loading={loading}>
-              Sign In
+              Sign Up
             </Button>
           </Stack>
         </Stack>
@@ -119,4 +138,4 @@ if (accessToken) {
   );
 }
 
-export default SignIn;
+export default SignUp;

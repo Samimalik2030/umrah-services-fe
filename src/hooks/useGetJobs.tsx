@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "../http";
 
-const useGetJob = (id: string) => {
+const useGetJobs = (title?: string) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["job", id],
-    queryFn: () => http.jobs.jobControllerShow(id),
+    queryKey: ["jobs", title],
+    queryFn: () => http.jobs.jobsControllerFindAll({ title: title }),
   });
-  const job = data?.data;
+  const jobs = data?.data;
 
-  return { job, isLoading };
+  return { jobs, isLoading };
 };
 
-export { useGetJob };
+export default useGetJobs;

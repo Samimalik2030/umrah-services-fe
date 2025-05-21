@@ -6,3 +6,10 @@ type ICommonIconProps = {
 };
 
 export default ICommonIconProps;
+
+export enum Role {
+  ADMIN = 'Admin',
+  DISTRICT_OFFICER = 'District Officer',
+  RECRUITER = 'Recruiter',
+  CANDIDATE = 'Candidate',
+}

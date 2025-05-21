@@ -9,13 +9,25 @@ const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
       onError: (error: IErrorResponse) => {
-        notifications.show({
-          color: "red",
-          message: error.response?.data.message
-        });
-      }
-    }
-  }
+        const message = error.response?.data?.message;
+        if (message) {
+          notifications.show({
+            color: "red",
+            message,
+          });
+        }
+      },
+      onSuccess: (data: any) => {
+        const message = data?.data?.message;
+        if (message) {
+          notifications.show({
+            color: "green",
+            message,
+          });
+        }
+      },
+    },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(

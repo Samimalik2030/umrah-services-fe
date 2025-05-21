@@ -1,5 +1,5 @@
 {
-  "name": "mpa-coaching-admin-portal-react",
+  "name": "punjab-police",
   "private": true,
   "version": "0.0.5",
   "type": "module",
@@ -8,13 +8,12 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "sync:api": "npx swagger-typescript-api -p https://dev-api.mpacoaching.com/api-json -o src/http --axios",
-    "deploy": "npm run build && firebase deploy --only hosting:admin-mpacoaching",
-    "prepare": "husky"
+    "sync:api": "npx swagger-typescript-api -p http://localhost:3000/api-json -o src/http --axios"
+
   },
   "dependencies": {
     "@mantine/core": "^7.15.1",
-    "@mantine/dates": "^7.15.1",
+    "@mantine/dates": "^7.17.7",
     "@mantine/form": "^7.15.1",
     "@mantine/hooks": "^7.15.1",
     "@mantine/notifications": "^7.15.1",

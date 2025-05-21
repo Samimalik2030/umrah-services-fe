@@ -1,96 +1,113 @@
 import { createBrowserRouter } from "react-router-dom";
-
 import PageNotFound from "../pages/PageNotFound";
 import SignIn from "../pages/auth/SignIn";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyOtp from "../pages/auth/VerifyOtp";
-
 import TwoFactorAuth from "../pages/auth/TwoFactorAuth";
 import RouteGuard from "../guards/RouteGuard";
 import DashboardLayout from "../pages/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
-import Companies from "../pages/companies/Companies";
-import Students from "../pages/students/Students";
-import Analytics from "../pages/analytics/Analytics";
-import Hosts from "../pages/hosts/Hosts";
-import Projects from "../pages/projects/Projects";
-import Settings from "../pages/settings/Settings";
-import Subscriptions from "../pages/subscriptions/Subscriptions";
-import Support from "../pages/support/Support";
-import CompanyDetail from "../pages/companies/CompanyDetail";
-import Properties from "../pages/hosts/properties/Properties";
-import PropertyApplications from "../pages/propertyApplications/PropertyApplications";
-import ApplicationDetails from "../pages/propertyApplications/ApplicationDetails";
-import Interviews from "../pages/interviews/Interviews";
-import StudentDetails from "../pages/interviews/StudentDetails";
+import AuthLayout from "../pages/auth/AuthLayout";
+import SignUp from "../pages/auth/SignUp";
+import LandingPage from "../pages/components/LandingPage";
+import DistrictOfficers from "../pages/dashboard/DistrictOfficers";
+import Recruiters from "../pages/dashboard/Recruiters";
+import Candidates from "../pages/dashboard/Candidates";
+import { Settings } from "../pages/settings/Settings";
+import CandidateStepper from "../pages/components/CandiateStepper";
+import RecruiterListDistrict from "../officer-pages/RecruiterListDistrict";
+import DistrictCandidates from "../pages/dashboard/DistrictCandidates";
+import Jobs from "../pages/components/Jobs";
+import MyJobs from "../pages/components/MyJobs";
 
 const routes = createBrowserRouter([
   {
+    path: "/",
+    element: <LandingPage />,
+  },
+  {
     path: "/auth",
+    element: <AuthLayout />,
     children: [
       {
         path: "sign-in",
-        element: <SignIn />
+        element: <SignIn />,
       },
-
+      {
+        path: "sign-up",
+        element: <SignUp />,
+      },
       {
         path: "forgot-password",
-        element: <ForgotPassword />
+        element: <ForgotPassword />,
       },
       {
         path: "reset-password",
-        element: <ResetPassword />
+        element: <ResetPassword />,
       },
       {
         path: "verify-otp",
-        element: <VerifyOtp />
+        element: <VerifyOtp />,
       },
       {
         path: "two-factor-auth",
-        element: <TwoFactorAuth />
-      }
-    ]
+        element: <TwoFactorAuth />,
+      },
+    ],
   },
   {
-    path: "/",
+    path: "/dashboard",
     element: <RouteGuard />,
     children: [
       {
-        path: "/",
         element: <DashboardLayout />,
         children: [
           {
-            path: "/",
-            element: <Dashboard />
+            index: true,
+            element: <Dashboard />,
           },
-
-          { path: "/companies", element: <Companies /> },
-          { path: "/companies/:id/jobs", element: <CompanyDetail /> },
-          { path: "/students", element: <Students /> },
-          { path: "/interviews", element: <Interviews /> },
           {
-            path: "/interviews/:interviewId/students/:studentId",
-            element: <StudentDetails />
+            path: "settings",
+            element: <Settings />,
           },
-          { path: "/hosts", element: <Hosts /> },
-          { path: "/property-applications", element: <PropertyApplications /> },
           {
-            path: "/property-applications/:id",
-            element: <ApplicationDetails />
+            path: "district-officers",
+            element: <DistrictOfficers />,
           },
-          { path: "/hosts/:id/properties", element: <Properties /> },
-
-          { path: "/subscriptions", element: <Subscriptions /> },
-          { path: "/analytics", element: <Analytics /> },
-          { path: "/support", element: <Support /> },
-          { path: "/projects", element: <Projects /> },
-          { path: "/settings", element: <Settings /> }
-        ]
-      }
-    ]
+          {
+            path: "recruiters",
+            element: <Recruiters />,
+          },
+          {
+            path: "my-recruiters",
+            element: <RecruiterListDistrict />,
+          },
+          {
+            path: "candidates",
+            element: <Candidates />,
+          },
+          {
+            path: "district-candidates",
+            element: <DistrictCandidates />,
+          },
+        ],
+      },
+    ],
   },
-  { path: "*", element: <PageNotFound /> }
+  {
+    path: "/stepper",
+    element: <CandidateStepper />,
+  },
+  {
+    path: "/my-jobs",
+    element: <MyJobs />,
+  },
+  {
+    path: "jobs",
+    element: <Jobs />,
+  },
+  { path: "*", element: <PageNotFound /> },
 ]);
 
 export default routes;
