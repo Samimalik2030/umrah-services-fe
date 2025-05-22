@@ -71,6 +71,10 @@ if (accessToken) {
   } else if (user?.role === Role.RECRUITER) {
     return <Navigate to="/dashboard/district-candidates" />;
   }
+  else{
+    return <Navigate to="/" />;
+
+  }
 }
 
   return (

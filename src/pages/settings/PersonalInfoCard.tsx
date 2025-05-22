@@ -1,81 +1,61 @@
 import { Title, Group, TextInput, Button, Stack } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import * as yup from "yup";
-import { notifications } from "@mantine/notifications";
+import { notifications, showNotification } from "@mantine/notifications";
 import { useAuth } from "../../contexts/AuthContext";
 import http from "../../http";
-import { UpdateProfileDto } from "../../http/Api";
 import { useMutation } from "@tanstack/react-query";
-import IconLocation from "../../assets/icons/IconLocation";
 import IconUserFilled from "../../assets/icons/IconUserFilled";
-import IconAt from "../../assets/icons/IconsAt";
 import IconMail from "../../assets/icons/IconMail";
+import axios from "axios";
+import { useState } from "react";
 
 export default function PersonalInfoCard() {
-  const { auth } = useAuth();
+  const { user, setUser } = useAuth();
   const { mutate: updateProfile, isPending: updatingProfile } = useMutation({
-    mutationFn: (data: UpdateProfileDto) =>
-      http.users.userControllerUpdateProfile(data),
+    mutationFn: http.auth.userControllerUpdateProfile,
   });
 
-  // Define validation schema
-  const schema = yup.object<UpdateProfileDto>({
-    firstName: yup
-      .string()
-      .trim()
-      .min(2, "First name must be at least 2 characters")
-      .matches(/^[a-zA-Z\s]*$/, "First name can only contain letters")
-      .required("First name is required"),
-    lastName: yup
-      .string()
-      .trim()
-      .min(2, "Last name must be at least 2 characters")
-      .matches(/^[a-zA-Z\s]*$/, "Last name can only contain letters")
-      .required("Last name is required"),
-  });
 
-  // Initialize form with validation
-  const form = useForm<UpdateProfileDto>({
+  const form = useForm({
     initialValues: {
-      firstName: auth?.firstName || "",
-      lastName: auth?.lastName || "",
+      fullName: user?.fullName || "",
     },
-    validate: yupResolver(schema),
   });
 
-  const handleProfileSubmit = async (values: UpdateProfileDto) => {
-    updateProfile(values, {
-      onSuccess: () => {
-        notifications.show({
-          title: "Success",
-          message: "Profile updated successfully",
-          color: "green",
-        });
-      },
-    });
+  const handleProfileSubmit = async (values: any) => {
+    try {
+      const respone = await axios.patch(
+      `http://localhost:3000/auth/update-profile/${user?._id}`,
+      {
+        fullName: values.fullName,
+      }
+    );
+    if (respone.data) {
+      setUser(respone?.data?.user);
+      showNotification({
+        message:"Profile Updated"
+      })
+    }
+    } catch (error) {
+      
+    }
+    
   };
+
+  
 
   return (
     <form onSubmit={form.onSubmit(handleProfileSubmit)}>
       <Stack>
         <Group justify="apart">
           <Title order={4}>Personal Information</Title>
-   
         </Group>
 
         <TextInput
-          label="First Name"
-          placeholder={auth?.firstName}
-          {...form.getInputProps("firstName")}
-          disabled={updatingProfile}
-          leftSection={<IconUserFilled />}
-          required
-        />
-
-        <TextInput
-          label="Last Name"
-          placeholder={auth?.lastName}
-          {...form.getInputProps("lastName")}
+          label="Full Name"
+          placeholder={user?.fullName}
+          {...form.getInputProps("fullName")}
           disabled={updatingProfile}
           leftSection={<IconUserFilled />}
           required
@@ -83,9 +63,9 @@ export default function PersonalInfoCard() {
 
         <TextInput
           label="Email"
-          value={auth?.email}
+          value={user?.email}
           disabled
-          leftSection={<IconMail/>}
+          leftSection={<IconMail />}
         />
 
         <Button

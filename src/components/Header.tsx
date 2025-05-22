@@ -30,7 +30,12 @@ function Header() {
       <Group justify="space-between" align="center">
         <Group justify="center" align="center" visibleFrom="md">
           <PoliceLogo height={50} width={50} />
-          <Title order={2} style={{ fontFamily: "cursive" ,cursor:"pointer"}} c={"blue"} onClick={()=>navigate('/')} >
+          <Title
+            order={2}
+            style={{ fontFamily: "cursive", cursor: "pointer" }}
+            c={"blue"}
+            onClick={() => navigate("/")}
+          >
             Punjab{" "}
             <span
               style={{
@@ -64,7 +69,7 @@ function Header() {
               </Menu.Label>
               <Menu.Divider />
               <Menu.Item
-                onClick={() => navigate("/settings")}
+                onClick={() => navigate("/dashboard/settings")}
                 leftSection={<IconSettings fill="none" withOutline />}
               >
                 Profile Settings

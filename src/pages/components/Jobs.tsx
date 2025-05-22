@@ -101,105 +101,98 @@ export default function Jobs() {
   return (
     <>
       <MyNavbar />
-      <Stack>
-        <Container fluid p={"xl"}>
-          <Stack>
-            <Box mt={14}>
-              <Title>Jobs List</Title>
+      <Container fluid p={'xl'}>
+        <Stack>
+          <Box >
+            <Title>Jobs List</Title>
 
-              <Text c={"dimmed"}>Here is list of all active jobs</Text>
-            </Box>
-            <Grid>
-              {jobs?.map((job) => (
-                <Grid.Col
-                  span={{
-                    base: 12,
-                    xs: 12,
-                    sm: 12,
-                    md: 6,
-                    lg: 4,
-                    xl: 4,
-                  }}
-                >
-                  <Card
-                    shadow="md"
-                    padding="lg"
-                    radius="md"
-                    withBorder
-                    style={{ maxWidth: 600, margin: "auto" }}
-                  >
-                    <Group justify="flex-end" mb="sm">
-                      <Badge color="cyan" variant="light" size="lg">
-                        BPS-{job.bps}
-                      </Badge>
+            <Text c={"dimmed"}>Here is list of all active jobs</Text>
+          </Box>
+          <Grid>
+            {jobs?.map((job) => (
+              <Grid.Col
+                span={{
+                  base: 12,
+                  xs: 12,
+                  sm: 12,
+                  md: 6,
+                  lg: 4,
+                  xl: 4,
+                }}
+              >
+                <Card shadow="md" padding="lg" radius="md" withBorder>
+                  <Group justify="flex-end" mb="sm">
+                    <Badge color="cyan" variant="light" size="lg">
+                      BPS-{job.bps}
+                    </Badge>
+                  </Group>
+                  <Text fw={700} size="xl">
+                    {job.title}
+                  </Text>
+
+                  <Text c="dimmed" size="sm" mb="md" lineClamp={4}>
+                    {job.description}
+                  </Text>
+
+                  <Divider my="sm" />
+
+                  <Stack gap="xs" mb="md">
+                    <Group gap="xs">
+                      <ThemeIcon color="blue" variant="light" size={28}>
+                        <IconUsersGroup size={18} />
+                      </ThemeIcon>
+                      <Text>
+                        <strong>Vacancies:</strong> {job.vacancies}
+                      </Text>
                     </Group>
-                    <Text fw={700} size="xl">
-                      {job.title}
-                    </Text>
 
-                    <Text c="dimmed" size="sm" mb="md" lineClamp={4}>
-                      {job.description}
-                    </Text>
+                    <Group gap="xs">
+                      <ThemeIcon color="orange" variant="light" size={28}>
+                        <IconBook size={18} />
+                      </ThemeIcon>
+                      <Text>
+                        <strong>Education:</strong> {job.education}
+                      </Text>
+                    </Group>
 
-                    <Divider my="sm" />
+                    <Group gap="xs">
+                      <ThemeIcon color="red" variant="light" size={28}>
+                        <Text style={{ fontFamily: "cursive" }}>Rs</Text>
+                      </ThemeIcon>
+                      <Text>
+                        <strong>Application Fee:</strong> PKR{" "}
+                        {job.application_fee}
+                      </Text>
+                    </Group>
 
-                    <Stack gap="xs" mb="md">
-                      <Group gap="xs">
-                        <ThemeIcon color="blue" variant="light" size={28}>
-                          <IconUsersGroup size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Vacancies:</strong> {job.vacancies}
-                        </Text>
-                      </Group>
+                    <Group gap="xs">
+                      <ThemeIcon color="green" variant="light" size={28}>
+                        <IconCalendar size={18} />
+                      </ThemeIcon>
+                      <Text>
+                        <strong>Application Deadline:</strong>{" "}
+                        {job.application_deadline
+                          ? new Date(
+                              job.application_deadline
+                            ).toLocaleDateString()
+                          : "N/A"}
+                      </Text>
+                    </Group>
 
-                      <Group gap="xs">
-                        <ThemeIcon color="orange" variant="light" size={28}>
-                          <IconBook size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Education:</strong> {job.education}
-                        </Text>
-                      </Group>
+                    <Group gap="xs">
+                      <ThemeIcon color="orange" variant="light" size={28}>
+                        <IconClock size={18} />
+                      </ThemeIcon>
+                      <Text>
+                        <strong>Age Limit:</strong> {job.age_min} -{" "}
+                        {job.age_max} years
+                      </Text>
+                    </Group>
+                  </Stack>
 
-                      <Group gap="xs">
-                        <ThemeIcon color="red" variant="light" size={28}>
-                          <Text style={{ fontFamily: "cursive" }}>Rs</Text>
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Application Fee:</strong> PKR{" "}
-                          {job.application_fee}
-                        </Text>
-                      </Group>
+                  <Divider my="xs" />
 
-                      <Group gap="xs">
-                        <ThemeIcon color="green" variant="light" size={28}>
-                          <IconCalendar size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Application Deadline:</strong>{" "}
-                          {job.application_deadline
-                            ? new Date(
-                                job.application_deadline
-                              ).toLocaleDateString()
-                            : "N/A"}
-                        </Text>
-                      </Group>
-
-                      <Group gap="xs">
-                        <ThemeIcon color="orange" variant="light" size={28}>
-                          <IconClock size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Age Limit:</strong> {job.age_min} -{" "}
-                          {job.age_max} years
-                        </Text>
-                      </Group>
-                    </Stack>
-
-                    <Divider my="xs" />
-
-                    {/* <Box
+                  {/* <Box
                           style={(theme) => ({
                             backgroundColor: theme.colors.gray[0],
                             padding: 12,
@@ -223,36 +216,31 @@ export default function Jobs() {
                           {job.terms_and_conditions}
                         </Box> */}
 
-                    <Group justify="right" mt="md" gap="sm">
-                      <Tooltip
-                        label="View more details"
-                        position="top"
-                        withArrow
+                  <Group justify="right" mt="md" gap="sm">
+                    <Tooltip label="View more details" position="top" withArrow>
+                      <Button
+                        variant="outline"
+                        onClick={() => handleShowDetails(job)}
                       >
-                        <Button
-                          variant="outline"
-                          onClick={() => handleShowDetails(job)}
-                        >
-                          Details
-                        </Button>
-                      </Tooltip>
-                      <Tooltip
-                        label="Apply for this job"
-                        position="top"
-                        withArrow
-                      >
-                        <Button onClick={() => handleApply(job)}>
-                          Apply Now
-                        </Button>
-                      </Tooltip>
-                    </Group>
-                  </Card>
-                </Grid.Col>
-              ))}
-            </Grid>
-          </Stack>
-        </Container>
-      </Stack>
+                        Details
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      label="Apply for this job"
+                      position="top"
+                      withArrow
+                    >
+                      <Button onClick={() => handleApply(job)}>
+                        Apply Now
+                      </Button>
+                    </Tooltip>
+                  </Group>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Stack>
+      </Container>
 
       <Modal
         opened={openedDetailsModal}

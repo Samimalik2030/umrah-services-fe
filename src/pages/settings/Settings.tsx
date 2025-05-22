@@ -13,8 +13,6 @@ export function Settings() {
       <Stack gap="xl">
         <AvatarCard />
         <PersonalInfoCard />
-        <PasswordCard />
-        {/* <TwoFactorAuthCard /> */}
       </Stack>
     </Paper>
   );

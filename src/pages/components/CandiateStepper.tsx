@@ -31,27 +31,25 @@ import { useNavigate } from "react-router-dom";
 
 function CandidateStepperForm() {
   const [active, setActive] = useState(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [candidateData, setCandidate] = useState<Candidate | undefined>();
   const prevStep = () => setActive((prev) => Math.max(prev - 1, 0));
 
   const { user } = useAuth();
 
-
-  const {candidate,isLoading} = useGetCandidate(
-    user?._id
-  );
+  const { candidate, isLoading } = useGetCandidate(user?._id);
 
   const SignUpForm = useForm({
     initialValues: {
       // personal
-      full_name: "",
-      father_name: "",
-      cnic: "",
-      dob: null,
-      gender: "",
-      marital_status: "",
-      religion: "",
+      full_name: candidate?.user?.fullName || "",
+      father_name: candidate?.father_name || "",
+      cnic: candidate?.cnic || "",
+      dob: new Date() || null,
+      gender: candidate?.gender || "",
+      marital_status: candidate?.marital_status || "",
+      religion: candidate?.religion || "",
+      district: candidate?.contact?.district || "",
     },
 
     validate: {
@@ -64,53 +62,40 @@ function CandidateStepperForm() {
 
   const AdressForm = useForm({
     initialValues: {
-      permanent_address: "",
-      present_address: "",
-      district: "",
-      phone: 0,
-      name: "",
-      relation: "",
-      contact: 0,
+      permanent_address: candidate?.address?.permanent || "",
+      present_address: candidate?.address?.present || "",
+      phone: candidate?.contact?.phone || 0,
+      name: candidate?.contact?.emergency_contact?.name || "",
+      relation: candidate?.contact?.emergency_contact?.relation || "",
+      contact: candidate?.contact || 0,
     },
   });
 
   const educationForm = useForm({
     initialValues: {
       // education
-      matric_board: "",
-      matric_year: 0,
-      matric_percentage: 0,
-      inter_board: "",
-      inter_year: 0,
-      inter_percentage: 0,
+      matric_board: candidate?.education?.matric?.board || "",
+      matric_year: candidate?.education?.matric?.passing_year || 0,
+      matric_percentage: candidate?.education?.matric?.marks_percentage || 0,
+      inter_board: candidate?.education?.intermediate?.board || "",
+      inter_year: candidate?.education?.intermediate?.passing_year || 0,
+      inter_percentage:
+        candidate?.education?.intermediate?.marks_percentage || 0,
     },
   });
 
   const phsicalForm = useForm({
     initialValues: {
       // physical
-      height_cm: 0,
-      weight_kg: 0,
-      chest_unexpanded: 0,
-      chest_expanded: 0,
-      vision: "",
-      blood_group: "",
+      height_cm: candidate?.physical_info?.height_cm || 0,
+      weight_kg: candidate?.physical_info?.weight_kg || 0,
+      chest_unexpanded: candidate?.physical_info?.chest_cm || 0,
+      chest_expanded: candidate?.physical_info?.chest_cm || 0,
+      vision: candidate?.physical_info?.vision || "",
+      blood_group: candidate?.physical_info?.blood_group || "",
     },
   });
-  const filesForm = useForm({
-    initialValues: {
-      cnic_file: null,
-      matric_file: null,
-      inter_file: null,
-      domicile_file: null,
-      character_file: null,
-      medical_file: null,
-      photo_file: null,
-      // job
-      applied_post: "",
-      recruitment_cycle: "",
-    },
-  });
+
   // documents
 
   const queryClient = useQueryClient();
@@ -120,28 +105,35 @@ function CandidateStepperForm() {
   });
 
   const handleCreate = () => {
-    createCandidate(SignUpForm.values, {
-      onSuccess: (data) => {
-        setCandidate(data.data);
-        setActive((prev) => prev + 1);
-      },
-    });
+    if (!candidate) {
+      createCandidate(SignUpForm.values, {
+        onSuccess: (data) => {
+          setCandidate(data.data);
+          setActive((prev) => prev + 1);
+          queryClient.invalidateQueries({ queryKey: ["candidate"] });
+        },
+      });
+    } else {
+      updateCandidate({
+        candidateId: candidate._id,
+        data: { ...SignUpForm.values },
+      });
+    }
   };
 
-const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
-  mutationFn: ({ candidateId, data }: { candidateId: string; data: any }) =>
-    http.candidates.candidateControllerUpdate(candidateId, data),
-  onSuccess: (data) => {
-    setCandidate(data.data);
+  const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
+    mutationFn: ({ candidateId, data }: { candidateId: string; data: any }) =>
+      http.candidates.candidateControllerUpdate(candidateId, data),
+    onSuccess: (data) => {
+      setCandidate(data.data);
 
-    if (active === 4) {
-      navigate('/jobs')
-    } else {
-      setActive((prev) => prev + 1);
-    }
-  },
-});
-
+      if (active === 4) {
+        navigate("/jobs");
+      } else {
+        setActive((prev) => prev + 1);
+      }
+    },
+  });
 
   const handleUpdateContactInfo = () => {
     console.log(candidate?._id, "candidate id");
@@ -259,17 +251,14 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
     });
   };
 
-
-
-
-  if(isLoading){
-    return(
-     <Stack>
+  if (isLoading) {
+    return (
+      <Stack>
         <Skeleton height={50} circle animate />
         <Skeleton height={50} animate />
         <Skeleton height={50} animate />
       </Stack>
-    )
+    );
   }
 
   return (
@@ -335,6 +324,13 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                     </SimpleGrid>
 
                     <SimpleGrid cols={2}>
+                      <Select
+                        label="district"
+                        data={districts}
+                        placeholder="e.g. Lahore"
+                        {...SignUpForm.getInputProps("district")}
+                        required
+                      />
                       <DateInput
                         label="Date of Birth"
                         placeholder="Select date"
@@ -349,15 +345,15 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                         {...SignUpForm.getInputProps("gender")}
                         required
                       />
-                    </SimpleGrid>
-
-                    <SimpleGrid cols={2}>
                       <Select
                         label="Marital Status"
                         data={["Married", "UnMarried"]}
                         placeholder="e.g. Single, Married"
                         {...SignUpForm.getInputProps("marital_status")}
                       />
+                    </SimpleGrid>
+
+                    <SimpleGrid cols={2}>
                       <TextInput
                         label="Religion"
                         placeholder="e.g. Islam, Christianity"
@@ -407,20 +403,13 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                     </SimpleGrid>
 
                     <SimpleGrid cols={2}>
-                      <Select
-                        label="district"
-                        data={districts}
-                        placeholder="e.g. Lahore"
-                        {...AdressForm.getInputProps("district")}
-                        required
-                      />
                       <NumberInput
                         label="Phone"
                         placeholder="e.g. 03001234567"
                         {...AdressForm.getInputProps("phone")}
                         required
                         max={11}
-                         min={11}
+                        min={11}
                       />
                     </SimpleGrid>
 
@@ -613,6 +602,11 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                       </Text>
                     </Box>
                     <SimpleGrid cols={2}>
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File: {candidate?.documents?.cnic.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="CNIC"
                         placeholder="Front Side"
@@ -620,6 +614,11 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                           file && handleUpload(file, "cnic_front")
                         }
                       />
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File: {candidate?.documents?.cnic.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="CNIC"
                         placeholder="Back Side"
@@ -630,6 +629,12 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                     </SimpleGrid>
 
                     <SimpleGrid cols={2}>
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File:{" "}
+                          {candidate?.documents?.matric_certificate?.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="Matric Certificate"
                         placeholder="Upload your Matric certificate"
@@ -637,6 +642,12 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                           file && handleUpload(file, "matric")
                         }
                       />
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File:{" "}
+                          {candidate?.documents?.inter_certificate?.url}
+                        </Text>
+                      )}
                       <FileInput
                         label="Inter Certificate"
                         placeholder="Upload your Inter certificate"
@@ -645,6 +656,11 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                     </SimpleGrid>
 
                     <SimpleGrid cols={2}>
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File: {candidate?.documents?.domicile?.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="Domicile"
                         placeholder="Upload your Domicile"
@@ -652,6 +668,12 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                           file && handleUpload(file, "domicile")
                         }
                       />
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File:{" "}
+                          {candidate?.documents?.character_certificate?.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="Character Certificate"
                         placeholder="Upload your Character certificate"
@@ -662,6 +684,12 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                     </SimpleGrid>
 
                     <SimpleGrid cols={2}>
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File:{" "}
+                          {candidate?.documents?.medical_certificate?.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="Medical Certificate"
                         placeholder="Upload your Medical certificate"
@@ -669,6 +697,11 @@ const { mutate: updateCandidate, isPending: loadingUpdate } = useMutation({
                           file && handleUpload(file, "medical")
                         }
                       />
+                      {candidate?.documents?.cnic && (
+                        <Text size="sm" mb={4}>
+                          Current File: {candidate?.documents?.photo.name}
+                        </Text>
+                      )}
                       <FileInput
                         label="Photo"
                         placeholder="Upload your Passport size photo"

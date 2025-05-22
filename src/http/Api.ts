@@ -147,6 +147,11 @@ export interface CreatePersonalInfoDto {
    * Father's name of the candidate
    * @example "Rashid Khan"
    */
+  district: string;
+  /**
+   * Father's name of the candidate
+   * @example "Rashid Khan"
+   */
   cnic: string;
   /**
    * Father's name of the candidate
@@ -319,6 +324,11 @@ export interface Candidate {
    * @example "Islam"
    */
   religion: string;
+  /**
+   * District of the candidate
+   * @example "Multan"
+   */
+  district: string;
   address: Address;
   contact: Contact;
   education: Education;
@@ -809,7 +819,24 @@ export interface CreateApplicationDto {
   job: string;
 }
 
-export interface UpdateApplicationDto {
+export interface Application {
+  /**
+   * Unique identifier of the job
+   * @example "60f7a1c5e5b3a72b3c8a830f"
+   */
+  _id: string;
+  /**
+   * Status of the job
+   * @example "Data Verification"
+   */
+  status: "Data Verification" | "Physical Test" | "Running" | "Written Test" | "Interview" | "Rejected" | "Selected";
+  /** Reference to the candidate account */
+  candidate: Candidate;
+  /** Reference to the Job */
+  job: Job;
+}
+
+export interface ApplicationUpdateDto {
   status: string;
 }
 
@@ -1096,6 +1123,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userControllerUploadImage: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/auth/upload`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserControllerUploadProfileImage
+     * @request POST:/auth/upload-profile
+     */
+    userControllerUploadProfileImage: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/auth/upload-profile`,
         method: "POST",
         ...params,
       }),
@@ -1616,11 +1657,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Recruiters
      * @name RecruiterControllerGetRecruiterByUser
      * @summary Get a recruiter by user ID
-     * @request GET:/recruiters/{userId}
+     * @request GET:/recruiters/user/{userId}
      */
     recruiterControllerGetRecruiterByUser: (userId: string, params: RequestParams = {}) =>
       this.request<Recruiter, any>({
-        path: `/recruiters/${userId}`,
+        path: `/recruiters/user/${userId}`,
         method: "GET",
         format: "json",
         ...params,
@@ -1659,10 +1700,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<Application[], any>({
         path: `/applications`,
         method: "GET",
         query: query,
+        format: "json",
         ...params,
       }),
 
@@ -1687,12 +1729,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Applications
      * @name ApplicationControllerUpdate
      * @summary Update application by ID
-     * @request PUT:/applications/{id}
+     * @request PATCH:/applications/{id}
      */
-    applicationControllerUpdate: (id: string, data: UpdateApplicationDto, params: RequestParams = {}) =>
+    applicationControllerUpdate: (id: string, data: ApplicationUpdateDto, params: RequestParams = {}) =>
       this.request<void, void>({
         path: `/applications/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
         type: ContentType.Json,
         ...params,
@@ -1710,6 +1752,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, void>({
         path: `/applications/${id}`,
         method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Applications
+     * @name ApplicationControllerFindApplicationsByCandidate
+     * @summary Get application by User Id
+     * @request GET:/applications/candidate/{candidateId}
+     */
+    applicationControllerFindApplicationsByCandidate: (candidateId: string, params: RequestParams = {}) =>
+      this.request<Application[], void>({
+        path: `/applications/candidate/${candidateId}`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };
