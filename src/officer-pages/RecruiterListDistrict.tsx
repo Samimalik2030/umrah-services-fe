@@ -20,7 +20,7 @@ import {
   ThemeIcon,
   SimpleGrid,
 } from "@mantine/core";
-import useGetRecruiters from "../hooks/useGetRecruiter";
+import useGetRecruiters from "../hooks/useGetSalesmans";
 import { useAuth } from "../contexts/AuthContext";
 import { useGetDistrictOfficer } from "../hooks/useGetJob";
 import RecruiterForm from "../pages/components/RecruiterForm";

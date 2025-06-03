@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Anchor,
   Avatar,
   Card,
   Group,
@@ -9,6 +8,7 @@ import {
   Text,
   Title,
   useMantineTheme,
+  Image
 } from "@mantine/core";
 
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,6 @@ import getInitials from "../utils/getInitials";
 import IconLogout from "../assets/icons/IconLogout";
 import IconSettings from "../assets/icons/IconSettings";
 import { useMediaQuery } from "@mantine/hooks";
-import PoliceLogo from "../assets/icons/Logo";
 
 function Header() {
   const { logout, user } = useAuth();
@@ -26,23 +25,24 @@ function Header() {
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   return (
-    <Card w={"100%"} withBorder={false} shadow="xs" radius={0}>
+    <Card w={isMobile?300:"100%"} withBorder={false} shadow="xs" radius={0}  >
       <Group justify="space-between" align="center">
         <Group justify="center" align="center" visibleFrom="md">
-          <PoliceLogo height={50} width={50} />
+         <Image w={50} src='https://ik.imagekit.io/yzrrrgg3d/professional/logo.jfif?updatedAt=1748796374280'/>
           <Title
             order={2}
             style={{ fontFamily: "cursive", cursor: "pointer" }}
             c={"blue"}
             onClick={() => navigate("/")}
           >
-            Punjab{" "}
+            Professional 
             <span
               style={{
                 color: "red",
+                marginLeft:4
               }}
             >
-              Police
+             Service
             </span>
           </Title>
         </Group>

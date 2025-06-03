@@ -16,7 +16,7 @@ function PageNotFound() {
           Head back to the homepage.
         </Anchor>
         <Box>
-          <Image fit="contain" src={notFound} alt="Page not found" />
+          <Image w={500} fit="contain" src={notFound} alt="Page not found" />
         </Box>
       </Stack>
     </Container>

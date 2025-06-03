@@ -9,7 +9,6 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "sync:api": "npx swagger-typescript-api -p http://localhost:3000/api-json -o src/http --axios"
-
   },
   "dependencies": {
     "@mantine/core": "^7.15.1",
@@ -17,6 +16,7 @@
     "@mantine/form": "^7.15.1",
     "@mantine/hooks": "^7.15.1",
     "@mantine/notifications": "^7.15.1",
+    "@react-google-maps/api": "^2.20.6",
     "@tanstack/react-query": "^5.60.6",
     "@tanstack/react-query-devtools": "^5.60.6",
     "axios": "^1.7.7",

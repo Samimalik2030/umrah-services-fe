@@ -11,20 +11,39 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import AuthLayout from "../pages/auth/AuthLayout";
 import SignUp from "../pages/auth/SignUp";
 import LandingPage from "../pages/components/LandingPage";
-import DistrictOfficers from "../pages/dashboard/DistrictOfficers";
-import Recruiters from "../pages/dashboard/Recruiters";
-import Candidates from "../pages/dashboard/Candidates";
 import { Settings } from "../pages/settings/Settings";
-import CandidateStepper from "../pages/components/CandiateStepper";
-import RecruiterListDistrict from "../officer-pages/RecruiterListDistrict";
-import DistrictCandidates from "../pages/dashboard/DistrictCandidates";
-import Jobs from "../pages/components/Jobs";
-import MyJobs from "../pages/components/MyJobs";
+import CityDetails from "../pages/components/CityDetail";
+import ElectricianServices from "../pages/components/ElectricianServices";
+import ACServices from "../pages/components/ACServices";
+import WallPaperServices from "../pages/components/WallPanels";
+import RoleGuard from "../guards/RoleGuard";
+import { Role } from "../interfaces/ICommonIconProps";
+import CityManagers from "../pages/dashboard/CityManagers";
+import Services from "../pages/dashboard/Services";
+import CitySalesPerson from "../pages/dashboard/CitySalesPersons";
+import Professionals from "../pages/dashboard/Professionals";
+import ServicesRequests from "../pages/dashboard/ServicesRequests";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
+  },
+  {
+    path: "/city",
+    element: <CityDetails />,
+  },
+  {
+    path: "/electrician-services",
+    element: <ElectricianServices />,
+  },
+  {
+    path: "/ac-services",
+    element: <ACServices />,
+  },
+  {
+    path: "/wallpanel-services",
+    element: <WallPaperServices />,
   },
   {
     path: "/auth",
@@ -65,48 +84,58 @@ const routes = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Dashboard />,
+            element: (
+              <RoleGuard allowedRoles={[Role.ADMIN]}>
+                <Dashboard />
+              </RoleGuard>
+            ),
           },
           {
             path: "settings",
             element: <Settings />,
           },
+
           {
-            path: "district-officers",
-            element: <DistrictOfficers />,
+            path: "city-managers",
+            element: (
+              <RoleGuard allowedRoles={[Role.ADMIN]}>
+                <CityManagers />
+              </RoleGuard>
+            ),
           },
           {
-            path: "recruiters",
-            element: <Recruiters />,
+            path: "services",
+            element: (
+              <RoleGuard allowedRoles={[Role.ADMIN, Role.CITY_MANAGER]}>
+                <Services />
+              </RoleGuard>
+            ),
           },
           {
-            path: "my-recruiters",
-            element: <RecruiterListDistrict />,
+            path: "service-requests",
+            element: (
+              <RoleGuard allowedRoles={[Role.CITY_MANAGER]}>
+                <ServicesRequests />
+              </RoleGuard>
+            ),
+          },
+          // {
+          //   path: "salesmans",
+          //   element: <SalesMan />,
+          // },
+          {
+            path: "city-salemans",
+            element: <CitySalesPerson />,
           },
           {
-            path: "candidates",
-            element: <Candidates />,
-          },
-          {
-            path: "district-candidates",
-            element: <DistrictCandidates />,
+            path: "professionals",
+            element: <Professionals />,
           },
         ],
       },
     ],
   },
-  {
-    path: "/stepper",
-    element: <CandidateStepper />,
-  },
-  {
-    path: "/my-jobs",
-    element: <MyJobs />,
-  },
-  {
-    path: "jobs",
-    element: <Jobs />,
-  },
+
   { path: "*", element: <PageNotFound /> },
 ]);
 

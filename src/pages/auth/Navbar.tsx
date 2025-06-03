@@ -16,9 +16,9 @@ function MyNavbar() {
   const handleNavigate = () => {
     if (user?.role === Role.ADMIN) {
       navigate("/dashboard");
-    } else if (user?.role === Role.DISTRICT_OFFICER) {
+    } else if (user?.role === Role.CITY_MANAGER) {
       navigate("/dashbaord/my-recruiters");
-    } else if (user?.role === Role.RECRUITER) {
+    } else if (user?.role === Role.SALESMAN) {
       navigate("/dashboard/district-candidates");
     } else {
       return;
@@ -39,39 +39,9 @@ function MyNavbar() {
         align={"center"}
         // bg={"blue"}
       >
-        <PoliceLogo height={50} width={50} />
+        <Text fw={900}>Logo</Text>
 
-        <Flex
-          gap={largeScreen ? 30 : 0}
-          display={largeScreen ? "flex" : "none"}
-        >
-          <Anchor
-            c={location.pathname === "/" ? "green" : "black"}
-            fz={18}
-            fw={location.pathname === "/" ? 700 : 500}
-            onClick={() => navigate("/")}
-          >
-            Home
-          </Anchor>
-          <Anchor
-            c={location.pathname.includes("/jobs") ? "green" : "black"}
-            fz={18}
-            fw={location.pathname.includes("/jobs") ? 700 : 500}
-            onClick={() => navigate("/jobs")}
-          >
-            Jobs
-          </Anchor>
-          {user?.role === Role.CANDIDATE && (
-            <Anchor
-              c={location.pathname.includes("/my-jobs") ? "green" : "black"}
-              fz={18}
-              fw={location.pathname.includes("/my-jobs") ? 700 : 500}
-              onClick={() => navigate("/my-jobs")}
-            >
-              My Jobs
-            </Anchor>
-          )}
-        </Flex>
+      
 
         {!user ? (
           <Flex gap="xs" pr={largeScreen ? 0 : 10}>
@@ -79,11 +49,11 @@ function MyNavbar() {
             <Button onClick={() => navigate("/auth/sign-up")}>SIGN UP</Button>
           </Flex>
         ) : (
-          user.role !== Role.CANDIDATE && (
+          user.role !== Role.CUSTOMER && (
             <Button onClick={() => handleNavigate()}>Dashboard</Button>
           )
         )}
-        {user && user.role === Role.CANDIDATE && (
+        {user && user.role === Role.CUSTOMER && (
           <Group>
             <Menu>
               <Menu.Target>

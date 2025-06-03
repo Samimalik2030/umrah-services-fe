@@ -1,23 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "../http";
 
-const useGetDistrictOfficers = (
-  name?: string,
-  cnic?: string,
-  district?: string
-) => {
+const useGetCityManagers = (name?: string) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["officers", name],
-    queryFn: () =>
-      http.districtOfficers.districtOfficerControllerFindAll({
-        cnic: cnic,
-        district: district,
-        name: name,
-      }),
+    queryKey: ["managers", name],
+    queryFn: () => http.cityOfficers.cityOfficerControllerFindAll(),
   });
-  const officers = data?.data;
+  const managers = data?.data;
 
-  return { officers, isLoading };
+  return { managers, isLoading };
 };
 
-export default useGetDistrictOfficers;
+export default useGetCityManagers;

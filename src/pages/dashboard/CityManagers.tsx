@@ -19,26 +19,22 @@ import {
   SimpleGrid,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { DistrictOfficerForm } from "../components/DistrictOfficerForm";
+import { CityManagerForm,  } from "../components/DistrictOfficerForm";
 import IconMail from "../../assets/icons/IconMail";
 import IconPhone from "../../assets/icons/IconPhone";
-import IconMapPin from "../../assets/icons/IconMapPin";
-import IconBook from "../../assets/icons/IconBook";
 import IconDots from "../../assets/icons/IconDots";
 import IconPencilOutlined from "../../assets/icons/IconPencilOutlined";
 import IconTrashOutlined from "../../assets/icons/IconTrashOutlined";
 import IconUserFilled from "../../assets/icons/IconUserFilled";
 import { useState } from "react";
-import { DistrictOfficer } from "../../http/Api";
-import IconBadge from "../../assets/icons/IconBadge";
-import IconBriefCase from "../../assets/icons/IconBriefCase";
-import IconLocation from "../../assets/icons/IconLocation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
 import { showNotification } from "@mantine/notifications";
-import useGetDistrictOfficers from "../../hooks/usegetDistrictOfficers";
+import { CityOfficer } from "../../http/Api";
+import useGetCityManagers from "../../hooks/usegetDistrictOfficers";
+import IconLocation from "../../assets/icons/IconLocation";
 
-export default function DistrictOfficers() {
+export default function CityManagers() {
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure();
   const [
@@ -47,16 +43,16 @@ export default function DistrictOfficers() {
   ] = useDisclosure();
   const queryClient = useQueryClient();
 
-  const { isLoading, officers } = useGetDistrictOfficers();
-  const [officer, setSelecedOfficer] = useState<DistrictOfficer | undefined>(
+  const { isLoading, managers } = useGetCityManagers();
+  const [officer, setSelecedOfficer] = useState<CityOfficer | undefined>(
     undefined
   );
 
-  const handleOpenModal = (officer: DistrictOfficer) => {
+  const handleOpenModal = (officer: CityOfficer) => {
     setSelecedOfficer(officer);
     openDetailsModal();
   };
-  const handleOpenEditModal = (officer?: DistrictOfficer) => {
+  const handleOpenEditModal = (officer?: CityOfficer) => {
     open();
     setSelecedOfficer(officer);
   };
@@ -69,16 +65,16 @@ export default function DistrictOfficers() {
     closeDetailModal();
   };
 
-    const { mutate: deleteOfficer, isPending: loadingDelete } = useMutation({
-    mutationFn: http.districtOfficers.districtOfficerControllerRemove,
+  const { mutate: deleteOfficer, isPending: loadingDelete } = useMutation({
+    mutationFn: http.cityOfficers.cityOfficerControllerRemove,
   });
   const handleDeleteOfficer = (id: string) => {
     deleteOfficer(id, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["officers"] });
+        queryClient.invalidateQueries({ queryKey: ["managers"] });
 
         showNotification({
-          message: "'Product Deleted'",
+          message: "Manager Deleted",
         });
       },
     });
@@ -98,14 +94,14 @@ export default function DistrictOfficers() {
       <Container fluid>
         <Stack>
           <Group justify="space-between" align="center">
-            <Title order={2}>District Officers</Title>
-            <Button color={theme.colors.dark[9]} onClick={open}>
-              Add Officer
+            <Title order={2}>City Managers</Title>
+            <Button  onClick={open}>
+              Add Manager
             </Button>
           </Group>
 
           <Grid>
-            {officers?.map((officer, ind) => (
+            {managers?.map((officer, ind) => (
               <Grid.Col
                 span={{
                   base: 12,
@@ -141,7 +137,7 @@ export default function DistrictOfficers() {
                         <Menu.Item
                           color="red"
                           leftSection={<IconTrashOutlined size={16} />}
-                          onClick={()=>handleDeleteOfficer(officer._id)}
+                          onClick={() => handleDeleteOfficer(officer._id)}
                         >
                           Delete
                         </Menu.Item>
@@ -179,22 +175,11 @@ export default function DistrictOfficers() {
                       </ThemeIcon>
                       <Text>{officer?.phone}</Text>
                     </Group>
-                    <Divider
-                      label="Professional Info"
-                      labelPosition="center"
-                      my="sm"
-                    />
                     <Group>
-                      <ThemeIcon color="grape" variant="light" size={28}>
-                        <IconMapPin size={18} />
+                      <ThemeIcon color="green" variant="light" size={28}>
+                        <IconLocation size={18} />
                       </ThemeIcon>
-                      <Text>{officer?.district}</Text>
-                    </Group>
-                    <Group>
-                      <ThemeIcon color="pink" variant="light" size={28}>
-                        <IconBook size={18} />
-                      </ThemeIcon>
-                      <Text>{officer?.qualification}</Text>
+                      <Text>{officer?.city}</Text>
                     </Group>
                   </Stack>
                 </Card>
@@ -204,15 +189,21 @@ export default function DistrictOfficers() {
         </Stack>
       </Container>
 
-      <Modal opened={opened} onClose={()=>handleCloseEditModal()} title="Add District Officer">
-        <DistrictOfficerForm onClose={close} officer={officer} />
+      <Modal
+        opened={opened}
+        onClose={() => handleCloseEditModal()}
+        title="Add City Manager"
+        size={"lg"}
+        centered
+      >
+        <CityManagerForm onClose={close} officer={officer} />
       </Modal>
 
       <Modal
         opened={openedDetailsModal}
         onClose={handleCloseModal}
-        title="District Officer Details"
-        size={"xl"}
+        title="City Manager Details"
+        size={"lg"}
         centered
       >
         <Card shadow="xl" padding="lg" radius="md" pos={"relative"}>
@@ -226,7 +217,7 @@ export default function DistrictOfficers() {
 
             <Divider label="Contact Info" labelPosition="center" my="sm" />
 
-            <SimpleGrid cols={2} spacing="md">
+            <SimpleGrid cols={1} spacing="md">
               <Group>
                 <ThemeIcon color="blue" variant="light" size={28}>
                   <IconMail size={18} />
@@ -241,57 +232,13 @@ export default function DistrictOfficers() {
                 <Text>{officer?.phone}</Text>
               </Group>
 
-              <Group>
-                <ThemeIcon color="violet" variant="light" size={28}>
-                  <IconBadge size={18} />
+               <Group>
+                <ThemeIcon color="teal" variant="light" size={28}>
+                  <IconLocation size={18} />
                 </ThemeIcon>
-                <Text>{officer?.cnic}</Text>
+                <Text>{officer?.city}</Text>
               </Group>
             </SimpleGrid>
-
-            <Divider label="Professional Info" labelPosition="center" my="sm" />
-
-            <SimpleGrid cols={2} spacing="md">
-              <Group>
-                <ThemeIcon color="orange" variant="light" size={28}>
-                  <IconUserFilled size={18} />
-                </ThemeIcon>
-                <Text>{officer?.gender}</Text>
-              </Group>
-
-              <Group>
-                <ThemeIcon color="grape" variant="light" size={28}>
-                  <IconMapPin size={18} />
-                </ThemeIcon>
-                <Text>{officer?.district}</Text>
-              </Group>
-
-              <Group>
-                <ThemeIcon color="pink" variant="light" size={28}>
-                  <IconBook size={18} />
-                </ThemeIcon>
-                <Text>{officer?.qualification}</Text>
-              </Group>
-
-              <Group style={{ gridColumn: "span 2" }}>
-                <ThemeIcon color="red" variant="light" size={28}>
-                  <IconBriefCase size={18} />
-                </ThemeIcon>
-                <Text style={{ whiteSpace: "pre-wrap" }}>
-                  {officer?.experience || "No experience provided"}
-                </Text>
-              </Group>
-            </SimpleGrid>
-
-            <Divider label="Address" labelPosition="center" my="sm" />
-
-            <Text style={{ whiteSpace: "pre-wrap" }}></Text>
-            <Group style={{ gridColumn: "span 2" }}>
-              <ThemeIcon color="red" variant="light" size={28}>
-                <IconLocation size={18} />
-              </ThemeIcon>
-              <Text style={{ whiteSpace: "pre-wrap" }}>{officer?.address}</Text>
-            </Group>
           </Stack>
         </Card>
       </Modal>

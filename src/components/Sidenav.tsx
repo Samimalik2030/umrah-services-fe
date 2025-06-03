@@ -19,24 +19,19 @@ interface Links {
 
 const adminLinks: Links[] = [
   {
-    label: "Jobs",
+    label: "Dashboard",
     icon: "IconLayoutDashboard",
     path: "/dashboard",
   },
   {
-    label: "District Officers",
-    icon: "IconLayoutDashboard",
-    path: "/dashboard/district-officers",
-  },
-  {
-    label: "Recruiters",
-    icon: "IconWorld",
-    path: "/dashboard/recruiters",
-  },
-  {
-    label: "Candidates",
+    label: "City Managers",
     icon: "IconUsersGroup",
-    path: "/dashboard/candidates",
+    path: "/dashboard/city-managers",
+  },
+  {
+    label: "Professionals",
+    icon: "IconUsersGroup",
+    path: "/dashboard/professionals",
   },
   {
     label: "Settings",
@@ -45,16 +40,21 @@ const adminLinks: Links[] = [
   },
 ];
 
-const officerLinks: Links[] = [
+const managerLinks: Links[] = [
   {
-    label: "Recruiters",
-    icon: "IconWorld",
-    path: "/dashboard/my-recruiters",
+    label: "Salesman",
+    icon: "IconUsersGroup",
+    path: "/dashboard/city-salemans",
   },
   {
-    label: "Candidates",
+    label: "Professionals",
     icon: "IconUsersGroup",
-    path: "/dashboard/candidates",
+    path: "/dashboard/professionals",
+  },
+  {
+    label: "Service Requests",
+    icon: "IconUsersGroup",
+    path: "/dashboard/service-requests",
   },
   {
     label: "Settings",
@@ -63,11 +63,11 @@ const officerLinks: Links[] = [
   },
 ];
 
-const recruiterLinks: Links[] = [
+const SalesPersonLinks: Links[] = [
   {
-    label: "Candidates",
-    icon: "IconWorld",
-    path: "/dashboard/district-candidates",
+    label: "Professionals",
+    icon: "IconUsersGroup",
+    path: "/dashboard/professionals",
   },
   {
     label: "Settings",
@@ -94,7 +94,12 @@ function Sidenav() {
     const color = isActive ? theme.colors.blue[4] : theme.colors.gray[5];
     const icons: Record<string, React.ReactNode> = {
       IconLayoutDashboard: (
-        <IconLayoutDashboard fill="none" withOutline color={color} size={size} />
+        <IconLayoutDashboard
+          fill="none"
+          withOutline
+          color={color}
+          size={size}
+        />
       ),
       IconWorld: (
         <IconWorld fill="none" withOutline color={color} size={size} />
@@ -124,10 +129,10 @@ function Sidenav() {
 
   let renderedLinks: Links[] = [];
 
-  if (user?.role === Role.DISTRICT_OFFICER) {
-    renderedLinks = officerLinks;
-  } else if (user?.role === Role.RECRUITER) {
-    renderedLinks = recruiterLinks;
+  if (user?.role === Role.CITY_MANAGER) {
+    renderedLinks = managerLinks;
+  } else if (user?.role === Role.SALESMAN) {
+    renderedLinks = SalesPersonLinks;
   } else {
     renderedLinks = adminLinks;
   }

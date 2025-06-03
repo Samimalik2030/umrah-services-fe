@@ -7,9 +7,9 @@ import {
   Group,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Recruiter } from "../../http/Api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
+import { Salesman } from "../../http/Api";
 
 function RecruiterForm({
   onClose,
@@ -17,32 +17,30 @@ function RecruiterForm({
   district,
 }: {
   onClose: () => void;
-  recruiter?: Recruiter;
+  recruiter?: Salesman;
   district?: string;
 }) {
   const form = useForm({
     initialValues: {
       name: recruiter?.user?.fullName || "",
       email: recruiter?.user?.email || "",
-      district: district || recruiter?.district,
+      city: district || recruiter?.city,
       phone: recruiter?.phone || "",
-      cnic: recruiter?.cnic || "",
+
       gender: recruiter?.gender || "",
-      address: recruiter?.address || "",
-      qualification: recruiter?.qualification || "",
     },
   });
-console.log(district)
+  console.log(district);
   const queryClient = useQueryClient();
 
   const { mutate: createRecruiter, isPending: loading } = useMutation({
-    mutationFn: http.recruiters.recruiterControllerCreate,
+    mutationFn: http.salesman.salesmanControllerCreate,
   });
   const { mutate: updateofficer, isPending: loadingUpdate } = useMutation({
     mutationFn: ({ recruiterId, data }: { recruiterId: string; data: any }) =>
-      http.recruiters.recruiterControllerUpdate(recruiterId, data),
+      http.salesman.salesmanControllerUpdate(recruiterId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recruiters"] });
+      queryClient.invalidateQueries({ queryKey: ["salesmans"] });
       onClose();
     },
   });
@@ -56,7 +54,7 @@ console.log(district)
           if (data.data) {
             onClose();
             form.reset();
-            queryClient.invalidateQueries({ queryKey: ["recruiters"] });
+            queryClient.invalidateQueries({ queryKey: ["salesmans"] });
           }
         },
       });
@@ -71,8 +69,7 @@ console.log(district)
           placeholder="Ahmed Khan"
           withAsterisk
           required
-            disabled={recruiter?true:false}
-
+          disabled={recruiter ? true : false}
           {...form.getInputProps("name")}
         />
         <TextInput
@@ -80,17 +77,16 @@ console.log(district)
           placeholder="ahmed.khan@punjabpolice.gov.pk"
           withAsterisk
           required
-            disabled={recruiter?true:false}
-
+          disabled={recruiter ? true : false}
           {...form.getInputProps("email")}
         />
         <TextInput
-          label="District"
-          placeholder="Select district"
+          label="City"
+          placeholder="Select City"
           withAsterisk
           value={district}
           disabled
-          {...form.getInputProps("district")}
+          {...form.getInputProps("city")}
         />
         <TextInput
           label="Phone Number"
@@ -99,13 +95,8 @@ console.log(district)
           required
           {...form.getInputProps("phone")}
         />
-        <TextInput
-          label="CNIC"
-          required
-          placeholder="3520112345678"
-          withAsterisk
-          {...form.getInputProps("cnic")}
-        />
+       
+
         <Select
           label="Gender"
           data={["male", "female"]}
@@ -114,35 +105,11 @@ console.log(district)
           required
           {...form.getInputProps("gender")}
         />
-        <Textarea
-          label="Address"
-          placeholder="Police Lines, Faisalabad"
-          autosize
-          minRows={2}
-          withAsterisk
-          required
-          {...form.getInputProps("address")}
-        />
 
-        <Select
-          data={[
-            "Primary",
-            "Middle",
-            "Matric",
-            "Intermediate",
-            "DAE (Diploma of Associate Engineering)",
-            "Bachelor's",
-            "Master's",
-            "MPhil",
-            "PhD",
-          ]}
-          label="Qualification"
-          required
-          placeholder="Bachelor's in Public Administration"
-          {...form.getInputProps("qualification")}
-        />
         <Group justify="flex-end" mt="md">
-          <Button type="submit">{recruiter ? 'Update Recruiter':"Add Recruiter"}</Button>
+          <Button type="submit" loading={loading || loadingUpdate}>
+            {recruiter ? "Update Salesman" : "Add Salesman"}
+          </Button>
         </Group>
       </Stack>
     </form>

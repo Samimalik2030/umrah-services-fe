@@ -9,7 +9,7 @@ export default ICommonIconProps;
 
 export enum Role {
   ADMIN = 'Admin',
-  DISTRICT_OFFICER = 'District Officer',
-  RECRUITER = 'Recruiter',
-  CANDIDATE = 'Candidate',
+  CITY_MANAGER = 'City Manager',
+  CUSTOMER = 'Customer',
+  SALESMAN = 'Salesman',
 }

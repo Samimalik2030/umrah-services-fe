@@ -1,374 +1,487 @@
 import {
-  Card,
-  Text,
-  Flex,
-  Title,
+  Anchor,
   Button,
-  Image,
+  Card,
   Container,
+  Flex,
+  Group,
   Stack,
+  Title,
+  Text,
+  Image,
   SimpleGrid,
   Box,
-  Accordion,
-  Group,
-  ActionIcon,
-  Badge,
-  Divider,
-  Grid,
-  Menu,
-  ThemeIcon,
-  Tooltip,
-  Modal,
+  Select,
+  Avatar,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import MyNavbar from "../auth/Navbar";
-import Footer from "./Footer";
-import { useNavigate } from "react-router-dom";
-import useGetJobs from "../../hooks/useGetJobs";
-import IconBook from "../../assets/icons/IconBook";
-import IconCalendar from "../../assets/icons/IconCalendar";
-import IconClock from "../../assets/icons/IconClock";
-import IconDots from "../../assets/icons/IconDots";
-import IconPencilOutlined from "../../assets/icons/IconPencilOutlined";
-import IconTrashOutlined from "../../assets/icons/IconTrashOutlined";
-import IconUsersGroup from "../../assets/icons/IconUsersGroup";
-import { useState } from "react";
-import { Job } from "../../http/Api";
-import { JobDetails } from "./JobDetails";
+import { useForm } from "@mantine/form";
+import { useRef } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { Role } from "../../interfaces/ICommonIconProps";
 
-function LandingPage() {
-  const [job, setJob] = useState<Job | undefined>(undefined);
-  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+export default function LandingPage() {
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
 
-  const [
-    openedDetailsModal,
-    { open: openDetailModal, close: closeDetailModal },
-  ] = useDisclosure();
-
-  const handleCloseDetailsModal = () => {
-    setJob(undefined);
-    closeDetailModal();
-  };
-  const handleShowDetails = (job: Job) => {
-    setJob(job);
-    openDetailModal();
-  };
-
-  const largeScreen = useMediaQuery("(min-width: 56.25em)");
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const { jobs } = useGetJobs();
+  const form = useForm({
+    initialValues: {
+      city: "",
+    },
+  });
+
+  const handleSubmit = () => {
+    navigate("/city", {
+      state: {
+        ...form.values,
+      },
+    });
+  };
+
   return (
     <>
-      <MyNavbar />
-      <Container fluid mt={12}>
-        <Flex justify={"center"} align={"center"} h={"100%"}>
-          <Box
-            w={largeScreen ? "90%" : "100%"}
-            bg={"transparent"}
-            style={{
-              borderRadius: 20,
-            }}
-          >
-            <Flex gap={20} direction={largeScreen ? "row" : "column"}>
-              <Card
-                w={largeScreen ? "50%" : "100%"}
-                h={370}
-                bg={"transparent"}
-                // bg={"lime"}
-              >
-                <Title
-                  order={2}
-                  ta={largeScreen ? "start" : "center"}
-                  mb="xs"
-                  fw={700}
-                >
-                  "Join Our Punjab Police Force!"
-                </Title>
-                <Text
-                  color="dimmed"
-                  fz={18}
-                  ta={largeScreen ? "start" : "center"}
-                >
-                  We are thrilled that you have chosen to explore a career in
-                  law enforcement and are considering joining our dedicated team
-                  of officers. At our police department, we strive to make a
-                  positive impact on the communities we serve, ensuring safety,
-                  upholding justice, and fostering trust. A career in the police
-                  force offers a unique opportunity to make a real difference in
-                  people's lives every day. As a police officer, you will have
-                  the chance to protect and serve your community, maintain law
-                  and order, and help create a safer environment for all.
-                </Text>
-                <Group justify={largeScreen ? "start" : "center"}>
-                  <Button mt={12} onClick={()=>navigate('/jobs')}>VIEW JOBS NOW</Button>
-                </Group>
-              </Card>
-              <Card w={largeScreen ? "50%" : "100%"} h={370} bg={"transparent"}>
-                <Image
-                  src="https://jobs.punjabpolice.gov.pk/images/final.png" // Replace with the actual URL of the police officers image
-                  alt="Police Officers"
-                  height={350}
-                  fit="contain"
-                />
-              </Card>
-            </Flex>
-          </Box>
-        </Flex>
-
-        <Card p={largeScreen ? 12 : 6} h={"100%"} mt={12}>
-          <Stack gap={20}>
-            <Stack gap={largeScreen ? 30 : 10}>
-              <Text fz={18} fw={700} ta={"center"} c={"#0d6efd"}>
-                OUR JOBS
-              </Text>
-              <Title fw={700} ta={"center"}>
-                Current Jobs
-              </Title>
-              <Text fz={largeScreen ? 20 : 18} fw={600} ta={"center"}>
-                Check out the latest jobs in Pakistan Punjab Police
-              </Text>
-            </Stack>
-
-            <Grid>
-              {jobs?.map((job) => (
-                <Grid.Col
-                  span={{
-                    base: 12,
-                    xs: 12,
-                    sm: 12,
-                    md: 6,
-                    lg: 4,
-                    xl: 4,
-                  }}
-                >
-                  <Card
-                    shadow="md"
-                    padding="lg"
-                    radius="md"
-                    withBorder
-                    style={{ maxWidth: 600, margin: "auto" }}
-                  >
-                    <Group justify="flex-end" mb="sm">
-                      <Badge color="cyan" variant="light" size="lg">
-                        BPS-{job.bps}
-                      </Badge>
-                    </Group>
-                    <Text fw={700} size="xl">
-                      {job.title}
-                    </Text>
-
-                    <Text c="dimmed" size="sm" mb="md" lineClamp={4}>
-                      {job.description}
-                    </Text>
-
-                    <Divider my="sm" />
-
-                    <Stack gap="xs" mb="md">
-                      <Group gap="xs">
-                        <ThemeIcon color="blue" variant="light" size={28}>
-                          <IconUsersGroup size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Vacancies:</strong> {job.vacancies}
-                        </Text>
-                      </Group>
-
-                      <Group gap="xs">
-                        <ThemeIcon color="orange" variant="light" size={28}>
-                          <IconBook size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Education:</strong> {job.education}
-                        </Text>
-                      </Group>
-
-                      <Group gap="xs">
-                        <ThemeIcon color="red" variant="light" size={28}>
-                          <Text style={{ fontFamily: "cursive" }}>Rs</Text>
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Application Fee:</strong> PKR{" "}
-                          {job.application_fee}
-                        </Text>
-                      </Group>
-
-                      <Group gap="xs">
-                        <ThemeIcon color="green" variant="light" size={28}>
-                          <IconCalendar size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Application Deadline:</strong>{" "}
-                          {job.application_deadline
-                            ? new Date(
-                                job.application_deadline
-                              ).toLocaleDateString()
-                            : "N/A"}
-                        </Text>
-                      </Group>
-
-                      <Group gap="xs">
-                        <ThemeIcon color="orange" variant="light" size={28}>
-                          <IconClock size={18} />
-                        </ThemeIcon>
-                        <Text>
-                          <strong>Age Limit:</strong> {job.age_min} -{" "}
-                          {job.age_max} years
-                        </Text>
-                      </Group>
-                    </Stack>
-
-                    <Divider my="xs" />
-
-                    {/* <Box
-                          style={(theme) => ({
-                            backgroundColor: theme.colors.gray[0],
-                            padding: 12,
-                            borderRadius: theme.radius.sm,
-                            maxHeight: 100,
-                            overflowY: "auto",
-                            whiteSpace: "pre-wrap",
-                            fontSize: theme.fontSizes.sm,
-                            color: theme.colors.dark[6],
-                            position: "relative",
-                          })}
-                        >
-                          <Group mb="xs" gap={4} align="center">
-                            <ThemeIcon color="blue" variant="light" size={20}>
-                              <IconBell size={14} />
-                            </ThemeIcon>
-                            <Text fw={600} size="sm">
-                              Terms & Conditions
-                            </Text>
-                          </Group>
-                          {job.terms_and_conditions}
-                        </Box> */}
-
-                    <Group justify="right" mt="md" gap="sm">
-                      {/* <Tooltip label="Apply for this job" position="top" withArrow>
-                            <Button>
-                              Apply Now
-                            </Button>
-                          </Tooltip> */}
-                      <Tooltip
-                        label="View more details"
-                        position="top"
-                        withArrow
+      <Container fluid p={0}>
+        <Stack gap={60}>
+          <Card bg={"#40c057ff"} h={"96vh"} radius={0}>
+            <Card bg={"transparent"}>
+              <Flex justify={"space-between"} align={"center"}>
+                <Flex gap={50}>
+                  <Group>
+                    <Anchor c={"white"}>Logo</Anchor>
+                  </Group>
+                  <Flex gap={30}>
+                    <Anchor
+                      c={"white"}
+                      onClick={() => {
+                        const aboutSection =
+                          document.getElementById("services");
+                        aboutSection?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      OUR SERVICES
+                    </Anchor>
+                    <Anchor
+                      c={"white"}
+                      onClick={() => {
+                        const aboutSection =
+                          document.getElementById("about-us");
+                        aboutSection?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      ABOUT US
+                    </Anchor>
+                  </Flex>
+                </Flex>
+                <Flex gap={10}>
+                  {user ? (
+                    <Group>
+                      <Button
+                        variant="outline"
+                        color="white"
+                        onClick={() => {
+                          if (user?.role === Role.ADMIN) {
+                            return <Navigate to="/dashboard" />;
+                          } else if (user?.role === Role.CITY_MANAGER) {
+                            return <Navigate to="/dashboard/city-salesmans" />;
+                          } else if (user?.role === Role.SALESMAN) {
+                            return <Navigate to="/dashboard/professionals" />;
+                          } else {
+                            return <Navigate to="/" />;
+                          }
+                        }}
                       >
-                        <Button
-                          variant="outline"
-                          onClick={() => handleShowDetails(job)}
-                        >
-                          Details
-                        </Button>
-                      </Tooltip>
+                        Dashboard
+                      </Button>
+                      <Avatar
+                        color="white"
+                        size={"md"}
+                        src={user.profileImage?.url}
+                      />
                     </Group>
-                  </Card>
-                </Grid.Col>
-              ))}
-            </Grid>
-          </Stack>
-        </Card>
+                  ) : (
+                    <Button
+                      onClick={() => navigate("/auth/sign-in")}
+                      bg={"#309945"}
+                      c={"white"}
+                    >
+                      Login
+                    </Button>
+                  )}
 
-        {/* ////////////// */}
+                  {!user && (
+                    <Button
+                      bg={"transparent"}
+                      style={{ border: "2px solid white" }}
+                      onClick={() => navigate("/auth/sign-up")}
+                    >
+                      GET STARTED
+                    </Button>
+                  )}
+                </Flex>
+              </Flex>
+            </Card>
+            <Card bg={"transparent"} w={"100%"} mt={40}>
+              <Flex gap={10}>
+                <Card w={"60%"} bg={"transparent"}>
+                  <Stack>
+                    <Title c={"white"} fw={700} fz={42}>
+                      Book trusted service professionals near you, without
+                      hassle
+                    </Title>
+                    <Text fw={600} fz={16} c={"white"}>
+                      Find reliable electricians, plumbers, mechanics, and more
+                      — our team connects you with verified experts in your
+                      city.
+                    </Text>
 
-        <Card p={largeScreen ? 12 : 5} py={24} mt={24}>
-          <Stack gap={20}>
-            <Stack gap={largeScreen ? 15 : 15}>
-              <Text fz={18} fw={700} ta={"center"} c={"#0d6efd"}>
-                QUESTION YOU HAVE
-              </Text>
-              <Title ta={"center"}>Frequently Asked Questions</Title>
-            </Stack>
-            <Flex justify={"center"}>
-              <Card shadow="sm" radius="md" w={largeScreen ? "80%" : "100%"}>
-                <Accordion>
-                  <Accordion.Item value="age-limit">
-                    <Accordion.Control>
-                      What is the age limit for PSA and SSA?
-                    </Accordion.Control>
-                    <Accordion.Panel>
-                      <Text size="sm" c="dimmed">
-                        18-25 Years
-                      </Text>
-                    </Accordion.Panel>
-                  </Accordion.Item>
+                    <Card radius={"100px"} w={"75%"} bg={"#66d07a"}>
+                      <form onSubmit={form.onSubmit(handleSubmit)}>
+                        <Flex gap={10}>
+                          <Select
+                            radius={30}
+                            w={"75%"}
+                            size="lg"
+                            placeholder="Your City"
+                            data={[
+                              "Multan",
+                              "Lahore",
+                              "Islamabad",
+                              "Karachi",
+                              "Rawalpindi",
+                              "Faisalabad",
+                            ]}
+                            {...form.getInputProps("city")}
+                          />
 
-                  <Accordion.Item value="qualification">
-                    <Accordion.Control>
-                      What Qualification is required for SSA and PSA?
-                    </Accordion.Control>
-                    <Accordion.Panel>
-                      {/* Add the qualification details here as Text or a List */}
-                      <Text size="md" c="dimmed">
-                        Intermediate is Mandatory.
-                      </Text>
-                    </Accordion.Panel>
-                  </Accordion.Item>
+                          <Button
+                            h={46}
+                            w={130}
+                            radius={30}
+                            fz={16}
+                            variant="outline"
+                            bg={"#309945"}
+                            c={"white"}
+                            type="submit"
+                          >
+                            Search
+                          </Button>
+                        </Flex>
+                      </form>
+                    </Card>
+                    <Group justify="end"></Group>
+                  </Stack>
+                </Card>
+                <Card w={"40%"} bg={"transparent"}>
+                  <Image
+                    src={
+                      "https://ik.imagekit.io/xf3wbji6t/hero_image_desktop-08e3eaac39db4404c62da49ee7c4cd83.png?updatedAt=1743237928837"
+                    }
+                  />
+                </Card>
+              </Flex>
+            </Card>
+          </Card>
 
-                  <Accordion.Item value="fee">
-                    <Accordion.Control>Fee?</Accordion.Control>
-                    <Accordion.Panel>
-                      <Text size="md" c="dimmed">
-                        Depenfds on the post you are applying for. For example,
-                        for SSA and PSA, the fee is 500 PKR.
-                      </Text>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-
-                  <Accordion.Item value="documents">
-                    <Accordion.Control>
-                      Which Documents are required?
-                    </Accordion.Control>
-                    <Accordion.Panel>
-                      {/* Add the list of required documents here as Text or a List */}
-                      <Text size="md" c="dimmed">
-                        Origianl CNIC , Matric Certificate , Intermediate
-                        Certificate , .
-                      </Text>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-
-                  <Accordion.Item value="noc">
-                    <Accordion.Control>NOC ?</Accordion.Control>
-                    <Accordion.Panel>
-                      <Text size="md" c="dimmed">
-                        NOC required in case already in Goverment Job.
-                      </Text>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-
-                  <Accordion.Item value="submit-fee">
-                    <Accordion.Control>
-                      Where i can Submit Fee?
-                    </Accordion.Control>
-                    <Accordion.Panel>
-                      <Text size="md" c="dimmed">
-                        You can submit your fee online in Bank Accout #
-                        xxxxxxxxxx.
-                      </Text>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion>
+          <Stack gap={30}>
+            <Text fz={24} ta={"center"}>
+              HOW IT WORKS
+            </Text>
+            <Title ta={"center"}>
+              Book a trusted professional in just a few clicks
+            </Title>
+            <SimpleGrid cols={3} spacing={20}>
+              <Card bg={"transparent"}>
+                <Stack>
+                  <Flex justify={"center"}>
+                    <Box w={"80px"} h={80}>
+                      <Image
+                        src={
+                          "https://ik.imagekit.io/yzrrrgg3d/price-quote-logo.webp?updatedAt=1743590997794"
+                        }
+                      ></Image>
+                    </Box>
+                  </Flex>
+                  <Title fz={28} ta={"center"}>
+                    Get an instant price quote
+                  </Title>
+                  <Text fz={16} ta={"center"}>
+                    Select your city and location, tell us what's wrong, and
+                    we'll give you an instant fixed price in seconds
+                  </Text>
+                </Stack>
               </Card>
+              <Card bg={"transparent"}>
+                <Stack>
+                  <Flex justify={"center"}>
+                    <Box w={"80px"} h={80}>
+                      <Image
+                        src={
+                          "https://ik.imagekit.io/yzrrrgg3d/calendar.webp?updatedAt=1743590972836"
+                        }
+                      />
+                    </Box>
+                  </Flex>
+                  <Title fz={28} ta={"center"}>
+                    Pick a date, time & location
+                  </Title>
+                  <Text fz={16} ta={"center"}>
+                    Your professional will come to whichever address suits you
+                    best, at the date and time of your choice.
+                  </Text>
+                </Stack>
+              </Card>
+              <Card bg={"transparent"}>
+                <Stack>
+                  <Flex justify={"center"}>
+                    <Box w={"80px"} h={80}>
+                      <Image
+                        src={
+                          "https://ik.imagekit.io/yzrrrgg3d/pc.webp?updatedAt=1743590972777"
+                        }
+                      />
+                    </Box>
+                  </Flex>
+                  <Title fz={28} ta={"center"}>
+                    Proffesional comes to you
+                  </Title>
+                  <Text fz={16} ta={"center"}>
+                    No need to go to the garage - once booked just sit back and
+                    relax while the professional comes to you.
+                  </Text>
+                </Stack>
+              </Card>
+            </SimpleGrid>
+            <Flex justify={"center"}>
+              <Button
+                w={210}
+                c={"#40c057ff"}
+                fz={16}
+                radius={30}
+                h={48}
+                bg={"transparent"}
+                style={{ border: "1px solid #40c057ff" }}
+                onClick={() =>
+                  navigate("/indexing", {
+                    state: {
+                      city: "",
+                      area: "",
+                    },
+                  })
+                }
+              >
+                FIND OUT MORE
+              </Button>
             </Flex>
           </Stack>
-        </Card>
-      </Container>
-      <Box mt={24}>
-        <Footer />
-      </Box>
+          <div ref={aboutRef} id="about-us">
+            <Flex justify={"center"} h={"80vh"}>
+              <Card bg={"transparent"} shadow="none" mt={20} w={"90%"}>
+                <Flex gap={40}>
+                  <Card
+                    bg={"transparent"}
+                    shadow="none"
+                    w={"40%"}
+                    p={0}
+                    radius={30}
+                  >
+                    <Image
+                      h={450}
+                      radius={30}
+                      src={
+                        "https://ik.imagekit.io/xf3wbji6t/about_us_400x500-e761a4b894fb46451e19937192f37993.jpg?updatedAt=1743242464692"
+                      }
+                    />
+                  </Card>
+                  <Card bg={"transparent"} w={"60%"} shadow="none">
+                    <Stack>
+                      <Stack gap={40}>
+                        <Stack gap={15}>
+                          <Text fz={18}>ABOUT US</Text>
+                          <Title fz={28}>Our promise to you</Title>
+                        </Stack>
 
-      <Modal
-        opened={openedDetailsModal}
-        onClose={handleCloseDetailsModal}
-        title="Job Details"
-        size={isSmallScreen ? "100%" : "70%"}
-        centered
-      >
-        {job && <JobDetails job={job} />}
-      </Modal>
+                        <Stack>
+                          <Text fz={16}>
+                            Tired of searching for reliable professionals when
+                            something breaks at home? We get it! That’s why
+                            we’re here — to make hiring electricians, plumbers,
+                            and technicians as hassle-free as possible.
+                          </Text>
+                          <Text fz={16}>
+                            Whether it's a leaky tap, faulty wiring, appliance
+                            repair, or general maintenance, our booking system
+                            connects you with trusted experts in your city. No
+                            hidden charges — just fair, upfront rates.
+                          </Text>
+                          <Text fz={16}>
+                            Once you place your request, our team finds the
+                            right professional for you. We coordinate
+                            everything, so you can relax while the expert comes
+                            to your doorstep — no app or tech skills needed!
+                          </Text>
+                        </Stack>
+                      </Stack>
+
+                      {/* <Button
+                      w={210}
+                      c={"#40c057ff"}
+                      fz={16}
+                      radius={30}
+                      h={48}
+                      bg={"transparent"}
+                      style={{ border: "1px solid #40c057ff" }}
+                    >
+                      FIND OUT MORE
+                    </Button> */}
+                    </Stack>
+                  </Card>
+                </Flex>
+              </Card>
+            </Flex>
+          </div>
+
+          <div ref={aboutRef} id="services">
+            <Card bg={"#f1f6ff"} px={60} py={60} shadow="none">
+              <Stack gap={40}>
+                <Stack>
+                  <Text fz={18} ta={"center"}>
+                    OUR SERVICES
+                  </Text>
+                  <Title ta={"center"} fz={30}>
+                    All the ways we can help
+                  </Title>
+                </Stack>
+                <Flex justify={"center"}>
+                  <SimpleGrid cols={3} w={"70%"}>
+                    <Card radius={15}>
+                      <Stack>
+                        <Flex justify={"center"}>
+                          <Box w={"80px"} h={80}>
+                            <Image
+                              height={"100%"}
+                              style={{
+                                objectFit: "contain",
+                              }}
+                              src={
+                                "https://ik.imagekit.io/yzrrrgg3d/icon%20screw.svg?updatedAt=1743593336899"
+                              }
+                            />
+                          </Box>
+                        </Flex>
+                        <Title ta={"center"} fz={22}>
+                          Repairs
+                        </Title>
+                      </Stack>
+                    </Card>
+                    <Card radius={15}>
+                      <Stack>
+                        <Flex justify={"center"}>
+                          <Box w={"80px"} h={80}>
+                            <Image
+                              height={"100%"}
+                              style={{
+                                objectFit: "contain",
+                              }}
+                              src={
+                                "https://ik.imagekit.io/yzrrrgg3d/icon-diagnostic.svg?updatedAt=1743593336528"
+                              }
+                            />
+                          </Box>
+                        </Flex>
+                        <Title ta={"center"} fz={22}>
+                          Diagnostics
+                        </Title>
+                      </Stack>
+                    </Card>
+                    <Card radius={15}>
+                      <Stack>
+                        <Flex justify={"center"}>
+                          <Box w={"80px"} h={80}>
+                            <Image
+                              height={"100%"}
+                              style={{
+                                objectFit: "contain",
+                              }}
+                              src={
+                                "https://ik.imagekit.io/yzrrrgg3d/icon-service.svg?updatedAt=1743593387608"
+                              }
+                            />
+                          </Box>
+                        </Flex>
+                        <Title ta={"center"} fz={22}>
+                          servicing
+                        </Title>
+                      </Stack>
+                    </Card>
+                    <Card radius={15}>
+                      <Stack>
+                        <Flex justify={"center"}>
+                          <Box w={"80px"} h={80}>
+                            <Image
+                              height={"100%"}
+                              style={{
+                                objectFit: "contain",
+                              }}
+                              src={
+                                "https://ik.imagekit.io/yzrrrgg3d/icon-mot.svg?updatedAt=1743593336468"
+                              }
+                            />
+                          </Box>
+                        </Flex>
+                        <Title ta={"center"} fz={22}>
+                          MOT
+                        </Title>
+                      </Stack>
+                    </Card>
+                    <Card radius={15}>
+                      <Stack>
+                        <Flex justify={"center"}>
+                          <Box w={"80px"} h={80}>
+                            <Image
+                              height={"100%"}
+                              style={{
+                                objectFit: "contain",
+                              }}
+                              src={
+                                "https://ik.imagekit.io/yzrrrgg3d/icon-tyre.svg?updatedAt=1743593336343"
+                              }
+                            />
+                          </Box>
+                        </Flex>
+                        <Title ta={"center"} fz={22}>
+                          Tyres
+                        </Title>
+                      </Stack>
+                    </Card>
+                    <Card radius={15}>
+                      <Stack>
+                        <Flex justify={"center"}>
+                          <Box w={"80px"} h={80}>
+                            <Image
+                              height={"100%"}
+                              style={{
+                                objectFit: "contain",
+                              }}
+                              src={
+                                "https://ik.imagekit.io/yzrrrgg3d/icon-inspection.svg?updatedAt=1743593387412"
+                              }
+                            />
+                          </Box>
+                        </Flex>
+                        <Title ta={"center"} fz={22}>
+                          Pre-purchase inspection
+                        </Title>
+                      </Stack>
+                    </Card>
+                  </SimpleGrid>
+                </Flex>
+              </Stack>
+            </Card>
+          </div>
+        </Stack>
+      </Container>
     </>
   );
 }
-
-export default LandingPage;

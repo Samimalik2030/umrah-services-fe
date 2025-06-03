@@ -23,7 +23,7 @@ import http from "../../http";
 import { Role } from "../../interfaces/ICommonIconProps";
 function SignIn() {
   const queryClient = useQueryClient();
-  const { setAccessToken, setUser, accessToken,user } = useAuth();
+  const { setAccessToken, setUser, accessToken, user } = useAuth();
   const navigate = useNavigate();
   const isSmall = useMediaQuery("(max-width: 768px)");
   const schema = yup.object({
@@ -63,19 +63,17 @@ function SignIn() {
     });
   }
 
-if (accessToken) {
-  if (user?.role === Role.ADMIN) {
-    return <Navigate to="/dashboard" />;
-  } else if (user?.role === Role.DISTRICT_OFFICER) {
-    return <Navigate to="/dashboard/my-recruiters" />;
-  } else if (user?.role === Role.RECRUITER) {
-    return <Navigate to="/dashboard/district-candidates" />;
+  if (accessToken) {
+    if (user?.role === Role.ADMIN) {
+      return <Navigate to="/dashboard" />;
+    } else if (user?.role === Role.CITY_MANAGER) {
+      return <Navigate to="/dashboard/city-salemans" />;
+    } else if (user?.role === Role.SALESMAN) {
+      return <Navigate to="/dashboard/professionals" />;
+    } else {
+      return <Navigate to="/" />;
+    }
   }
-  else{
-    return <Navigate to="/" />;
-
-  }
-}
 
   return (
     <Card p={"xl"} radius={"xl"} w={isSmall ? 350 : 500}>

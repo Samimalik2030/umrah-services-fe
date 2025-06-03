@@ -1,12 +1,16 @@
 import { AppShell, Burger, Group, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Header from "../../components/Header";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Sidenav from "../../components/Sidenav";
+import { useAuth } from "../../contexts/AuthContext";
 function DashboardLayout() {
    const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure();
 
+
+
+ 
   return (
     <AppShell
       header={{ height: 90 }}
@@ -17,8 +21,8 @@ function DashboardLayout() {
       }}
       padding="md"
     >
-      <AppShell.Header>
-        <Group justify="space-between" align="center">
+      <AppShell.Header >
+        <Group justify="space-between" align="center" >
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Header />
         </Group>

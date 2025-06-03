@@ -55,7 +55,7 @@ export interface User {
    * Role of the user
    * @example "Admin"
    */
-  role: "Admin" | "District Officer" | "Recruiter" | "Candidate";
+  role: "Admin" | "City Manager" | "Customer" | "Salesman";
   /**
    * Timestamp when the user was created
    * @format date-time
@@ -137,459 +137,6 @@ export interface UpdateInquiryDto {
   message: string;
 }
 
-export interface CreatePersonalInfoDto {
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  father_name: string;
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  district: string;
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  cnic: string;
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  gender: string;
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  marital_status: string;
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  religion: string;
-}
-
-export interface Address {
-  /**
-   * Permanent residential address
-   * @example "House 123, Street 4, Lahore"
-   */
-  permanent: string;
-  /**
-   * Current living address
-   * @example "Hostel Block B, Punjab University"
-   */
-  present: string;
-}
-
-export interface EmergencyContact {
-  /**
-   * Name of the emergency contact person
-   * @example "Ahmed Khan"
-   */
-  name: string;
-  /**
-   * Relation to the candidate
-   * @example "Brother"
-   */
-  relation: string;
-  /**
-   * Phone number of the emergency contact
-   * @example "03001234567"
-   */
-  contact: string;
-}
-
-export interface Contact {
-  /**
-   * District of the candidate
-   * @example "Multan"
-   */
-  district: string;
-  /**
-   * Phone number of the candidate
-   * @example "03123456789"
-   */
-  phone: string;
-  /** Emergency contact details */
-  emergency_contact: EmergencyContact;
-}
-
-export interface EducationLevel {
-  /**
-   * Name of the examination board
-   * @example "Lahore Board"
-   */
-  board: string;
-  /**
-   * Year of passing the exam
-   * @example 2019
-   */
-  passing_year: number;
-  /**
-   * Percentage marks obtained
-   * @example 85.5
-   */
-  marks_percentage: number;
-}
-
-export interface Education {
-  matric: EducationLevel;
-  intermediate: EducationLevel;
-}
-
-export interface Chest {
-  /**
-   * Unexpanded chest size in cm
-   * @example 85
-   */
-  unexpanded: number;
-  /**
-   * Expanded chest size in cm
-   * @example 90
-   */
-  expanded: number;
-}
-
-export interface PhysicalInfo {
-  /**
-   * Height in centimeters
-   * @example 175
-   */
-  height_cm: number;
-  /**
-   * Weight in kilograms
-   * @example 70
-   */
-  weight_kg: number;
-  /** Chest measurements in cm */
-  chest_cm: Chest;
-  /**
-   * Vision of the candidate
-   * @example "6/6"
-   */
-  vision: string;
-  /**
-   * Blood group of the candidate
-   * @example "B+"
-   */
-  blood_group: string;
-}
-
-export interface Documents {
-  cnic: FileDto;
-  matric_certificate: FileDto;
-  inter_certificate: FileDto;
-  domicile: FileDto;
-  character_certificate: FileDto;
-  medical_certificate: FileDto;
-  photo: FileDto;
-}
-
-export interface Candidate {
-  /**
-   * Unique identifier of the user
-   * @example "60f7a1c5e5b3a72b3c8a830f"
-   */
-  _id: string;
-  /**
-   * Father's name of the candidate
-   * @example "Rashid Khan"
-   */
-  father_name: string;
-  /**
-   * CNIC of the candidate
-   * @example "35202-1234567-1"
-   */
-  cnic: string;
-  /**
-   * Date of birth
-   * @format date-time
-   * @example "2001-06-15"
-   */
-  dob: string;
-  /**
-   * Gender of the candidate
-   * @example "Male"
-   */
-  gender: string;
-  /**
-   * Marital status
-   * @example "Single"
-   */
-  marital_status: string;
-  /**
-   * Religion of the candidate
-   * @example "Islam"
-   */
-  religion: string;
-  /**
-   * District of the candidate
-   * @example "Multan"
-   */
-  district: string;
-  address: Address;
-  contact: Contact;
-  education: Education;
-  physical_info: PhysicalInfo;
-  /** @default null */
-  documents: Documents;
-  /** Reference to the associated user account */
-  user: User;
-}
-
-export interface CreateJobDto {
-  /**
-   * Job title
-   * @example "Junior Constable"
-   */
-  title: string;
-  /**
-   * Job description
-   * @example "Job description here..."
-   */
-  description?: string;
-  /**
-   * Number of vacancies
-   * @example 1
-   */
-  vacancies: number;
-  /**
-   * BPS (Basic Pay Scale)
-   * @example 7
-   */
-  bps: number;
-  /** @example "male" */
-  gender: "male" | "female";
-  /**
-   * Minimum age requirement
-   * @example 18
-   */
-  age_min: number;
-  /**
-   * Maximum age requirement
-   * @example 25
-   */
-  age_max: number;
-  /**
-   * Minimum height for male in cm
-   * @example 170
-   */
-  height_male?: number;
-  /**
-   * Minimum height for female in cm
-   * @example 158
-   */
-  height_female?: number;
-  /**
-   * Chest measurement for male
-   * @example "33x34.5"
-   */
-  chest_male?: string;
-  /**
-   * Chest measurement for female
-   * @example ""
-   */
-  chest_female?: string;
-  /**
-   * Minimum education requirement
-   * @example "Matric"
-   */
-  education?: string;
-  /**
-   * Application deadline
-   * @format date-time
-   * @example "2025-12-31"
-   */
-  application_deadline?: string;
-  /**
-   * Posting date
-   * @format date-time
-   * @example "2025-05-18"
-   */
-  posting_date: string;
-  /**
-   * Application fee amount
-   * @example 0
-   */
-  application_fee: number;
-  /**
-   * Terms and conditions
-   * @example "Terms and conditions text"
-   */
-  terms_and_conditions?: string;
-}
-
-export interface Job {
-  /**
-   * Unique identifier of the user
-   * @example "60f7a1c5e5b3a72b3c8a830f"
-   */
-  _id: string;
-  /**
-   * Job title
-   * @example "Junior Constable"
-   */
-  title: string;
-  /**
-   * Job description
-   * @example "Job description here..."
-   */
-  description?: string;
-  /**
-   * Number of vacancies
-   * @example 1
-   */
-  vacancies: number;
-  /**
-   * BPS (Basic Pay Scale)
-   * @example 7
-   */
-  bps: number;
-  /** @example "Male" */
-  gender: string;
-  /**
-   * Minimum age requirement
-   * @example 18
-   */
-  age_min: number;
-  /**
-   * Maximum age requirement
-   * @example 25
-   */
-  age_max: number;
-  /**
-   * Minimum height for male in cm
-   * @example 170
-   */
-  height_male?: number;
-  /**
-   * Minimum height for female in cm
-   * @example 158
-   */
-  height_female?: number;
-  /**
-   * Chest measurement for male
-   * @example "33x34.5"
-   */
-  chest_male?: string;
-  /**
-   * Chest measurement for female
-   * @example ""
-   */
-  chest_female?: string;
-  /**
-   * Minimum education requirement
-   * @example "Matric"
-   */
-  education?: string;
-  /**
-   * Application deadline
-   * @format date-time
-   * @example "2025-12-31"
-   */
-  application_deadline?: string;
-  /**
-   * Posting date
-   * @format date-time
-   * @example "2025-05-18"
-   */
-  posting_date: string;
-  /**
-   * Application fee amount
-   * @example 0
-   */
-  application_fee: number;
-  /**
-   * Terms and conditions
-   * @example "Terms and conditions text"
-   */
-  terms_and_conditions?: string;
-}
-
-export interface UpdateJobDto {
-  /**
-   * Job title
-   * @example "Junior Constable"
-   */
-  title?: string;
-  /**
-   * Job description
-   * @example "Job description here..."
-   */
-  description?: string;
-  /**
-   * Number of vacancies
-   * @example 1
-   */
-  vacancies?: number;
-  /**
-   * BPS (Basic Pay Scale)
-   * @example 7
-   */
-  bps?: number;
-  /** @example "male" */
-  gender?: "male" | "female";
-  /**
-   * Minimum age requirement
-   * @example 18
-   */
-  age_min?: number;
-  /**
-   * Maximum age requirement
-   * @example 25
-   */
-  age_max?: number;
-  /**
-   * Minimum height for male in cm
-   * @example 170
-   */
-  height_male?: number;
-  /**
-   * Minimum height for female in cm
-   * @example 158
-   */
-  height_female?: number;
-  /**
-   * Chest measurement for male
-   * @example "33x34.5"
-   */
-  chest_male?: string;
-  /**
-   * Chest measurement for female
-   * @example ""
-   */
-  chest_female?: string;
-  /**
-   * Minimum education requirement
-   * @example "Matric"
-   */
-  education?: string;
-  /**
-   * Application deadline
-   * @format date-time
-   * @example "2025-12-31"
-   */
-  application_deadline?: string;
-  /**
-   * Posting date
-   * @format date-time
-   * @example "2025-05-18"
-   */
-  posting_date?: string;
-  /**
-   * Application fee amount
-   * @example 0
-   */
-  application_fee?: number;
-  /**
-   * Terms and conditions
-   * @example "Terms and conditions text"
-   */
-  terms_and_conditions?: string;
-}
-
 export interface CreateDistrictOfficerDto {
   /**
    * Phone number
@@ -605,40 +152,15 @@ export interface CreateDistrictOfficerDto {
    * Phone number
    * @example "03001234567"
    */
-  phone: string;
-  /**
-   * CNIC number
-   * @example "35202-1234567-8"
-   */
-  cnic: string;
-  /**
-   * Gender
-   * @example "male"
-   */
-  gender: "male" | "female" | "other";
-  /**
-   * Address
-   * @example "123 Street, City"
-   */
-  address?: string;
+  phone: number;
   /**
    * District
    * @example "Lahore"
    */
-  district?: string;
-  /**
-   * Qualification
-   * @example "Masters in Public Administration"
-   */
-  qualification?: string;
-  /**
-   * Experience
-   * @example "5 years experience in law enforcement"
-   */
-  experience?: string;
+  city: string;
 }
 
-export interface DistrictOfficer {
+export interface CityOfficer {
   /**
    * Unique identifier of the user
    * @example "60f7a1c5e5b3a72b3c8a830f"
@@ -648,37 +170,12 @@ export interface DistrictOfficer {
    * Contact phone number
    * @example "03001234567"
    */
-  phone: string;
-  /**
-   * Unique CNIC number
-   * @example "35202-1234567-8"
-   */
-  cnic: string;
-  /**
-   * Gender
-   * @example "male"
-   */
-  gender: "male" | "female" | "other";
-  /**
-   * Residential address
-   * @example "123 Street, Lahore"
-   */
-  address?: string;
+  phone: number;
   /**
    * District name
    * @example "Lahore"
    */
-  district?: string;
-  /**
-   * Highest qualification
-   * @example "Masters in Public Administration"
-   */
-  qualification?: string;
-  /**
-   * Experience details
-   * @example "5 years in law enforcement"
-   */
-  experience?: string;
+  city?: "Multan" | "Lahore" | "Karachi" | "Islamabad" | "Faisalabad" | "Rawalpindi";
   /** Reference to the User who owns this */
   user: User;
 }
@@ -698,40 +195,15 @@ export interface UpdateDistrictOfficerDto {
    * Phone number
    * @example "03001234567"
    */
-  phone?: string;
-  /**
-   * CNIC number
-   * @example "35202-1234567-8"
-   */
-  cnic?: string;
-  /**
-   * Gender
-   * @example "male"
-   */
-  gender?: "male" | "female" | "other";
-  /**
-   * Address
-   * @example "123 Street, City"
-   */
-  address?: string;
+  phone?: number;
   /**
    * District
    * @example "Lahore"
    */
-  district?: string;
-  /**
-   * Qualification
-   * @example "Masters in Public Administration"
-   */
-  qualification?: string;
-  /**
-   * Experience
-   * @example "5 years experience in law enforcement"
-   */
-  experience?: string;
+  city?: string;
 }
 
-export interface CreateRecruiterDto {
+export interface CreateSalesmanDto {
   /**
    * Phone number
    * @example "03001234567"
@@ -748,33 +220,18 @@ export interface CreateRecruiterDto {
    */
   phone: string;
   /**
-   * CNIC number
-   * @example "35202-1234567-8"
-   */
-  cnic: string;
-  /**
    * Gender
    * @example "male"
    */
   gender: "male" | "female" | "other";
   /**
-   * Address
-   * @example "123 Street, Lahore"
-   */
-  address: string;
-  /**
-   * Qualification
-   * @example "Bachelor’s in Criminology"
-   */
-  qualification: string;
-  /**
    * District
    * @example "Lahore"
    */
-  district: string;
+  city: string;
 }
 
-export interface Recruiter {
+export interface Salesman {
   /**
    * Unique identifier of the user
    * @example "60f7a1c5e5b3a72b3c8a830f"
@@ -786,58 +243,76 @@ export interface Recruiter {
    */
   phone: string;
   /**
-   * CNIC number
-   * @example "35202-1234567-8"
-   */
-  cnic: string;
-  /**
    * Gender
    * @example "male"
    */
-  gender: "male" | "female" | "other";
+  gender: "male" | "female";
   /**
-   * Address of the recruiter
-   * @example "123 Street, Lahore"
-   */
-  address?: string;
-  /**
-   * Educational qualification
-   * @example "Bachelor’s in Criminology"
-   */
-  qualification?: string;
-  /**
-   * District assigned to the recruiter
+   * city assigned to the salesman
    * @example "Lahore"
    */
-  district?: string;
+  city?: string;
   /** Reference to the associated user account */
   user: User;
 }
 
-export interface CreateApplicationDto {
-  candidate: string;
-  job: string;
+export interface CreateProfessionalDto {
+  /** @example "Ali Raza" */
+  name: string;
+  /** @example "03001234567" */
+  phone: string;
+  /** @example "03001234567" */
+  whatsappNumber: string;
+  /**
+   * Profession of the individual
+   * @example "Electrician"
+   */
+  profession: "Plumber" | "Electrician" | "Mechanic" | "Carpenter" | "AC Technician" | "Painter" | "Cleaner";
+  /**
+   * Years of experience (optional)
+   * @example 5
+   */
+  experienceYears?: number;
+  /** @example "Lahore" */
+  city: string;
+  /** @example "123 Main Street, Lahore" */
+  address?: string;
+  /** @example 31.5204 */
+  latitude: number;
+  /** @example 74.3587 */
+  longitude: number;
 }
 
-export interface Application {
+export interface Coordinates {
+  /** @example 31.5204 */
+  latitude: number;
+  /** @example 74.3587 */
+  longitude: number;
+}
+
+export interface Professional {
   /**
-   * Unique identifier of the job
+   * Unique identifier of the user
    * @example "60f7a1c5e5b3a72b3c8a830f"
    */
   _id: string;
-  /**
-   * Status of the job
-   * @example "Data Verification"
-   */
-  status: "Data Verification" | "Physical Test" | "Running" | "Written Test" | "Interview" | "Rejected" | "Selected";
-  /** Reference to the candidate account */
-  candidate: Candidate;
-  /** Reference to the Job */
-  job: Job;
-}
-
-export interface ApplicationUpdateDto {
-  status: string;
+  /** @example "john doe" */
+  name: string;
+  /** @example "03001234567" */
+  phone: string;
+  /** @example "03001234567" */
+  whatsappNumber: string;
+  /** @example "Electrician" */
+  profession: "Plumber" | "Electrician" | "Mechanic" | "Carpenter" | "AC Technician" | "Painter" | "Cleaner";
+  /** @example 3 */
+  experienceYears?: number;
+  /** @example "Lahore" */
+  city: string;
+  /** @example "123 Street, Lahore" */
+  address?: string;
+  coordinates?: Coordinates;
+  /** @default false */
+  isVerified: boolean;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -1231,224 +706,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  candidates = {
+  cityOfficers = {
     /**
      * No description
      *
-     * @tags Candidates
-     * @name CandidateControllerCreate
-     * @summary Create a new candidate application
-     * @request POST:/candidates
-     * @secure
-     */
-    candidateControllerCreate: (data: CreatePersonalInfoDto, params: RequestParams = {}) =>
-      this.request<Candidate, any>({
-        path: `/candidates`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Candidates
-     * @name CandidateControllerFindAll
-     * @summary Get all candidates
-     * @request GET:/candidates
-     * @secure
-     */
-    candidateControllerFindAll: (params: RequestParams = {}) =>
-      this.request<Candidate[], any>({
-        path: `/candidates`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Candidates
-     * @name CandidateControllerFindOne
-     * @summary Get a candidate by ID
-     * @request GET:/candidates/{id}
-     * @secure
-     */
-    candidateControllerFindOne: (id: string, params: RequestParams = {}) =>
-      this.request<Candidate, void>({
-        path: `/candidates/${id}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Candidates
-     * @name CandidateControllerUpdate
-     * @summary Update a candidate
-     * @request PATCH:/candidates/{id}
-     * @secure
-     */
-    candidateControllerUpdate: (id: string, data: Candidate, params: RequestParams = {}) =>
-      this.request<Candidate, void>({
-        path: `/candidates/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Candidates
-     * @name CandidateControllerRemove
-     * @summary Delete a candidate
-     * @request DELETE:/candidates/{id}
-     * @secure
-     */
-    candidateControllerRemove: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/candidates/${id}`,
-        method: "DELETE",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Candidates
-     * @name CandidateControllerByUser
-     * @summary Get a Candidate  by user ID
-     * @request GET:/candidates/user/{userId}
-     * @secure
-     */
-    candidateControllerByUser: (userId: string, params: RequestParams = {}) =>
-      this.request<Candidate, any>({
-        path: `/candidates/user/${userId}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  jobs = {
-    /**
-     * No description
-     *
-     * @tags jobs
-     * @name JobsControllerCreate
-     * @summary Create a new job posting
-     * @request POST:/jobs
-     */
-    jobsControllerCreate: (data: CreateJobDto, params: RequestParams = {}) =>
-      this.request<Job, any>({
-        path: `/jobs`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags jobs
-     * @name JobsControllerFindAll
-     * @summary Get all jobs or filter by title
-     * @request GET:/jobs
-     */
-    jobsControllerFindAll: (
-      query?: {
-        /**
-         * Filter jobs by title
-         * @example "Junior Constable"
-         */
-        title?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<Job[], any>({
-        path: `/jobs`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags jobs
-     * @name JobsControllerFindOne
-     * @summary Get job by ID
-     * @request GET:/jobs/{id}
-     */
-    jobsControllerFindOne: (id: string, params: RequestParams = {}) =>
-      this.request<Job, void>({
-        path: `/jobs/${id}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags jobs
-     * @name JobsControllerUpdate
-     * @summary Update job by ID
-     * @request PATCH:/jobs/{id}
-     */
-    jobsControllerUpdate: (id: string, data: UpdateJobDto, params: RequestParams = {}) =>
-      this.request<Job, void>({
-        path: `/jobs/${id}`,
-        method: "PATCH",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags jobs
-     * @name JobsControllerRemove
-     * @summary Delete job by ID
-     * @request DELETE:/jobs/{id}
-     */
-    jobsControllerRemove: (id: string, params: RequestParams = {}) =>
-      this.request<void, void>({
-        path: `/jobs/${id}`,
-        method: "DELETE",
-        ...params,
-      }),
-  };
-  districtOfficers = {
-    /**
-     * No description
-     *
-     * @tags District Officers
-     * @name DistrictOfficerControllerCreate
+     * @tags City Officers
+     * @name CityOfficerControllerCreate
      * @summary Create a new district officer
-     * @request POST:/district-officers
+     * @request POST:/city-officers
      */
-    districtOfficerControllerCreate: (data: CreateDistrictOfficerDto, params: RequestParams = {}) =>
-      this.request<DistrictOfficer, any>({
-        path: `/district-officers`,
+    cityOfficerControllerCreate: (data: CreateDistrictOfficerDto, params: RequestParams = {}) =>
+      this.request<CityOfficer, any>({
+        path: `/city-officers`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -1459,23 +728,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags District Officers
-     * @name DistrictOfficerControllerFindAll
+     * @tags City Officers
+     * @name CityOfficerControllerFindAll
      * @summary Get all district officers with optional filters
-     * @request GET:/district-officers
+     * @request GET:/city-officers
      */
-    districtOfficerControllerFindAll: (
+    cityOfficerControllerFindAll: (
       query?: {
-        /**
-         * CNIC number
-         * @example "35202-1234567-8"
-         */
-        cnic?: string;
         /**
          * District name
          * @example "Multan"
          */
-        district?: string;
+        city?: string;
         /**
          * Full name of the district officer
          * @example "Sami Ullah"
@@ -1484,8 +748,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<DistrictOfficer[], any>({
-        path: `/district-officers`,
+      this.request<CityOfficer[], any>({
+        path: `/city-officers`,
         method: "GET",
         query: query,
         format: "json",
@@ -1495,14 +759,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags District Officers
-     * @name DistrictOfficerControllerFindOne
+     * @tags City Officers
+     * @name CityOfficerControllerFindOne
      * @summary Get a district officer by ID
-     * @request GET:/district-officers/{id}
+     * @request GET:/city-officers/{id}
      */
-    districtOfficerControllerFindOne: (id: string, params: RequestParams = {}) =>
-      this.request<DistrictOfficer, any>({
-        path: `/district-officers/${id}`,
+    cityOfficerControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<CityOfficer, any>({
+        path: `/city-officers/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -1511,14 +775,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags District Officers
-     * @name DistrictOfficerControllerUpdate
+     * @tags City Officers
+     * @name CityOfficerControllerUpdate
      * @summary Update a district officer by ID
-     * @request PATCH:/district-officers/{id}
+     * @request PATCH:/city-officers/{id}
      */
-    districtOfficerControllerUpdate: (id: string, data: UpdateDistrictOfficerDto, params: RequestParams = {}) =>
-      this.request<DistrictOfficer, any>({
-        path: `/district-officers/${id}`,
+    cityOfficerControllerUpdate: (id: string, data: UpdateDistrictOfficerDto, params: RequestParams = {}) =>
+      this.request<CityOfficer, any>({
+        path: `/city-officers/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
@@ -1529,14 +793,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags District Officers
-     * @name DistrictOfficerControllerRemove
+     * @tags City Officers
+     * @name CityOfficerControllerRemove
      * @summary Delete a district officer by ID
-     * @request DELETE:/district-officers/{id}
+     * @request DELETE:/city-officers/{id}
      */
-    districtOfficerControllerRemove: (id: string, params: RequestParams = {}) =>
+    cityOfficerControllerRemove: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/district-officers/${id}`,
+        path: `/city-officers/${id}`,
         method: "DELETE",
         ...params,
       }),
@@ -1544,31 +808,31 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags District Officers
-     * @name DistrictOfficerControllerByUser
+     * @tags City Officers
+     * @name CityOfficerControllerByUser
      * @summary Get a district officer  by user ID
-     * @request GET:/district-officers/user/{userId}
+     * @request GET:/city-officers/user/{userId}
      */
-    districtOfficerControllerByUser: (userId: string, params: RequestParams = {}) =>
-      this.request<DistrictOfficer, any>({
-        path: `/district-officers/user/${userId}`,
+    cityOfficerControllerByUser: (userId: string, params: RequestParams = {}) =>
+      this.request<CityOfficer, any>({
+        path: `/city-officers/user/${userId}`,
         method: "GET",
         format: "json",
         ...params,
       }),
   };
-  recruiters = {
+  salesman = {
     /**
      * No description
      *
-     * @tags Recruiters
-     * @name RecruiterControllerCreate
-     * @summary Create a new recruiter
-     * @request POST:/recruiters
+     * @tags Salesman
+     * @name SalesmanControllerCreate
+     * @summary Create a new Salesman
+     * @request POST:/salesman
      */
-    recruiterControllerCreate: (data: CreateRecruiterDto, params: RequestParams = {}) =>
-      this.request<Recruiter, any>({
-        path: `/recruiters`,
+    salesmanControllerCreate: (data: CreateSalesmanDto, params: RequestParams = {}) =>
+      this.request<Salesman, any>({
+        path: `/salesman`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -1579,23 +843,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Recruiters
-     * @name RecruiterControllerGetAll
-     * @summary Get all recruiters with optional filters
-     * @request GET:/recruiters
+     * @tags Salesman
+     * @name SalesmanControllerGetAll
+     * @summary Get all Salesmans with optional filters
+     * @request GET:/salesman
      */
-    recruiterControllerGetAll: (
+    salesmanControllerGetAll: (
       query?: {
         /**
          * District
          * @example "Lahore"
          */
-        district?: string;
+        city?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<Recruiter[], any>({
-        path: `/recruiters`,
+      this.request<Salesman[], any>({
+        path: `/salesman`,
         method: "GET",
         query: query,
         format: "json",
@@ -1605,14 +869,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Recruiters
-     * @name RecruiterControllerGetById
-     * @summary Get a recruiter by ID
-     * @request GET:/recruiters/{id}
+     * @tags Salesman
+     * @name SalesmanControllerGetById
+     * @summary Get a Salesman by ID
+     * @request GET:/salesman/{id}
      */
-    recruiterControllerGetById: (id: string, params: RequestParams = {}) =>
-      this.request<Recruiter, any>({
-        path: `/recruiters/${id}`,
+    salesmanControllerGetById: (id: string, params: RequestParams = {}) =>
+      this.request<Salesman, any>({
+        path: `/salesman/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -1621,14 +885,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Recruiters
-     * @name RecruiterControllerUpdate
-     * @summary Update a recruiter by ID
-     * @request PATCH:/recruiters/{id}
+     * @tags Salesman
+     * @name SalesmanControllerUpdate
+     * @summary Update a Salesman by ID
+     * @request PATCH:/salesman/{id}
      */
-    recruiterControllerUpdate: (id: string, data: CreateRecruiterDto, params: RequestParams = {}) =>
-      this.request<Recruiter, any>({
-        path: `/recruiters/${id}`,
+    salesmanControllerUpdate: (id: string, data: CreateSalesmanDto, params: RequestParams = {}) =>
+      this.request<Salesman, any>({
+        path: `/salesman/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
@@ -1639,14 +903,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Recruiters
-     * @name RecruiterControllerDelete
-     * @summary Delete a recruiter by ID
-     * @request DELETE:/recruiters/{id}
+     * @tags Salesman
+     * @name SalesmanControllerDelete
+     * @summary Delete a Salesman by ID
+     * @request DELETE:/salesman/{id}
      */
-    recruiterControllerDelete: (id: string, params: RequestParams = {}) =>
+    salesmanControllerDelete: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/recruiters/${id}`,
+        path: `/salesman/${id}`,
         method: "DELETE",
         ...params,
       }),
@@ -1654,54 +918,62 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Recruiters
-     * @name RecruiterControllerGetRecruiterByUser
-     * @summary Get a recruiter by user ID
-     * @request GET:/recruiters/user/{userId}
+     * @tags Salesman
+     * @name SalesmanControllerGetSalesmanByUser
+     * @summary Get a Salesman by user ID
+     * @request GET:/salesman/user/{userId}
      */
-    recruiterControllerGetRecruiterByUser: (userId: string, params: RequestParams = {}) =>
-      this.request<Recruiter, any>({
-        path: `/recruiters/user/${userId}`,
+    salesmanControllerGetSalesmanByUser: (userId: string, params: RequestParams = {}) =>
+      this.request<Salesman, any>({
+        path: `/salesman/user/${userId}`,
         method: "GET",
         format: "json",
         ...params,
       }),
   };
-  applications = {
+  professionals = {
     /**
      * No description
      *
-     * @tags Applications
-     * @name ApplicationControllerCreate
-     * @summary Create a new application
-     * @request POST:/applications
+     * @tags professionals
+     * @name ProfessionalControllerCreate
+     * @summary Create a new professional
+     * @request POST:/professionals
      */
-    applicationControllerCreate: (data: CreateApplicationDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/applications`,
+    professionalControllerCreate: (data: CreateProfessionalDto, params: RequestParams = {}) =>
+      this.request<Professional, any>({
+        path: `/professionals`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Applications
-     * @name ApplicationControllerFindAll
-     * @summary Get all applications
-     * @request GET:/applications
+     * @tags professionals
+     * @name ProfessionalControllerFindAll
+     * @summary Get all professionals with optional filters
+     * @request GET:/professionals
      */
-    applicationControllerFindAll: (
+    professionalControllerFindAll: (
       query?: {
-        /** Filter applications by district */
-        district?: string;
+        /** @example "Lahore" */
+        city?: string;
+        /**
+         * Profession of the individual
+         * @example "ELECTRICIAN"
+         */
+        profession?: string;
+        /** @example "123 Main Street, Lahore" */
+        address?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<Application[], any>({
-        path: `/applications`,
+      this.request<Professional[], any>({
+        path: `/professionals`,
         method: "GET",
         query: query,
         format: "json",
@@ -1711,63 +983,118 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Applications
-     * @name ApplicationControllerFindOne
-     * @summary Get application by ID
-     * @request GET:/applications/{id}
+     * @tags professionals
+     * @name ProfessionalControllerFindOne
+     * @summary Get a professional by ID
+     * @request GET:/professionals/{id}
      */
-    applicationControllerFindOne: (id: string, params: RequestParams = {}) =>
-      this.request<void, void>({
-        path: `/applications/${id}`,
+    professionalControllerFindOne: (id: string, params: RequestParams = {}) =>
+      this.request<Professional, void>({
+        path: `/professionals/${id}`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Applications
-     * @name ApplicationControllerUpdate
-     * @summary Update application by ID
-     * @request PATCH:/applications/{id}
+     * @tags professionals
+     * @name ProfessionalControllerUpdate
+     * @summary Update a professional by ID
+     * @request PATCH:/professionals/{id}
      */
-    applicationControllerUpdate: (id: string, data: ApplicationUpdateDto, params: RequestParams = {}) =>
-      this.request<void, void>({
-        path: `/applications/${id}`,
+    professionalControllerUpdate: (id: string, data: CreateProfessionalDto, params: RequestParams = {}) =>
+      this.request<Professional, void>({
+        path: `/professionals/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags Applications
-     * @name ApplicationControllerRemove
-     * @summary Delete application by ID
-     * @request DELETE:/applications/{id}
+     * @tags professionals
+     * @name ProfessionalControllerRemove
+     * @summary Delete a professional by ID
+     * @request DELETE:/professionals/{id}
      */
-    applicationControllerRemove: (id: string, params: RequestParams = {}) =>
+    professionalControllerRemove: (id: string, params: RequestParams = {}) =>
       this.request<void, void>({
-        path: `/applications/${id}`,
+        path: `/professionals/${id}`,
         method: "DELETE",
         ...params,
       }),
+  };
+  bookings = {
+    /**
+     * No description
+     *
+     * @tags bookings
+     * @name BookingControllerCreateBooking
+     * @summary Create a new booking (with optional audio upload)
+     * @request POST:/bookings
+     */
+    bookingControllerCreateBooking: (
+      data: {
+        /** @example "60f7a1c5e5b3a72b3c8a830f" */
+        user?: string;
+        /** @example "60f7a1c5e5b3a72b3c8a830f" */
+        professional?: string;
+        /** @format date-time */
+        bookingDateTime?: string;
+        /** @example "PENDING" */
+        status?: string;
+        /** @example "Please be on time." */
+        notes?: string;
+        /** @example "123 Main Street" */
+        serviceAddress?: string;
+        /**
+         * Optional voice recording file
+         * @format binary
+         */
+        audioFile?: File;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/bookings`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
 
     /**
      * No description
      *
-     * @tags Applications
-     * @name ApplicationControllerFindApplicationsByCandidate
-     * @summary Get application by User Id
-     * @request GET:/applications/candidate/{candidateId}
+     * @tags bookings
+     * @name BookingControllerGetBooking
+     * @summary Get booking by ID
+     * @request GET:/bookings/{id}
      */
-    applicationControllerFindApplicationsByCandidate: (candidateId: string, params: RequestParams = {}) =>
-      this.request<Application[], void>({
-        path: `/applications/candidate/${candidateId}`,
+    bookingControllerGetBooking: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/bookings/${id}`,
         method: "GET",
-        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags bookings
+     * @name BookingControllerUpdateBooking
+     * @summary Update booking by ID
+     * @request PUT:/bookings/{id}
+     */
+    bookingControllerUpdateBooking: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/bookings/${id}`,
+        method: "PUT",
         ...params,
       }),
   };
