@@ -58,7 +58,7 @@ function AuthLayout() {
             </Button>
           </Group>
 
-          <Center mt={36} h={'80%'} >
+          <Center mt={isSmallScreen?100:36} h={'80%'} >
             <Outlet />
           </Center>
         </Grid.Col>
