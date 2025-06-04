@@ -15,9 +15,12 @@ import {
 import MyNavbar from "../auth/Navbar";
 import IconSettings from "../../assets/icons/IconSettings";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function CityDetails() {
   const navigate = useNavigate();
+  const isSmallScreen = useMediaQuery("(max-width: 56.25em)");
+
   const services = [
     {
       title: "AC Repair",
@@ -164,15 +167,27 @@ export default function CityDetails() {
       imageURL:
         "https://ik.imagekit.io/yzrrrgg3d/professional/1700217150690-faf4ec.webp?updatedAt=1748926041725",
     },
-   
   ];
 
   return (
     <>
       <MyNavbar />
-      <Container fluid px={150} py={60}>
+      <Container
+        fluid
+        px={isSmallScreen ? 12 : 150}
+        py={isSmallScreen ? 12 : 50}
+      >
         <Stack gap={100}>
-          <SimpleGrid cols={2} spacing={100}>
+          <SimpleGrid
+            cols={{
+              base: 1,
+              sm: 1,
+              md: 1,
+              lg: 2,
+              xl: 2,
+            }}
+            spacing={100}
+          >
             <Box>
               <Stack>
                 <Title
@@ -190,7 +205,15 @@ export default function CityDetails() {
                     <Title order={4} c={"dimmed"}>
                       What are you looking for?
                     </Title>
-                    <SimpleGrid cols={3}>
+                    <SimpleGrid
+                      cols={{
+                        base: 2,
+                        sm: 2,
+                        md: 2,
+                        lg: 3,
+                        xl: 3,
+                      }}
+                    >
                       {services.map((service, ind) => (
                         <Box
                           key={ind}
@@ -311,7 +334,15 @@ export default function CityDetails() {
             </Box>
           </SimpleGrid>
 
-          <SimpleGrid cols={3}>
+          <SimpleGrid
+            cols={{
+              base: 1,
+              sm: 2,
+              md: 2,
+              lg: 3,
+              xl: 3,
+            }}
+          >
             <Box
               h={222}
               style={{
@@ -390,9 +421,18 @@ export default function CityDetails() {
           </SimpleGrid>
           <Stack>
             <Title order={2}>Most Booked Service</Title>
-            <SimpleGrid cols={5} spacing={"xl"}>
+            <SimpleGrid
+              cols={{
+                base: 1,
+                sm: 1,
+                md: 2,
+                lg: 5,
+                xl: 5,
+              }}
+              spacing={"xl"}
+            >
               {bookedServices.map((ser) => (
-                <Card shadow="sm" padding="md" radius="md" withBorder w={240}>
+                <Card shadow="sm" padding="md" radius="md" withBorder >
                   <Box style={{ overflow: "hidden", borderRadius: 8 }}>
                     <Image src={ser.image} alt="Pest Control" height={150} />
                   </Box>
@@ -442,7 +482,13 @@ export default function CityDetails() {
           </Box>
           <Stack>
             <Title>Cleaning & Pest Control</Title>
-            <SimpleGrid cols={5}>
+            <SimpleGrid cols={{
+                base: 1,
+                sm: 1,
+                md: 2,
+                lg: 5,
+                xl: 5,
+              }}>
               {pestServices.map((ser) => (
                 <Card
                   style={{
@@ -464,7 +510,13 @@ export default function CityDetails() {
           </Stack>
           <Stack>
             <Title>Appliance Service & Repair</Title>
-            <SimpleGrid cols={5}>
+            <SimpleGrid cols={{
+                base: 1,
+                sm: 1,
+                md: 2,
+                lg: 5,
+                xl: 5,
+              }}>
               {applianceServices.map((ser) => (
                 <Card
                   style={{
@@ -478,11 +530,7 @@ export default function CityDetails() {
                     <Text mt={20} ml={20} fw={600}>
                       {ser.title}
                     </Text>
-                    <Image
-                      src={
-                       ser.imageURL
-                      }
-                    />
+                    <Image src={ser.imageURL} />
                   </Stack>
                 </Card>
               ))}
@@ -490,7 +538,13 @@ export default function CityDetails() {
           </Stack>
           <Stack>
             <Title order={2}>Home Repair & Installation</Title>
-            <SimpleGrid cols={5} spacing={"xl"}>
+            <SimpleGrid cols={{
+                base: 1,
+                sm: 1,
+                md: 2,
+                lg: 5,
+                xl: 5,
+              }} spacing={"xl"}>
               <Card shadow="none" padding={0} radius="md" bg={"transparent"}>
                 <Box style={{ overflow: "hidden", borderRadius: 8 }}>
                   <Image

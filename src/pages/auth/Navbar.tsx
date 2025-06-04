@@ -46,6 +46,7 @@ function MyNavbar() {
         justify={"space-between"}
         align={"center"}
         // bg={"blue"}
+        gap={'lg'}
       >
         <Text fw={900}>Logo</Text>
 

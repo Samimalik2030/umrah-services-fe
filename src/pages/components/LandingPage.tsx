@@ -19,10 +19,11 @@ import { useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Role } from "../../interfaces/ICommonIconProps";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function LandingPage() {
   const aboutRef = useRef<HTMLDivElement>(null);
-
+  const isSmallScreen = useMediaQuery("(max-width: 56.25em)");
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ export default function LandingPage() {
         <Stack gap={60}>
           <Card bg={"#40c057ff"} h={"96vh"} radius={0}>
             <Card bg={"transparent"}>
-              <Flex justify={"space-between"} align={"center"}>
+              <Flex justify={"space-between"} wrap={"wrap"} align={"center"}>
                 <Flex gap={50}>
                   <Group>
                     <Anchor c={"white"}>Logo</Anchor>
@@ -59,6 +60,7 @@ export default function LandingPage() {
                           document.getElementById("services");
                         aboutSection?.scrollIntoView({ behavior: "smooth" });
                       }}
+                      fz={isSmallScreen?14:16}
                     >
                       OUR SERVICES
                     </Anchor>
@@ -69,12 +71,13 @@ export default function LandingPage() {
                           document.getElementById("about-us");
                         aboutSection?.scrollIntoView({ behavior: "smooth" });
                       }}
+                                fz={isSmallScreen?14:16}
                     >
                       ABOUT US
                     </Anchor>
                   </Flex>
                 </Flex>
-                <Flex gap={10}>
+                <Flex gap={10} mt={isSmallScreen?24:0}>
                   {user ? (
                     <Group>
                       <Button
@@ -82,11 +85,11 @@ export default function LandingPage() {
                         color="white"
                         onClick={() => {
                           if (user?.role === Role.ADMIN) {
-                            return <Navigate to="/dashboard" />;
+                            navigate("/dashboard");
                           } else if (user?.role === Role.CITY_MANAGER) {
-                            return <Navigate to="/dashboard/city-salesmans" />;
+                            navigate("/dashboard/city-salesmans");
                           } else if (user?.role === Role.SALESMAN) {
-                            return <Navigate to="/dashboard/professionals" />;
+                            navigate("/dashboard/professionals");
                           } else {
                             return <Navigate to="/" />;
                           }
@@ -105,6 +108,7 @@ export default function LandingPage() {
                       onClick={() => navigate("/auth/sign-in")}
                       bg={"#309945"}
                       c={"white"}
+                      size={isSmallScreen?"sm":"lg"}
                     >
                       Login
                     </Button>
@@ -115,6 +119,7 @@ export default function LandingPage() {
                       bg={"transparent"}
                       style={{ border: "2px solid white" }}
                       onClick={() => navigate("/auth/sign-up")}
+                         size={isSmallScreen?"sm":"lg"}
                     >
                       GET STARTED
                     </Button>
@@ -124,24 +129,31 @@ export default function LandingPage() {
             </Card>
             <Card bg={"transparent"} w={"100%"} mt={40}>
               <Flex gap={10}>
-                <Card w={"60%"} bg={"transparent"}>
+                <Card w={isSmallScreen ? "100%" : "60%"} bg={"transparent"}>
                   <Stack>
-                    <Title c={"white"} fw={700} fz={42}>
+                    <Title c={"white"} fw={700} fz={isSmallScreen ? 18 : 42}>
                       Book trusted service professionals near you, without
                       hassle
                     </Title>
-                    <Text fw={600} fz={16} c={"white"}>
+                    <Text fz={isSmallScreen ? 14 : 16} c={"white"}>
                       Find reliable electricians, plumbers, mechanics, and more
                       — our team connects you with verified experts in your
                       city.
                     </Text>
 
-                    <Card radius={"100px"} w={"75%"} bg={"#66d07a"}>
+                    <Card
+                      radius={isSmallScreen ? "lg" : "100px"}
+                      w={isSmallScreen ? "100%" : "75%"}
+                      bg={"#66d07a"}
+                    >
                       <form onSubmit={form.onSubmit(handleSubmit)}>
-                        <Flex gap={10}>
+                        <Flex
+                          gap={10}
+                          direction={isSmallScreen ? "column" : "row"}
+                        >
                           <Select
                             radius={30}
-                            w={"75%"}
+                            w={isSmallScreen ? "100%" : "75%"}
                             size="lg"
                             placeholder="Your City"
                             data={[
@@ -157,7 +169,7 @@ export default function LandingPage() {
 
                           <Button
                             h={46}
-                            w={130}
+                            w={isSmallScreen ? "100%" : 130}
                             radius={30}
                             fz={16}
                             variant="outline"
@@ -173,7 +185,11 @@ export default function LandingPage() {
                     <Group justify="end"></Group>
                   </Stack>
                 </Card>
-                <Card w={"40%"} bg={"transparent"}>
+                <Card
+                  w={"40%"}
+                  bg={"transparent"}
+                  display={isSmallScreen ? "none" : "block"}
+                >
                   <Image
                     src={
                       "https://ik.imagekit.io/xf3wbji6t/hero_image_desktop-08e3eaac39db4404c62da49ee7c4cd83.png?updatedAt=1743237928837"
@@ -191,7 +207,16 @@ export default function LandingPage() {
             <Title ta={"center"}>
               Book a trusted professional in just a few clicks
             </Title>
-            <SimpleGrid cols={3} spacing={20}>
+            <SimpleGrid
+              cols={{
+                base: 1,
+                sm: 1,
+                md: 2,
+                lg: 3,
+                xl: 3,
+              }}
+              spacing={20}
+            >
               <Card bg={"transparent"}>
                 <Stack>
                   <Flex justify={"center"}>
@@ -276,13 +301,13 @@ export default function LandingPage() {
             </Flex>
           </Stack>
           <div ref={aboutRef} id="about-us">
-            <Flex justify={"center"} h={"80vh"}>
+            <Flex justify={"center"} h={isSmallScreen ? "" : "80vh"}>
               <Card bg={"transparent"} shadow="none" mt={20} w={"90%"}>
-                <Flex gap={40}>
+                <Flex gap={40} direction={isSmallScreen ? "column" : "row"}>
                   <Card
                     bg={"transparent"}
                     shadow="none"
-                    w={"40%"}
+                    w={isSmallScreen ? "100%" : "40%"}
                     p={0}
                     radius={30}
                   >
@@ -294,7 +319,11 @@ export default function LandingPage() {
                       }
                     />
                   </Card>
-                  <Card bg={"transparent"} w={"60%"} shadow="none">
+                  <Card
+                    bg={"transparent"}
+                    w={isSmallScreen ? "100%" : "60%"}
+                    shadow="none"
+                  >
                     <Stack>
                       <Stack gap={40}>
                         <Stack gap={15}>
@@ -354,7 +383,16 @@ export default function LandingPage() {
                   </Title>
                 </Stack>
                 <Flex justify={"center"}>
-                  <SimpleGrid cols={3} w={"70%"}>
+                  <SimpleGrid
+                    cols={{
+                      base: 1,
+                      sm: 1,
+                      md: 2,
+                      lg: 3,
+                      xl: 3,
+                    }}
+                    w={"70%"}
+                  >
                     <Card radius={15}>
                       <Stack>
                         <Flex justify={"center"}>
