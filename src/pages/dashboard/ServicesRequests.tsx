@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   Table,
   ScrollArea,
@@ -9,7 +9,6 @@ import {
   ActionIcon,
   Menu,
   Button,
-  Group,
   Modal,
   TextInput,
 } from "@mantine/core";

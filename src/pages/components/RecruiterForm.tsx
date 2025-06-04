@@ -2,7 +2,6 @@ import {
   Stack,
   TextInput,
   Select,
-  Textarea,
   Button,
   Group,
 } from "@mantine/core";

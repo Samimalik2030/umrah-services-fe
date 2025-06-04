@@ -31,7 +31,7 @@ function ResetPassword() {
   const isSmall = useMediaQuery("(max-width: 768px)");
 
   const location = useLocation();
-  const { email, type, otp } = location.state || "";
+  const { email, otp } = location.state || "";
   const schema = yup.object({
     password: yup
       .string()

@@ -1,21 +1,20 @@
 import { Title, Group, TextInput, Button, Stack } from "@mantine/core";
-import { useForm, yupResolver } from "@mantine/form";
-import * as yup from "yup";
-import { notifications, showNotification } from "@mantine/notifications";
+import { useForm } from "@mantine/form";
+
+import { showNotification } from "@mantine/notifications";
 import { useAuth } from "../../contexts/AuthContext";
 import http from "../../http";
 import { useMutation } from "@tanstack/react-query";
 import IconUserFilled from "../../assets/icons/IconUserFilled";
 import IconMail from "../../assets/icons/IconMail";
 import axios from "axios";
-import { useState } from "react";
 
 export default function PersonalInfoCard() {
   const { user, setUser } = useAuth();
   const { mutate: updateProfile, isPending: updatingProfile } = useMutation({
     mutationFn: http.auth.userControllerUpdateProfile,
   });
-
+  console.log(updateProfile);
 
   const form = useForm({
     initialValues: {
@@ -26,24 +25,19 @@ export default function PersonalInfoCard() {
   const handleProfileSubmit = async (values: any) => {
     try {
       const respone = await axios.patch(
-      `http://localhost:3000/auth/update-profile/${user?._id}`,
-      {
-        fullName: values.fullName,
+        `http://localhost:3000/auth/update-profile/${user?._id}`,
+        {
+          fullName: values.fullName,
+        }
+      );
+      if (respone.data) {
+        setUser(respone?.data?.user);
+        showNotification({
+          message: "Profile Updated",
+        });
       }
-    );
-    if (respone.data) {
-      setUser(respone?.data?.user);
-      showNotification({
-        message:"Profile Updated"
-      })
-    }
-    } catch (error) {
-      
-    }
-    
+    } catch (error) {}
   };
-
-  
 
   return (
     <form onSubmit={form.onSubmit(handleProfileSubmit)}>

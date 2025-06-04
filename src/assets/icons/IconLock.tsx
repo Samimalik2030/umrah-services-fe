@@ -1,7 +1,6 @@
-import ICommonIconProps from "../../interfaces/ICommonIconProps";
-import BaseIcon from "./BaseIcon";
 
-const IconLock = (props: ICommonIconProps) => {
+
+const IconLock = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

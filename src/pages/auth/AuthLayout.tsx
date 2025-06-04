@@ -10,12 +10,10 @@ import {
 
 import { useMediaQuery } from "@mantine/hooks";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import PoiceLogo from "../../assets/icons/Logo";
 function AuthLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isSignInPage = location.pathname === "/auth/sign-in";
-  const isSignUpPage = location.pathname === "/auth/sign-up";
   const isSmallScreen = useMediaQuery("(max-width: 56.25em)");
 
   const hanleClick = () => {

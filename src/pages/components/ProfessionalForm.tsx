@@ -2,7 +2,6 @@ import {
   Stack,
   TextInput,
   Select,
-  Textarea,
   Button,
   Group,
   NumberInput,
@@ -10,7 +9,7 @@ import {
 import { useForm } from "@mantine/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "../../http";
-import { Professional, Salesman } from "../../http/Api";
+import { Professional } from "../../http/Api";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -136,7 +135,6 @@ function ProfessionalForm({
           placeholder="Ahmed Khan"
           withAsterisk
           required
-  
           {...form.getInputProps("name")}
         />
 

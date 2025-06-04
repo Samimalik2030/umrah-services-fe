@@ -12,15 +12,13 @@ import {
 
 import { useState } from "react";
 import AudioRecorder from "./audioRecording";
-import IconFileFilled from "../../assets/icons/IconFileFilled";
 import { useForm } from "@mantine/form";
 import IconImage from "../../assets/icons/IconImage";
 
 export default function BookingForm() {
   const [value, setValue] = useState("");
-  const [file, setFile] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
-  const [audio, setAudio] = useState<File | null>(null);
+  console.log(image)
 
   const form = useForm({
     initialValues: {
@@ -31,13 +29,7 @@ export default function BookingForm() {
       contact: "",
     },
   });
-  const handleSubmit = () => {
-    console.log({ message: value, file, image, audio });
-    setValue("");
-    setFile(null);
-    setImage(null);
-    setAudio(null);
-  };
+
 
   return (
     <Box p="xs" style={{ border: "1px solid #ccc", borderRadius: 8 }}>
@@ -86,7 +78,7 @@ export default function BookingForm() {
               <FileButton onChange={setImage} accept="image/*">
                 {(props) => (
                   <ActionIcon variant="subtle" {...props}>
-                    <IconImage size={18} />
+                    <IconImage />
                   </ActionIcon>
                 )}
               </FileButton>

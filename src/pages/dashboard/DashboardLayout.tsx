@@ -1,11 +1,10 @@
-import { AppShell, Burger, Group, useMantineTheme } from "@mantine/core";
+import { AppShell, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Header from "../../components/Header";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidenav from "../../components/Sidenav";
-import { useAuth } from "../../contexts/AuthContext";
 function DashboardLayout() {
-   const theme = useMantineTheme();
+
   const [opened, { toggle }] = useDisclosure();
 
 

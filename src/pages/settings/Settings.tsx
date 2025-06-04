@@ -2,7 +2,6 @@
 import { Paper, Stack, Title } from "@mantine/core";
 import { AvatarCard } from "./ProfileCard";
 import PersonalInfoCard from "./PersonalInfoCard";
-import PasswordCard from "./PasswordCard";
 
 export function Settings() {
   return (

@@ -18,14 +18,11 @@ import {
 import MyNavbar from "../auth/Navbar";
 import IconCircleCheck from "../../assets/icons/IconCircleCheck";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { useState } from "react";
 import   BookingForm  from "./BookingForm";
-import AudioRecorder from "./audioRecording";
 
 
 export default function ElectricianServices() {
   const isMobile = useMediaQuery("(max-width: 56.25em)");
-  const [selectedService, setService] = useState();
   const [opened, { open: OpenBookingModal, close: CloseBookingModal }] =
     useDisclosure();
 
@@ -267,13 +264,13 @@ export default function ElectricianServices() {
     });
   };
 
-  const handleOpenBookingModal = (service) => {
-    setService(service);
+  const handleOpenBookingModal = () => {
+
     OpenBookingModal();
   };
 
   const handleCloseBookingModal = () => {
-    setService(null);
+
     CloseBookingModal();
   };
   return (
@@ -390,7 +387,7 @@ export default function ElectricianServices() {
                               bottom={15}
                               variant="outline"
                               size="xs"
-                              onClick={()=>handleOpenBookingModal(ser)}
+                              onClick={()=>handleOpenBookingModal()}
                             >
                               Book
                             </Button>

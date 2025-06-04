@@ -1,7 +1,16 @@
-import { Card, Button, Flex, Anchor, ActionIcon, Avatar, Group, Menu, Stack ,Text} from "@mantine/core";
+import {
+  Card,
+  Button,
+  Flex,
+  ActionIcon,
+  Avatar,
+  Group,
+  Menu,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import PoliceLogo from "../../assets/icons/Logo";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Role } from "../../interfaces/ICommonIconProps";
 import IconLogout from "../../assets/icons/IconLogout";
@@ -11,8 +20,7 @@ import getInitials from "../../utils/getInitials";
 function MyNavbar() {
   const largeScreen = useMediaQuery("(min-width: 56.25em)");
   const navigate = useNavigate();
-  const { user,logout } = useAuth();
-  const location = useLocation();
+  const { user, logout } = useAuth();
   const handleNavigate = () => {
     if (user?.role === Role.ADMIN) {
       navigate("/dashboard");
@@ -40,8 +48,6 @@ function MyNavbar() {
         // bg={"blue"}
       >
         <Text fw={900}>Logo</Text>
-
-      
 
         {!user ? (
           <Flex gap="xs" pr={largeScreen ? 0 : 10}>

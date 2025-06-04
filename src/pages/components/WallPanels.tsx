@@ -19,16 +19,13 @@ import {
 import MyNavbar from "../auth/Navbar";
 import IconCircleCheck from "../../assets/icons/IconCircleCheck";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { useState } from "react";
 import BookingForm from "./BookingForm";
-import AudioRecorder from "./audioRecording";
 
 export default function WallPaperServices() {
   const isMobile = useMediaQuery("(max-width: 56.25em)");
-  const [selectedService, setService] = useState();
   const [opened, { open: OpenBookingModal, close: CloseBookingModal }] =
     useDisclosure();
-
+  console.log(OpenBookingModal);
   const services = [
     {
       title: "Living Room",
@@ -58,13 +55,7 @@ export default function WallPaperServices() {
     });
   };
 
-  const handleOpenBookingModal = (service) => {
-    setService(service);
-    OpenBookingModal();
-  };
-
   const handleCloseBookingModal = () => {
-    setService(null);
     CloseBookingModal();
   };
   return (
@@ -219,7 +210,7 @@ export default function WallPaperServices() {
                           fontFamily: "inherit",
                         }}
                       >
-                       TV Wall Panels Consultation
+                        TV Wall Panels Consultation
                       </Title>
                       <Button variant="outline">Book</Button>
                     </Group>
@@ -269,7 +260,7 @@ export default function WallPaperServices() {
                           fontFamily: "inherit",
                         }}
                       >
-                      Bedroom  Wall Panels Consultation
+                        Bedroom Wall Panels Consultation
                       </Title>
                       <Button variant="outline">Book</Button>
                     </Group>
@@ -320,7 +311,7 @@ export default function WallPaperServices() {
                           fontFamily: "inherit",
                         }}
                       >
-                      Other Areas  Wall Panels Consultation
+                        Other Areas Wall Panels Consultation
                       </Title>
                       <Button variant="outline">Book</Button>
                     </Group>

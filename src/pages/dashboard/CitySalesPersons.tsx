@@ -30,8 +30,8 @@ import IconPencilOutlined from "../../assets/icons/IconPencilOutlined";
 import IconTrashOutlined from "../../assets/icons/IconTrashOutlined";
 import IconMapPin from "../../assets/icons/IconMapPin";
 import IconPhone from "../../assets/icons/IconPhone";
-import RecruiterForm from "../components/RecruiterForm";
 import useGetCityOfficer from "../../hooks/useGeCityOfficer";
+import RecruiterForm from "../components/RecruiterForm";
 
 export default function CitySalesPerson() {
   const { user } = useAuth();
@@ -71,7 +71,7 @@ export default function CitySalesPerson() {
     open();
   };
 
-  const { mutate: deleteOfficer, isPending: loadingDelete } = useMutation({
+  const { mutate: deleteOfficer } = useMutation({
     mutationFn: http.salesman.salesmanControllerDelete,
   });
   const handleDeleteOfficer = (id: string) => {
@@ -106,7 +106,7 @@ export default function CitySalesPerson() {
           </Group>
 
           <Grid>
-            {salesmans?.map((salesman, ind) => (
+            {salesmans?.map((salesman) => (
               <Grid.Col
                 key={salesman._id}
                 span={{

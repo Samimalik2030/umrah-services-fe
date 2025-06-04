@@ -6,7 +6,6 @@ import {
   Group,
   Stack,
   Text,
-  useMantineTheme,
   Title,
   Modal,
   Divider,
@@ -19,7 +18,7 @@ import {
   SimpleGrid,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { CityManagerForm,  } from "../components/DistrictOfficerForm";
+import { CityManagerForm } from "../components/DistrictOfficerForm";
 import IconMail from "../../assets/icons/IconMail";
 import IconPhone from "../../assets/icons/IconPhone";
 import IconDots from "../../assets/icons/IconDots";
@@ -35,7 +34,6 @@ import useGetCityManagers from "../../hooks/usegetDistrictOfficers";
 import IconLocation from "../../assets/icons/IconLocation";
 
 export default function CityManagers() {
-  const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure();
   const [
     openedDetailsModal,
@@ -65,7 +63,7 @@ export default function CityManagers() {
     closeDetailModal();
   };
 
-  const { mutate: deleteOfficer, isPending: loadingDelete } = useMutation({
+  const { mutate: deleteOfficer } = useMutation({
     mutationFn: http.cityOfficers.cityOfficerControllerRemove,
   });
   const handleDeleteOfficer = (id: string) => {
@@ -95,9 +93,7 @@ export default function CityManagers() {
         <Stack>
           <Group justify="space-between" align="center">
             <Title order={2}>City Managers</Title>
-            <Button  onClick={open}>
-              Add Manager
-            </Button>
+            <Button onClick={open}>Add Manager</Button>
           </Group>
 
           <Grid>
@@ -232,7 +228,7 @@ export default function CityManagers() {
                 <Text>{officer?.phone}</Text>
               </Group>
 
-               <Group>
+              <Group>
                 <ThemeIcon color="teal" variant="light" size={28}>
                   <IconLocation size={18} />
                 </ThemeIcon>

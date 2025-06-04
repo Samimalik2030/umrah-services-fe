@@ -8,7 +8,7 @@ const AudioRecorder: React.FC = () => {
   const [audioURL, setAudioURL] = useState<string>("");
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]); // Explicitly type as Blob[]
-
+  console.log(audioURL);
   const startRecording = async () => {
     try {
       // Check for browser support
@@ -79,7 +79,6 @@ const AudioRecorder: React.FC = () => {
     }
   };
 
- 
   return (
     <div>
       {!isRecording ? (

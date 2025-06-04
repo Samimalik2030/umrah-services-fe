@@ -18,7 +18,7 @@ import * as yup from "yup";
 import { useMediaQuery } from "@mantine/hooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../contexts/AuthContext";
-import { SignInDto, SignUpDto } from "../../http/Api";
+import {  SignUpDto } from "../../http/Api";
 import http from "../../http";
 function SignUp() {
   const queryClient = useQueryClient();
