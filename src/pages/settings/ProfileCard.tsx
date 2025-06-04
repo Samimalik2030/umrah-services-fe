@@ -7,37 +7,35 @@ import {
   Box,
   ActionIcon,
 } from "@mantine/core";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import http from "../../http";
+
 import { useAuth } from "../../contexts/AuthContext";
 import IconCamera from "../../assets/icons/IconCamera";
-import axios from "axios";
+// import axios from "axios";
 export function AvatarCard() {
-  const queryClient = useQueryClient();
 
   const { user,accessToken } = useAuth();
 console.log(accessToken,'access token')
 
-  const uploadProfileImage = async (file: File) => {
-    const formData = new FormData();
-    formData.append("file", file);
+  // const uploadProfileImage = async (file: File) => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
 
-    const response = await axios.post(
-      "http://localhost:3000/auth/upload-profile",
-      formData,
-      {
-        headers: {
-          Authorization: `${accessToken}`, 
-        },
-      }
-    );
+  //   const response = await axios.post(
+  //     "http://localhost:3000/auth/upload-profile",
+  //     formData,
+  //     {
+  //       headers: {
+  //         Authorization: `${accessToken}`, 
+  //       },
+  //     }
+  //   );
 
-    return response.data;
-  };
+  //   return response.data;
+  // };
   return (
     <Stack>
       <Center>
-        <FileButton onChange={(file)=>uploadProfileImage(file)} accept="image/png,image/jpeg">
+        <FileButton onChange={(file)=>console.log(file)} accept="image/png,image/jpeg">
           {(props) => (
             <Box
               pos="relative"
@@ -68,7 +66,7 @@ console.log(accessToken,'access token')
                 bottom={0}
                 right={0}
               >
-                <IconCamera color="white" />
+                <IconCamera  />
               </ActionIcon>
             </Box>
           )}

@@ -22,7 +22,7 @@ import { Role } from "../../interfaces/ICommonIconProps";
 
 export default function LandingPage() {
   const aboutRef = useRef<HTMLDivElement>(null);
-  const servicesRef = useRef<HTMLDivElement>(null);
+
 
   const { user } = useAuth();
   const navigate = useNavigate();
