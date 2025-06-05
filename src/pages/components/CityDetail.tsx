@@ -16,6 +16,7 @@ import MyNavbar from "../auth/Navbar";
 import IconSettings from "../../assets/icons/IconSettings";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@mantine/hooks";
+import cleaningImage from '../../assets/images/house-cleaning.png'
 
 export default function CityDetails() {
   const navigate = useNavigate();
@@ -40,28 +41,28 @@ export default function CityDetails() {
       href: "",
 
       imageUrl:
-        "https://ik.imagekit.io/yzrrrgg3d/professional/download.png?updatedAt=1748440467975",
+        "https://ik.imagekit.io/yzrrrgg3d/professional/plumber.png?updatedAt=1749093442937",
     },
     {
       title: "Carpenter",
       href: "",
 
       imageUrl:
-        "https://ik.imagekit.io/yzrrrgg3d/professional/ac%20repair.webp?updatedAt=1748413681218",
+        "https://ik.imagekit.io/yzrrrgg3d/professional/9635057-removebg-preview.png?updatedAt=1749093512625",
     },
     {
       title: "Wall Panels",
       href: "/wallpanel-services",
 
       imageUrl:
-        "https://ik.imagekit.io/yzrrrgg3d/professional/ac%20repair.webp?updatedAt=1748413681218",
+        "https://ik.imagekit.io/yzrrrgg3d/professional/5926008.jpg?updatedAt=1749093753911",
     },
     {
       title: "Appliance Repair",
       href: "",
 
       imageUrl:
-        "https://ik.imagekit.io/yzrrrgg3d/professional/ac%20repair.webp?updatedAt=1748413681218",
+        "https://ik.imagekit.io/yzrrrgg3d/professional/18091-removebg-preview.png?updatedAt=1749094082020",
     },
   ];
 
@@ -240,7 +241,9 @@ export default function CityDetails() {
                       ))}
                     </SimpleGrid>
                     <SimpleGrid cols={2}>
-                      <Box>
+                      <Box style={{
+                        cursor:"pointer"
+                      }}>
                         <Stack gap={"xs"}>
                           <Flex
                             justify={"space-between"}
@@ -251,17 +254,19 @@ export default function CityDetails() {
                             }}
                             p={"sm"}
                           >
-                            <Text size="sm">Home Cleaning</Text>
-                            <Image
-                              w={"25%"}
+                            <Text size="sm">Pack & Go</Text>
+                             <Image
+                              w={70}
                               src={
-                                "https://ik.imagekit.io/yzrrrgg3d/professional/ac%20repair.webp?updatedAt=1748413681218"
+                           'https://ik.imagekit.io/yzrrrgg3d/professional/delivery.png?updatedAt=1749094682279'
                               }
                             />
                           </Flex>
                         </Stack>
                       </Box>
-                      <Box>
+                      <Box style={{
+                        cursor:"pointer"
+                      }}>
                         <Stack gap={"xs"}>
                           <Flex
                             justify={"space-between"}
@@ -274,9 +279,9 @@ export default function CityDetails() {
                           >
                             <Text size="sm">Home Cleaning</Text>
                             <Image
-                              w={"25%"}
+                            w={47}
                               src={
-                                "https://ik.imagekit.io/yzrrrgg3d/professional/ac%20repair.webp?updatedAt=1748413681218"
+                               cleaningImage
                               }
                             />
                           </Flex>

@@ -78,9 +78,9 @@ function SignUp() {
     return <Navigate to="/stepper" />;
   }
   return (
-    <Card px={"xl"} py={"md"} radius={"xl"} w={isSmall ? 350 : 500}>
+    <Card px={isSmall?"xs":"xl"} py={"md"} radius={"xl"} w={isSmall ? 350 : 500}>
       <form onSubmit={form.onSubmit(handleSignUpSubmit)}>
-        <Stack align="center" mx={"xl"} gap={0}>
+        <Stack align="center" mx={isSmall?"xs":"xl"} gap={0}>
           <Stack gap={1} align="center">
             <Title ta={isSmall ? "center" : "start"} order={1}>
               Welcome!

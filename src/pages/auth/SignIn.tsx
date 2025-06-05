@@ -76,9 +76,9 @@ function SignIn() {
   }
 
   return (
-    <Card p={"xl"} radius={"xl"} w={isSmall ? 350 : 500}>
+    <Card p={isSmall?"xs":"xl"} radius={"xl"} w={isSmall ? 350 : 500}>
       <form onSubmit={form.onSubmit(handleSignInSubmit)}>
-        <Stack align="center" mx={"xl"}>
+        <Stack align="center" gap={isSmall?"xs":"md"} mx={isSmall?"xs":"xl"}>
           <Stack gap={1} align="center">
             <Title ta={isSmall ? "center" : "start"} order={1}>
               Welcome Back!
@@ -87,7 +87,7 @@ function SignIn() {
           </Stack>
           <br />
 
-          <Stack w={"100%"}>
+          <Stack w={"100%"} gap={isSmall?"xs":"md"}>
             <TextInput
               label="Your Email"
               type="email"
