@@ -6,7 +6,6 @@ import {
   Button,
   Text,
   Paper,
-  rem,
   useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';

@@ -14,7 +14,6 @@ import LandingPage from "../pages/components/LandingPage";
 import { Settings } from "../pages/settings/Settings";
 import CityDetails from "../pages/components/CityDetail";
 import ElectricianServices from "../pages/components/ElectricianServices";
-import ACServices from "../pages/components/ACServices";
 import WallPaperServices from "../pages/components/WallPanels";
 import RoleGuard from "../guards/RoleGuard";
 import { Role } from "../interfaces/ICommonIconProps";
@@ -23,7 +22,6 @@ import Services from "../pages/dashboard/Services";
 import CitySalesPerson from "../pages/dashboard/CitySalesPersons";
 import Professionals from "../pages/dashboard/Professionals";
 import ServicesRequests from "../pages/dashboard/ServicesRequests";
-import ACService from "../pages/components/AC-Services";
 import Practice from "../pages/components/Practice";
 
 const routes = createBrowserRouter([

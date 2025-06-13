@@ -96,7 +96,7 @@ export default function BookingForm({
     formData.append("time", String(form.values.time || ""));
     formData.append("address", String(form.values.address || ""));
     formData.append("contact", String(form.values.contact || ""));
-    formData.append("city", "Multan");
+    formData.append("city", city);
     if (user?._id) {
       formData.append("user", user._id);
     }

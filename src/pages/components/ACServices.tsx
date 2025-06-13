@@ -532,7 +532,7 @@ export default function ACServices() {
         title="Book a service"
         onClose={() => handleCloseBookingModal()}
       >
-        <BookingForm />
+        <BookingForm  city="Multan"/>
       </Modal>
     </>
   );

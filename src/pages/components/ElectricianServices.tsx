@@ -933,7 +933,7 @@ export default function ElectricianServices() {
       </Container>
 
       <Modal opened={opened} title="Book a service" onClose={() => handleCloseBookingModal()}>
-        <BookingForm/>
+        <BookingForm city="Multan"/>
       </Modal>
     </>
   );

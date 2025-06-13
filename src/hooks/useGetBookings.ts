@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "../http";
-import { Booking } from "../http/Api";
 
 const useGetBookings = (city?: string, status?: string) => {
   const { data, isLoading } = useQuery({

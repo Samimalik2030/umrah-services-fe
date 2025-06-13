@@ -85,7 +85,7 @@ export default function Practice() {
             >
               Book a Service
             </Title>
-            <BookingForm isHeader={true} />
+            <BookingForm city="Multan" isHeader={true} />
           </Stack>
         </Card>
         <Box

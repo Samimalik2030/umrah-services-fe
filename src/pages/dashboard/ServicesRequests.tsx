@@ -23,7 +23,7 @@ import { notifications } from "@mantine/notifications";
 export default function ServicesRequests() {
   const [bookingId, setBookingId] = useState<string>("");
 
-  const { bookings, isLoading } = useGetBookings();
+  const { bookings,} = useGetBookings();
   const [opened, { open, close }] = useDisclosure();
   console.log(bookings);
 

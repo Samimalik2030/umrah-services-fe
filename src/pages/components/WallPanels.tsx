@@ -391,7 +391,7 @@ export default function WallPaperServices() {
         title="Book a service"
         onClose={() => handleCloseBookingModal()}
       >
-        <BookingForm />
+        <BookingForm city="Multan"/>
       </Modal>
     </>
   );
