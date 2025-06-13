@@ -1,4 +1,3 @@
-
 import {
   Table,
   ScrollArea,
@@ -14,92 +13,37 @@ import {
 } from "@mantine/core";
 import IconDots from "../../assets/icons/IconDots";
 import { useDisclosure } from "@mantine/hooks";
-
-const bookings = [
-  {
-    userName: "Sami Ullah",
-    bookingDateTime: new Date("2025-06-03T10:00:00Z"),
-    status: "PENDING",
-    notes: "Need urgent repair for washing machine.",
-    serviceAddress: "101 Tech Street, Lahore",
-  },
-  {
-    userName: "Ayesha Tariq",
-    bookingDateTime: new Date("2025-06-04T14:30:00Z"),
-    status: "PENDING",
-    notes: "Install ceiling fan.",
-    serviceAddress: "22 Green Road, Karachi",
-  },
-  {
-    userName: "Hassan Mirza",
-    bookingDateTime: new Date("2025-06-05T09:00:00Z"),
-    status: "PENDING",
-    notes: "Fix broken faucet.",
-    serviceAddress: "Block D, Faisalabad",
-  },
-  {
-    userName: "Fatima Noor",
-    bookingDateTime: new Date("2025-06-06T12:15:00Z"),
-    status: "PENDING",
-    notes: "Cleaning service was cancelled.",
-    serviceAddress: "Phase 6, DHA, Lahore",
-  },
-  {
-    userName: "Usman Ghani",
-    bookingDateTime: new Date("2025-06-07T16:00:00Z"),
-    status: "PENDING",
-    notes: "AC servicing required.",
-    serviceAddress: "House 45, Islamabad",
-  },
-  {
-    userName: "Zara Jameel",
-    bookingDateTime: new Date("2025-06-08T11:30:00Z"),
-    status: "PENDING",
-    notes: "Paint bedroom walls.",
-    serviceAddress: "Gulshan-e-Iqbal, Karachi",
-  },
-  {
-    userName: "Imran Latif",
-    bookingDateTime: new Date("2025-06-09T15:45:00Z"),
-    status: "PENDING",
-    notes: "Fix electric board.",
-    serviceAddress: "Street 12, Rawalpindi",
-  },
-  {
-    userName: "Rabia Yousuf",
-    bookingDateTime: new Date("2025-06-10T10:00:00Z"),
-    status: "PENDING",
-    notes: "Gas stove installation.",
-    serviceAddress: "North Nazimabad, Karachi",
-  },
-];
+import useGetBookings from "../../hooks/useGetBookings";
+import { useForm } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
+import http from "../../http";
+import { useState } from "react";
+import { notifications } from "@mantine/notifications";
 
 export default function ServicesRequests() {
+  const [bookingId, setBookingId] = useState<string>("");
+
+  const { bookings, isLoading } = useGetBookings();
   const [opened, { open, close }] = useDisclosure();
+  console.log(bookings);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "PENDING":
-        return "yellow";
-      case "CONFIRMED":
-        return "blue";
-      case "COMPLETED":
-        return "green";
-      case "CANCELLED":
-        return "red";
-      default:
-        return "gray";
-    }
-  };
-  const rows = bookings.map((b) => (
-    <Table.Tr key={`${b.userName}-${b.bookingDateTime.toISOString()}`}>
-      <Table.Td>{b.userName}</Table.Td>
+  const form = useForm({
+    initialValues: {
+      professionalId: "",
+    },
+  });
 
-      <Table.Td>{new Date(b.bookingDateTime).toLocaleString()}</Table.Td>
-      <Table.Td>{b.notes || "-"}</Table.Td>
-      <Table.Td>{b.serviceAddress}</Table.Td>
+  const rows = bookings?.map((b, ind) => (
+    <Table.Tr key={ind}>
+      <Table.Td>{b.user?.fullName}</Table.Td>
+
+      <Table.Td>{new Date(b.date).toLocaleString()}</Table.Td>
+      <Table.Td>{b.time}</Table.Td>
+
+      <Table.Td>{b.description || "-"}</Table.Td>
+      <Table.Td>{b.address}</Table.Td>
       <Table.Td>
-        <Badge color={getStatusColor(b.status)}>{b.status}</Badge>
+        <Badge>{b.status}</Badge>
       </Table.Td>
       <Table.Td>
         <Menu shadow="md" width={160}>
@@ -110,9 +54,7 @@ export default function ServicesRequests() {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Item
-            onClick={()=>open()}
-            >
+            <Menu.Item onClick={() => handleOpenModal(b._id)}>
               Approve
             </Menu.Item>
           </Menu.Dropdown>
@@ -120,6 +62,35 @@ export default function ServicesRequests() {
       </Table.Td>
     </Table.Tr>
   ));
+
+  const handleOpenModal = (id: string) => {
+    setBookingId(id);
+    open();
+  };
+  const handleCloseModal = () => {
+    setBookingId("");
+    close();
+  };
+
+  const { mutate: patchProfessional, isPending: loadingUpdate } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      http.bookings.bookingControllerUpdateProfessional(id, data),
+    onSuccess: () => {
+      notifications.show({
+        message: "Service details sent to the professional",
+      });
+      handleCloseModal();
+    },
+  });
+
+  const handleSubmit = () => {
+    patchProfessional({
+      id: bookingId,
+      data: {
+        professionalId: form.values.professionalId,
+      },
+    });
+  };
   return (
     <>
       <Container fluid>
@@ -141,7 +112,9 @@ export default function ServicesRequests() {
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th>Name</Table.Th>
-                  <Table.Th>Date & Time</Table.Th>
+                  <Table.Th>Date</Table.Th>
+                  <Table.Th>Time</Table.Th>
+
                   <Table.Th>Notes</Table.Th>
                   <Table.Th>Address</Table.Th>
                   <Table.Th>Status</Table.Th>
@@ -156,22 +129,20 @@ export default function ServicesRequests() {
 
       <Modal
         opened={opened}
-        onClose={close}
+        onClose={handleCloseModal}
         title="Professional Key"
         centered
       >
-        <form>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
+            <TextInput
+              placeholder="Enter key of Professional "
+              required
+              {...form.getInputProps("professionalId")}
+            />
 
-     
-          <TextInput
-        
-            placeholder="Enter key of Professional "
-            required
-          />
-      
-            <Button type="submit">Submit</Button>
-           </Stack>
+            <Button type="submit" loading={loadingUpdate}>Submit</Button>
+          </Stack>
         </form>
       </Modal>
     </>

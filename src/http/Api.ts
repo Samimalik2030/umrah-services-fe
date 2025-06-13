@@ -1,5 +1,6 @@
 /* eslint-disable */
 /* tslint:disable */
+// @ts-nocheck
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -18,15 +19,9 @@ export interface SignInDto {
 
 export interface FileDto {
   /** Id of the file */
-  id: string;
+  fileId: string;
   /** url of the file */
   url: string;
-  /** path of the file */
-  filePath: string;
-  /** name of the file */
-  name: string;
-  /** type of the file */
-  fileType: string;
 }
 
 export interface User {
@@ -175,7 +170,13 @@ export interface CityOfficer {
    * District name
    * @example "Lahore"
    */
-  city?: "Multan" | "Lahore" | "Karachi" | "Islamabad" | "Faisalabad" | "Rawalpindi";
+  city?:
+    | "Multan"
+    | "Lahore"
+    | "Karachi"
+    | "Islamabad"
+    | "Faisalabad"
+    | "Rawalpindi";
   /** Reference to the User who owns this */
   user: User;
 }
@@ -267,7 +268,14 @@ export interface CreateProfessionalDto {
    * Profession of the individual
    * @example "Electrician"
    */
-  profession: "Plumber" | "Electrician" | "Mechanic" | "Carpenter" | "AC Technician" | "Painter" | "Cleaner";
+  profession:
+    | "Plumber"
+    | "Electrician"
+    | "Mechanic"
+    | "Carpenter"
+    | "AC Technician"
+    | "Painter"
+    | "Cleaner";
   /**
    * Years of experience (optional)
    * @example 5
@@ -303,7 +311,14 @@ export interface Professional {
   /** @example "03001234567" */
   whatsappNumber: string;
   /** @example "Electrician" */
-  profession: "Plumber" | "Electrician" | "Mechanic" | "Carpenter" | "AC Technician" | "Painter" | "Cleaner";
+  profession:
+    | "Plumber"
+    | "Electrician"
+    | "Mechanic"
+    | "Carpenter"
+    | "AC Technician"
+    | "Painter"
+    | "Cleaner";
   /** @example 3 */
   experienceYears?: number;
   /** @example "Lahore" */
@@ -315,12 +330,55 @@ export interface Professional {
   isVerified: boolean;
 }
 
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
+export interface Booking {
+  /**
+   * Unique identifier of the booking
+   * @example "60f7a1c5e5b3a72b3c8a830f"
+   */
+  _id: string;
+  /** Reference to the User who owns this */
+  user: User;
+  /** Reference to the User who owns this */
+  professional: Professional;
+  /**
+   * Date and time of the booking
+   * @format date-time
+   */
+  date: string;
+  /** Date and time of the booking */
+  time: string;
+  /** Date and time of the booking */
+  city: string;
+  /** @example "pending" */
+  status: "pending" | "confirmed" | "completed" | "cancelled";
+  /** Additional notes or instructions from the customer */
+  description?: string;
+  /** Address where service is to be provided */
+  address: string;
+  /** Address where service is to be provided */
+  images?: FileDto[];
+  /** Address where service is to be provided */
+  audio?: FileDto;
+}
+
+export interface PatchProfessionalDTO {
+  /** @example "2025-07-01T10:00:00Z" */
+  professionalId: string;
+}
+
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  HeadersDefaults,
+  ResponseType,
+} from "axios";
 import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
-export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
+export interface FullRequestParams
+  extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -335,9 +393,13 @@ export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "pa
   body?: unknown;
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
+>;
 
-export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+export interface ApiConfig<SecurityDataType = unknown>
+  extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
   securityWorker?: (
     securityData: SecurityDataType | null,
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
@@ -359,8 +421,16 @@ export class HttpClient<SecurityDataType = unknown> {
   private secure?: boolean;
   private format?: ResponseType;
 
-  constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
+  constructor({
+    securityWorker,
+    secure,
+    format,
+    ...axiosConfig
+  }: ApiConfig<SecurityDataType> = {}) {
+    this.instance = axios.create({
+      ...axiosConfig,
+      baseURL: axiosConfig.baseURL || "",
+    });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
@@ -370,7 +440,10 @@ export class HttpClient<SecurityDataType = unknown> {
     this.securityData = data;
   };
 
-  protected mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
+  protected mergeRequestParams(
+    params1: AxiosRequestConfig,
+    params2?: AxiosRequestConfig,
+  ): AxiosRequestConfig {
     const method = params1.method || (params2 && params2.method);
 
     return {
@@ -378,7 +451,11 @@ export class HttpClient<SecurityDataType = unknown> {
       ...params1,
       ...(params2 || {}),
       headers: {
-        ...((method && this.instance.defaults.headers[method.toLowerCase() as keyof HeadersDefaults]) || {}),
+        ...((method &&
+          this.instance.defaults.headers[
+            method.toLowerCase() as keyof HeadersDefaults
+          ]) ||
+          {}),
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
@@ -399,11 +476,15 @@ export class HttpClient<SecurityDataType = unknown> {
     }
     return Object.keys(input || {}).reduce((formData, key) => {
       const property = input[key];
-      const propertyContent: any[] = property instanceof Array ? property : [property];
+      const propertyContent: any[] =
+        property instanceof Array ? property : [property];
 
       for (const formItem of propertyContent) {
         const isFileType = formItem instanceof Blob || formItem instanceof File;
-        formData.append(key, isFileType ? formItem : this.stringifyFormItem(formItem));
+        formData.append(
+          key,
+          isFileType ? formItem : this.stringifyFormItem(formItem),
+        );
       }
 
       return formData;
@@ -427,11 +508,21 @@ export class HttpClient<SecurityDataType = unknown> {
     const requestParams = this.mergeRequestParams(params, secureParams);
     const responseFormat = format || this.format || undefined;
 
-    if (type === ContentType.FormData && body && body !== null && typeof body === "object") {
+    if (
+      type === ContentType.FormData &&
+      body &&
+      body !== null &&
+      typeof body === "object"
+    ) {
       body = this.createFormData(body as Record<string, unknown>);
     }
 
-    if (type === ContentType.Text && body && body !== null && typeof body !== "string") {
+    if (
+      type === ContentType.Text &&
+      body &&
+      body !== null &&
+      typeof body !== "string"
+    ) {
       body = JSON.stringify(body);
     }
 
@@ -456,7 +547,9 @@ export class HttpClient<SecurityDataType = unknown> {
  *
  * API documentation for Punjab Police Job Portal
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown,
+> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
@@ -513,7 +606,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerForgotPassword
      * @request POST:/auth/forgot-password
      */
-    userControllerForgotPassword: (data: ForgotPasswordDTO, params: RequestParams = {}) =>
+    userControllerForgotPassword: (
+      data: ForgotPasswordDTO,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/auth/forgot-password`,
         method: "POST",
@@ -546,7 +642,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerResetPassword
      * @request POST:/auth/reset-password
      */
-    userControllerResetPassword: (data: ResetPasswordDTO, params: RequestParams = {}) =>
+    userControllerResetPassword: (
+      data: ResetPasswordDTO,
+      params: RequestParams = {},
+    ) =>
       this.request<AuthUserDto, any>({
         path: `/auth/reset-password`,
         method: "POST",
@@ -624,7 +723,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name InquiryControllerCreateInquiry
      * @request POST:/inquiry
      */
-    inquiryControllerCreateInquiry: (data: CreateInquiryDto, params: RequestParams = {}) =>
+    inquiryControllerCreateInquiry: (
+      data: CreateInquiryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/inquiry`,
         method: "POST",
@@ -668,7 +770,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name InquiryControllerUpdateInquiry
      * @request PATCH:/inquiry/{id}
      */
-    inquiryControllerUpdateInquiry: (id: string, data: UpdateInquiryDto, params: RequestParams = {}) =>
+    inquiryControllerUpdateInquiry: (
+      id: string,
+      data: UpdateInquiryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/inquiry/${id}`,
         method: "PATCH",
@@ -715,7 +821,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create a new district officer
      * @request POST:/city-officers
      */
-    cityOfficerControllerCreate: (data: CreateDistrictOfficerDto, params: RequestParams = {}) =>
+    cityOfficerControllerCreate: (
+      data: CreateDistrictOfficerDto,
+      params: RequestParams = {},
+    ) =>
       this.request<CityOfficer, any>({
         path: `/city-officers`,
         method: "POST",
@@ -780,7 +889,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Update a district officer by ID
      * @request PATCH:/city-officers/{id}
      */
-    cityOfficerControllerUpdate: (id: string, data: UpdateDistrictOfficerDto, params: RequestParams = {}) =>
+    cityOfficerControllerUpdate: (
+      id: string,
+      data: UpdateDistrictOfficerDto,
+      params: RequestParams = {},
+    ) =>
       this.request<CityOfficer, any>({
         path: `/city-officers/${id}`,
         method: "PATCH",
@@ -830,7 +943,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create a new Salesman
      * @request POST:/salesman
      */
-    salesmanControllerCreate: (data: CreateSalesmanDto, params: RequestParams = {}) =>
+    salesmanControllerCreate: (
+      data: CreateSalesmanDto,
+      params: RequestParams = {},
+    ) =>
       this.request<Salesman, any>({
         path: `/salesman`,
         method: "POST",
@@ -890,7 +1006,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Update a Salesman by ID
      * @request PATCH:/salesman/{id}
      */
-    salesmanControllerUpdate: (id: string, data: CreateSalesmanDto, params: RequestParams = {}) =>
+    salesmanControllerUpdate: (
+      id: string,
+      data: CreateSalesmanDto,
+      params: RequestParams = {},
+    ) =>
       this.request<Salesman, any>({
         path: `/salesman/${id}`,
         method: "PATCH",
@@ -923,7 +1043,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Get a Salesman by user ID
      * @request GET:/salesman/user/{userId}
      */
-    salesmanControllerGetSalesmanByUser: (userId: string, params: RequestParams = {}) =>
+    salesmanControllerGetSalesmanByUser: (
+      userId: string,
+      params: RequestParams = {},
+    ) =>
       this.request<Salesman, any>({
         path: `/salesman/user/${userId}`,
         method: "GET",
@@ -940,7 +1063,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create a new professional
      * @request POST:/professionals
      */
-    professionalControllerCreate: (data: CreateProfessionalDto, params: RequestParams = {}) =>
+    professionalControllerCreate: (
+      data: CreateProfessionalDto,
+      params: RequestParams = {},
+    ) =>
       this.request<Professional, any>({
         path: `/professionals`,
         method: "POST",
@@ -1004,7 +1130,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Update a professional by ID
      * @request PATCH:/professionals/{id}
      */
-    professionalControllerUpdate: (id: string, data: CreateProfessionalDto, params: RequestParams = {}) =>
+    professionalControllerUpdate: (
+      id: string,
+      data: CreateProfessionalDto,
+      params: RequestParams = {},
+    ) =>
       this.request<Professional, void>({
         path: `/professionals/${id}`,
         method: "PATCH",
@@ -1035,36 +1165,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags bookings
      * @name BookingControllerCreateBooking
-     * @summary Create a new booking (with optional audio upload)
+     * @summary Create a new booking (with optional audio and images)
      * @request POST:/bookings
      */
-    bookingControllerCreateBooking: (
-      data: {
-        /** @example "60f7a1c5e5b3a72b3c8a830f" */
-        user?: string;
-        /** @example "60f7a1c5e5b3a72b3c8a830f" */
-        professional?: string;
-        /** @format date-time */
-        bookingDateTime?: string;
-        /** @example "PENDING" */
-        status?: string;
-        /** @example "Please be on time." */
-        notes?: string;
-        /** @example "123 Main Street" */
-        serviceAddress?: string;
-        /**
-         * Optional voice recording file
-         * @format binary
-         */
-        audioFile?: File;
-      },
-      params: RequestParams = {},
-    ) =>
+    bookingControllerCreateBooking: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/bookings`,
         method: "POST",
-        body: data,
-        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags bookings
+     * @name BookingControllerGetAllBooking
+     * @summary Get all bookings with optional filters
+     * @request GET:/bookings
+     */
+    bookingControllerGetAllBooking: (
+      query?: {
+        /** @example "2025-07-01T10:00:00Z" */
+        city?: string;
+        /** @example "2025-07-01T10:00:00Z" */
+        status?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Booking[], any>({
+        path: `/bookings`,
+        method: "GET",
+        query: query,
+        format: "json",
         ...params,
       }),
 
@@ -1089,12 +1221,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags bookings
      * @name BookingControllerUpdateBooking
      * @summary Update booking by ID
-     * @request PUT:/bookings/{id}
+     * @request PATCH:/bookings/{id}
      */
     bookingControllerUpdateBooking: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/bookings/${id}`,
-        method: "PUT",
+        method: "PATCH",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags bookings
+     * @name BookingControllerUpdateProfessional
+     * @summary Update booking by ID
+     * @request PATCH:/bookings/{id}/patch-professional
+     */
+    bookingControllerUpdateProfessional: (
+      id: string,
+      data: PatchProfessionalDTO,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/bookings/${id}/patch-professional`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

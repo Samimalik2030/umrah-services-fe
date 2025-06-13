@@ -1,6 +1,6 @@
 import { Notifications } from "@mantine/notifications";
 import { MantineProvider } from "@mantine/core";
-import { DatesProvider } from "@mantine/dates"; // ✅ import this
+import { DatesProvider } from "@mantine/dates";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 

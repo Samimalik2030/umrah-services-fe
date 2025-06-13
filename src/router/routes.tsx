@@ -23,6 +23,8 @@ import Services from "../pages/dashboard/Services";
 import CitySalesPerson from "../pages/dashboard/CitySalesPersons";
 import Professionals from "../pages/dashboard/Professionals";
 import ServicesRequests from "../pages/dashboard/ServicesRequests";
+import ACService from "../pages/components/AC-Services";
+import Practice from "../pages/components/Practice";
 
 const routes = createBrowserRouter([
   {
@@ -39,7 +41,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/ac-services",
-    element: <ACServices />,
+    element: <Practice />,
   },
   {
     path: "/wallpanel-services",
