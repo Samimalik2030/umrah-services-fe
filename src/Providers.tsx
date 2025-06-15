@@ -10,6 +10,11 @@ import router from "./router/routes";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/montserrat/index.css';
+
 
 import theme from "./theme";
 import { AuthProvider } from "./contexts/AuthContext";

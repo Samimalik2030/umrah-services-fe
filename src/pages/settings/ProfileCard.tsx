@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 
 import { useAuth } from "../../contexts/AuthContext";
-import IconCamera from "../../assets/icons/IconCamera";
+// import IconCamera from "../../assets/icons/IconCamera";
 // import axios from "axios";
 export function AvatarCard() {
 
@@ -66,7 +66,7 @@ console.log(accessToken,'access token')
                 bottom={0}
                 right={0}
               >
-                <IconCamera  />
+                {/* <IconCamera  /> */}
               </ActionIcon>
             </Box>
           )}

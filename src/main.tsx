@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { IErrorResponse } from "./interfaces/IErrorResponse.ts";
 import { notifications } from "@mantine/notifications";
 
+
 const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {

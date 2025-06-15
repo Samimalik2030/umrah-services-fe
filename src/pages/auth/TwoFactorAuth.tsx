@@ -13,7 +13,7 @@ import {
 import { useForm, yupResolver } from "@mantine/form";
 import * as yup from "yup";
 import { useMediaQuery } from "@mantine/hooks";
-import IconEmailFilled from "../../assets/icons/IconEmailFilled";
+// import IconEmailFilled from "../../assets/icons/IconEmailFilled";
 
 function TwoFactorAuth() {
   //Hooks
@@ -64,7 +64,7 @@ function TwoFactorAuth() {
                     </Stack>
                   </Group>
                   <Box>
-                    <IconEmailFilled size={32} color="black" />
+                    {/* <IconEmailFilled size={32} color="black" /> */}
                   </Box>
                 </Group>
               </Checkbox.Card>

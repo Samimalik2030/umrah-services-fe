@@ -349,6 +349,8 @@ export interface Booking {
   time: string;
   /** Date and time of the booking */
   city: string;
+  /** Date and time of the booking */
+  type: string;
   /** @example "pending" */
   status: "pending" | "confirmed" | "completed" | "cancelled";
   /** Additional notes or instructions from the customer */

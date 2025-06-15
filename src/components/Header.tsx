@@ -14,8 +14,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import getInitials from "../utils/getInitials";
-import IconLogout from "../assets/icons/IconLogout";
-import IconSettings from "../assets/icons/IconSettings";
+// import IconLogout from "../assets/icons/IconLogout";
+// import IconSettings from "../assets/icons/IconSettings";
 import { useMediaQuery } from "@mantine/hooks";
 
 function Header() {
@@ -51,7 +51,7 @@ function Header() {
           <Menu>
             <Menu.Target>
               <ActionIcon variant="subtle" size={"lg"}>
-                <IconSettings withOutline fill="none" size={32} />
+                {/* <IconSettings withOutline fill="none" size={32} /> */}
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
@@ -70,14 +70,14 @@ function Header() {
               <Menu.Divider />
               <Menu.Item
                 onClick={() => navigate("/dashboard/settings")}
-                leftSection={<IconSettings fill="none" withOutline />}
+                // leftSection={<IconSettings fill="none" withOutline />}
               >
                 Profile Settings
               </Menu.Item>
               <Menu.Item
                 onClick={logout}
                 color="red"
-                leftSection={<IconLogout fill="none" color="red" />}
+                // leftSection={<IconLogout fill="none" color="red" />}
               >
                 Logout
               </Menu.Item>

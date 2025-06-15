@@ -3,16 +3,14 @@ import { useForm } from "@mantine/form";
 
 import { showNotification } from "@mantine/notifications";
 import { useAuth } from "../../contexts/AuthContext";
-import http from "../../http";
 import { useMutation } from "@tanstack/react-query";
-import IconUserFilled from "../../assets/icons/IconUserFilled";
-import IconMail from "../../assets/icons/IconMail";
+
 import axios from "axios";
 
 export default function PersonalInfoCard() {
   const { user, setUser } = useAuth();
   const { mutate: updateProfile, isPending: updatingProfile } = useMutation({
-    mutationFn: http.auth.userControllerUpdateProfile,
+    // mutationFn: http.auth.userControllerUpdateProfile,
   });
   console.log(updateProfile);
 
@@ -51,7 +49,7 @@ export default function PersonalInfoCard() {
           placeholder={user?.fullName}
           {...form.getInputProps("fullName")}
           disabled={updatingProfile}
-          leftSection={<IconUserFilled />}
+          // leftSection={<IconUserFilled />}
           required
         />
 
@@ -59,7 +57,7 @@ export default function PersonalInfoCard() {
           label="Email"
           value={user?.email}
           disabled
-          leftSection={<IconMail />}
+          // leftSection={<IconMail />}
         />
 
         <Button

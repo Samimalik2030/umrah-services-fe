@@ -1,4 +1,5 @@
-import { Api } from "./Api";
+import { Api } from "./api";
+
 const http = new Api();
 
 // http.instance.defaults.baseURL = "https://company-api.mpacoaching.com";
