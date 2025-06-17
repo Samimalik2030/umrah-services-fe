@@ -16,9 +16,34 @@ import { Settings } from "../pages/settings/Settings";
 import RoleGuard from "../guards/RoleGuard";
 import { Role } from "../interfaces/ICommonIconProps";
 import LandingPage from "../pages/components/LandingPage";
+import Navbar from "../pages/components/Navbar";
+import UmrahServices from "../pages/components/Umrah-Services";
+import WorldPackages from "../pages/components/World-Packages";
+import CustomPackages from "../pages/components/Custom-Packages";
 
 const routes = createBrowserRouter([
-  { path: "/", element: <LandingPage /> },
+  { path: "/",
+    element: <LandingPage />
+  },
+
+  { path: "navbar",
+    element: <Navbar />
+  },
+
+  { 
+    path: "umrah-services",
+    element: <UmrahServices />
+  },
+
+  { 
+    path: "world-packages",
+    element: <WorldPackages />
+  },
+
+    { 
+    path: "custom-packages",
+    element: <CustomPackages />
+  },
 
   {
     path: "/auth",
