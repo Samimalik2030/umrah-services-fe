@@ -20,29 +20,31 @@ import Navbar from "../pages/components/Navbar";
 import UmrahServices from "../pages/components/Umrah-Services";
 import WorldPackages from "../pages/components/World-Packages";
 import CustomPackages from "../pages/components/Custom-Packages";
+import BecomeAgent from "../pages/components/Become-Agent";
 
 const routes = createBrowserRouter([
-  { path: "/",
-    element: <LandingPage />
-  },
+  { path: "/", element: <LandingPage /> },
 
-  { path: "navbar",
-    element: <Navbar />
-  },
+  { path: "navbar", element: <Navbar /> },
 
-  { 
+  {
     path: "umrah-services",
-    element: <UmrahServices />
+    element: <UmrahServices />,
   },
 
-  { 
+  {
     path: "world-packages",
-    element: <WorldPackages />
+    element: <WorldPackages />,
   },
 
-    { 
+  {
     path: "custom-packages",
-    element: <CustomPackages />
+    element: <CustomPackages />,
+  },
+
+  {
+    path: "become-agent",
+    element: <BecomeAgent />,
   },
 
   {

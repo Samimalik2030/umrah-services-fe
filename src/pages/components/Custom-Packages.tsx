@@ -16,17 +16,21 @@ import {
   TextInput,
   ActionIcon,
   CheckIcon,
+  Badge,
+  Rating,
 } from "@mantine/core";
 // import image20 from '../../assets/images/img-20.avif'
 import image17 from "../../assets/images/img-17.avif";
 import image18 from "../../assets/images/img-18.avif";
 import image19 from "../../assets/images/img-19.avif";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 function CustomPackages() {
+  const navigate = useNavigate();
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <Container w={"100vw"} bg={"#1a237e"} fluid py={80}>
         <Stack gap={130}>
           <Stack>
@@ -273,6 +277,7 @@ function CustomPackages() {
                 bg={"#3949ab"}
                 w={260}
                 h={54}
+                onClick={() => navigate("/become-agent")}
               >
                 Submit your travel inquiry
               </Button>
@@ -282,6 +287,64 @@ function CustomPackages() {
         <Text size="sm" mt={30} c={"white"}>
           © 2025. All rights reserved.
         </Text>
+      </Card>
+
+      <Card shadow="sm" p={0} radius="md" withBorder bg={"red"} w={300}>
+        <Card.Section pos="relative" bg={"blue"}>
+          <Image src={image17} height={160} alt="Premium Umrah" />
+          <Badge
+            color="yellow"
+            variant="filled"
+            size="lg"
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              zIndex: 1,
+            }}
+          >
+            $90,899.00
+          </Badge>
+        </Card.Section>
+
+        <Stack mt="md" gap={4}>
+          <Text fw={700} size="lg">
+            Premium Umrah
+          </Text>
+          <Text size="sm" c="dimmed">
+            🕓 6 DAYS - 5 NIGHTS
+          </Text>
+          <Text size="sm">Luxurious Stay Return Airfare</Text>
+        </Stack>
+
+        <Flex
+         h={48}
+          bg="#f4f4f4"
+          align="center"
+          justify="space-between"
+          style={{ overflow: "hidden" }}
+        >
+          <Box >
+            <Rating defaultValue={4} readOnly color="yellow" size="md" />
+          </Box>
+
+          <Box
+        
+            component="button"
+            style={{
+            width: "150px",
+              backgroundColor: "#00AEEF",
+              color: "white",
+              border: "none",
+              padding: "10px 10px",
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%, 15% 50%)",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            READ MORE
+          </Box>
+        </Flex>
       </Card>
     </>
   );
